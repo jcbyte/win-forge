@@ -5,11 +5,11 @@ properties:
 
   resources:
     - resource: Microsoft.WinGet.DSC/WinGetPackage
-      id: nodejs
+      id: nvm
       directives:
-        description: Install Node.js
+        description: Install NVM
       settings:
-        id: OpenJS.NodeJS
+        id: CoreyButler.NVMforWindows
         source: winget
 
     - resource: Microsoft.WinGet.DSC/WinGetPackage
