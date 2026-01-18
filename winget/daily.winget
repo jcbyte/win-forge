@@ -5,19 +5,19 @@ properties:
 
   resources:
     - resource: Microsoft.WinGet.DSC/WinGetPackage
-      id: google_drive
-      directives:
-        description: Install Google Drive
-      settings:
-        id: Google.Drive
-        source: winget
-
-    - resource: Microsoft.WinGet.DSC/WinGetPackage
       id: google_chrome
       directives:
         description: Install Google Chrome
       settings:
         id: Google.Chrome
+        source: winget
+
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: google_drive
+      directives:
+        description: Install Google Drive
+      settings:
+        id: Google.Drive
         source: winget
 
     - resource: Microsoft.WinGet.DSC/WinGetPackage
@@ -29,11 +29,11 @@ properties:
         source: winget
 
     - resource: Microsoft.WinGet.DSC/WinGetPackage
-      id: steam
+      id: whatsapp
       directives:
-        description: Install Steam
+        description: Install whatsapp
       settings:
-        id: Valve.Steam
+        id: WhatsApp.WhatsApp
         source: winget
 
     - resource: Microsoft.WinGet.DSC/WinGetPackage
@@ -42,4 +42,12 @@ properties:
         description: Install Discord
       settings:
         id: Discord.Discord
+        source: winget
+
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: steam
+      directives:
+        description: Install Steam
+      settings:
+        id: Valve.Steam
         source: winget

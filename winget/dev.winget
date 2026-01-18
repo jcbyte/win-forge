@@ -21,14 +21,6 @@ properties:
         source: winget
 
     - resource: Microsoft.WinGet.DSC/WinGetPackage
-      id: visualstudio_community
-      directives:
-        description: Install Visual Studio 2022 Community
-      settings:
-        id: Microsoft.VisualStudio.2022.Community
-        source: winget
-
-    - resource: Microsoft.WinGet.DSC/WinGetPackage
       id: docker_desktop
       directives:
         description: Install Docker Desktop
@@ -42,6 +34,14 @@ properties:
         description: Install Postman
       settings:
         id: Postman.Postman
+        source: winget
+
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: powershell
+      directives:
+        description: Install Modern Powershell
+      settings:
+        id: Microsoft.PowerShell
         source: winget
 
     - resource: Microsoft.WinGet.DSC/WinGetPackage
