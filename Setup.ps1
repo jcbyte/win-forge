@@ -1,7 +1,3 @@
-Read-Host "Continue"
-
-
-
 function New-TemporaryDirectory {
   $tmp = [System.IO.Path]::GetTempPath()
   $name = (New-Guid).ToString("N")
@@ -12,13 +8,16 @@ function New-TemporaryDirectory {
 
 # Self-elevate the script if required
 if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
+  $cmdPath = $PSCommandPath
 
-  $tempSetupDir = New-TemporaryDirectory
-  $tempSetupFile = Join-Path $tempSetupDir "Setup.ps1"
-  Invoke-RestMethod "https://raw.githubusercontent.com/jcbyte/win-forge/refs/heads/main/Setup.ps1" -OutFile $tempSetupFile
+  if (-not $cmdPath) {
+    $tempSetupDir = New-TemporaryDirectory
+    $tempSetupFile = Join-Path $tempSetupDir "Setup.ps1"
+    Invoke-RestMethod "https://raw.githubusercontent.com/jcbyte/win-forge/refs/heads/main/Setup.ps1" -OutFile $tempSetupFile
+    $cmdPath = $tempSetupFile
+  }
 
-  Start-Process -FilePath PowerShell.exe -ArgumentList "-NoExit -File `"$tempSetupFile`" -NoProfile -ExecutionPolicy Bypass" -Verb Runas
-  Read-Host "Hold Until Enter here? $tempSetupFile"
+  Start-Process -FilePath PowerShell.exe -ArgumentList "-File `"$cmdPath`" -NoProfile -ExecutionPolicy Bypass" -Verb Runas
   Exit
 }
 
