@@ -35,7 +35,6 @@ Write-Todo "Activate Windows (and Office)" "Open troubleshooting: https://massgr
 # Remind User to Sign In to installed Applications
 Write-Todo "Sign In to Chrome"
 Write-Todo "Sign In to Spotify"
-Write-Todo "Sign In to WhatsApp"
 Write-Todo "Sign In to Steam"
 Write-Todo "Sign In to VSCode"
 

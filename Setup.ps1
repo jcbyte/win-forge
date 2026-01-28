@@ -33,7 +33,7 @@ if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 
 # Install Git early to clone the repo
 Write-Host "Installing Git"
-winget install -e --id Git.Git --silent --accept-source-agreements --accept-package-agreements
+winget install -e --id Git.Git --silent --accept-source-agreements --accept-package-agreements --source winget
 
 # Clone repository
 Write-Host "Cloning ``$REPO_NAME`` Repository"
