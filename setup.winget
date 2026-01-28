@@ -14,14 +14,6 @@ properties:
         source: winget
 
     - resource: Microsoft.WinGet.DSC/WinGetPackage
-      id: google_drive
-      directives:
-        description: Install Google Drive
-      settings:
-        id: Google.Drive
-        source: winget
-
-    - resource: Microsoft.WinGet.DSC/WinGetPackage
       id: spotify
       directives:
         description: Install Spotify
@@ -79,14 +71,6 @@ properties:
         source: winget
 
     - resource: Microsoft.WinGet.DSC/WinGetPackage
-      id: postman
-      directives:
-        description: Install Postman
-      settings:
-        id: Postman.Postman
-        source: winget
-
-    - resource: Microsoft.WinGet.DSC/WinGetPackage
       id: powershell
       directives:
         description: Install Modern Powershell
@@ -128,6 +112,7 @@ properties:
         source: winget
 
     - resource: Microsoft.WinGet.DSC/WinGetPackage
+      # Note: This will always install JDK 25
       id: oracle_jdk_25
       directives:
         description: Install Oracle JDK 25
@@ -153,11 +138,11 @@ properties:
         source: winget
 
     - resource: Microsoft.WinGet.DSC/WinGetPackage
-      id: localsend
+      id: google_drive
       directives:
-        description: Install LocalSend
+        description: Install Google Drive
       settings:
-        id: LocalSend.LocalSend
+        id: Google.Drive
         source: winget
 
     - resource: Microsoft.WinGet.DSC/WinGetPackage
@@ -166,6 +151,14 @@ properties:
         description: Install Microsoft PowerToys
       settings:
         id: Microsoft.PowerToys
+        source: winget
+
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: localsend
+      directives:
+        description: Install LocalSend
+      settings:
+        id: LocalSend.LocalSend
         source: winget
 
     - resource: Microsoft.WinGet.DSC/WinGetPackage

@@ -2,14 +2,21 @@
 
 > Very unfinished, much draft
 
-## Installed
+## Installs
+
+### Daily Software
+
+- Google Chrome
+- Spotify
+- WhatsApp
+- Discord
+- Steam
 
 ### Development
 
 - Git
 - VSCode
 - Docker Desktop
-- Postman
 - Powershell (Modern)
 - Oh My Posh
 
@@ -17,9 +24,12 @@
 
 - 7-Zip
 - Everything
-- LocalSend
+- Google Drive
 - PowerToys
+- LocalSend
 - Unified Remote
+- Chrome Remote Desktop
+- Windhawk
 
 ### Languages
 
@@ -28,55 +38,21 @@
 - Rust (Rustup)
 - Java (JDK 25)
 
-### Daily
+## Todo
 
-- Google Chrome
-- Google Drive
-- Spotify
-- WhatsApp
-- Discord
-- Steam
-
-## Configurations
-
-### Git
-
-- Set name and email config
-- enable auto crlf for windoes
-- enable pull rebase for cleaner pulling
-
-###
-
-## todo
-
-enable wsl+install ubuntu
-install office
-activate windows+office https://massgrave.dev/
-debloat windows https://github.com/Raphire/Win11Debloat
-windows config (file epxlorer)
-sign into vscode
-docker desctop config?
-postman config?
-powershell 7 defualt shell + ghost text
-oh my posh, theme + config
-7z config?
-everything config?
-localsend config?
-power toys config
-unified remote config?
-install node
-install python
-rust setup?
-java setup?
-remote desktop config?
-sign in to chrome
-sign in to google drive
-sign into spotify + new theme ad remocal
-sign into whatsapp
-sign in to discord
-sign into steam
-windhawk: Better file sizes in Explorer details, Taskbar Volume Control
-
-- WHat about Hardware Software (Chroma, icue, armoury crate, afterburner, nvidea game pannel)
-
-- note will always install jdk_25
+- Single script to install
+- Install Office
+- Activate Windows+Office (https://massgrave.dev/)
+- Debloat + Configure Windows (https://github.com/Raphire/Win11Debloat)
+- Install winget Apps
+- Sign In (Chrome, Spotify, WhatsApp, Discord, Steam, VSCode, Docker Desktop, Google Drive)
+- Configure Git
+- Configure pwsh (Oh My Posh, Ghost Text)
+- Install Node.js
+- Install Python
+- Install Rust? How does rustup work?
+- Configure PowerToys
+- Configure Windhawk (Better file sizes in Explorer details, Taskbar Volume Control)
+- Configure Spotify (Ad Removal)
+- Check if needing config? (7-Zip, Everything, LocalSend, Unified Remote, Chrome Remote Desktop)
+- Mention Driver Software (NVIDIA , Afterburner, Razer Chroma, iCUE, Armoury Crate)
