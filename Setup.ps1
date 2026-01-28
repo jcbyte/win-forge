@@ -40,3 +40,5 @@ Set-Location "$repoDir"
 .\ConfigurePackages.ps1
 .\InstallDev.ps1
 .\PostSetup.ps1
+
+Read-Host "Hold Until Enter"
