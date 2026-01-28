@@ -6,6 +6,7 @@ if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
   Exit
 }
 
+Read-Host "This is admin..."
 
 $REPO_NAME = "win-forge"
 $REPO_URL = "https://github.com/jcbyte/$REPO_NAME.git"
