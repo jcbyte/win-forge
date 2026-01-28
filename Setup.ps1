@@ -6,7 +6,7 @@ function New-TemporaryDirectory {
   $tmp = [System.IO.Path]::GetTempPath()
   $name = (New-Guid).ToString("N")
   $path = Join-Path $tmp $name
-  New-Item -ItemType Directory -Path $path
+  New-Item -ItemType Directory -Path $path | Out-Null
   return $path
 }
 
@@ -15,7 +15,7 @@ if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 
   $tempSetupDir = New-TemporaryDirectory
   $tempSetupFile = Join-Path $tempSetupDir "Setup.ps1"
-  Invoke-RestMethod "https://raw.githubusercontent.com/jcbyte/win-forge/refs/heads/main/Setup.ps1" -OutFile "$tempSetupFile"
+  Invoke-RestMethod "https://raw.githubusercontent.com/jcbyte/win-forge/refs/heads/main/Setup.ps1" -OutFile $tempSetupFile
 
   Start-Process -FilePath PowerShell.exe -ArgumentList "-NoExit -File `"$tempSetupFile`" -NoProfile -ExecutionPolicy Bypass" -Verb Runas
   Read-Host "Hold Until Enter here? $tempSetupFile"
