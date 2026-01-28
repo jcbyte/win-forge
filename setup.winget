@@ -175,3 +175,19 @@ properties:
       settings:
         id: UnifiedIntents.UnifiedRemote
         source: winget
+
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: chrome_remote_desktop
+      directives:
+        description: Install Chrome Remote Desktop
+      settings:
+        id: Google.ChromeRemoteDesktop
+        source: winget
+
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: windhawk
+      directives:
+        description: Install Windhawk
+      settings:
+        id: RamenSoftware.Windhawk
+        source: winget
