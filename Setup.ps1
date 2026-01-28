@@ -1,9 +1,10 @@
+# Set constants
 $REPO_NAME = "win-forge"
 $REPO_URL = "https://github.com/jcbyte/$REPO_NAME.git"
 $SETUP_SCRIPT_NAME = "Setup.ps1"
-$SETUP_IRM = "https://raw.githubusercontent.com/jcbyte/$REPO_NAME/refs/heads/main/$SETUP_SCRIPT_NAME"
+$SETUP_SCRIPT_URL = "https://raw.githubusercontent.com/jcbyte/$REPO_NAME/refs/heads/main/$SETUP_SCRIPT_NAME"
 
-# Create and return path to a new temporary directory
+# Creates a new temporary directory and returns its path
 function New-TemporaryDirectory {
   $tmp = [System.IO.Path]::GetTempPath()
   $name = (New-Guid).ToString("N")
@@ -12,23 +13,24 @@ function New-TemporaryDirectory {
   return $path
 }
 
-# Self-elevate the script if required
+# Check if the script is running as administrator; if not, relaunch it with elevation
 if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
-  # If the script is purley in memory (i.e. from `irm`) then download the script
   $cmdPath = $PSCommandPath
+  # If the script is running directly from memory (`irm`), download it to a temporary file
   if (-not $cmdPath) {
     $tempSetupDir = New-TemporaryDirectory
-    $tempSetupFile = Join-Path $tempSetupDir $SETUP_SCRIPT_NAME
-    Invoke-RestMethod $SETUP_IRM -OutFile $tempSetupFile
+    $tempSetupFile = Join-Path $tempSetupDir $SETUP_SCRIPT
+    Invoke-RestMethod $SETUP_SCRIPT_URL -OutFile $tempSetupFile
     $cmdPath = $tempSetupFile
   }
 
-  # Run the script with elevated privileges
+  # Relaunch the script with elevated privileges
   Start-Process -FilePath PowerShell.exe -ArgumentList "-NoExit -NoProfile -ExecutionPolicy Bypass -File `"$cmdPath`"" -Verb Runas
   Exit
 }
 
-Read-Host "This is admin..."
+Read-Host "We Are Admin!"
+# todo below
 
 
 
