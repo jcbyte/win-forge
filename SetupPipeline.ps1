@@ -2,6 +2,8 @@ param(
   [string]$RepoDir
 )
 
+$StepsPath = Join-Path $RepoDir "Steps"
+
 # Execute each stage of the setup
 $SetupSteps = @(
   [PSCustomObject]@{File = "ConfigureWindows.ps1"; Title = "Configure Windows" },
@@ -14,6 +16,6 @@ $SetupSteps = @(
 Write-Host "Performing Setup"
 foreach ($Step in $SetupSteps) {
   Write-Host "Performing Step: $($Step.Title)"
-  $ScriptFile = Join-Path $RepoDir "steps" $Step.File
+  $ScriptFile = Join-Path $StepsPath $Step.File
   & $ScriptFile
 }
