@@ -53,6 +53,7 @@ enable wsl+install ubuntu
 install office
 activate windows+office https://massgrave.dev/
 debloat windows https://github.com/Raphire/Win11Debloat
+windows config (file epxlorer)
 sign into vscode
 docker desctop config?
 postman config?
@@ -67,9 +68,15 @@ install node
 install python
 rust setup?
 java setup?
+remote desktop config?
 sign in to chrome
 sign in to google drive
 sign into spotify + new theme ad remocal
 sign into whatsapp
 sign in to discord
 sign into steam
+windhawk: Better file sizes in Explorer details, Taskbar Volume Control
+
+- WHat about Hardware Software (Chroma, icue, armoury crate, afterburner, nvidea game pannel)
+
+- note will always install jdk_25
