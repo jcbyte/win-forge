@@ -2,6 +2,10 @@
 
 > Very unfinished, much draft
 
+```
+irm https://raw.githubusercontent.com/jcbyte/win-forge/refs/heads/main/Setup.ps1 | iex
+```
+
 ## Installs
 
 ### Daily Software
