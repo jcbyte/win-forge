@@ -1,9 +1,7 @@
-$wingetPath = ".\winget"
+Set-ExecutionPolicy Bypass -Scope Process -Force
 
-# Package Installation though WinGet
-Get-ChildItem -Path $wingetPath -File | ForEach-Object { 
-  winget configure -f $_.FullName 
-}
-
-# ? is this how i should run my other files?
-./wsl/setup_wsl.ps1
+.\ConfigureWindows.ps1
+.\InstallPackages.ps1
+.\ConfigurePackages.ps1
+.\InstallDev.ps1
+.\PostSetup.ps1

@@ -40,19 +40,37 @@
 
 ## Todo
 
+`Setup.ps1`
+
 - Single script to install
-- Install Office
-- Activate Windows+Office (https://massgrave.dev/)
+
+`ConfigureWindows.ps1`
+
 - Debloat + Configure Windows (https://github.com/Raphire/Win11Debloat)
+- Install WSL + Ubuntu
+
+`InstallPackages.ps1`
+
 - Install winget Apps
-- Sign In (Chrome, Spotify, WhatsApp, Discord, Steam, VSCode, Docker Desktop, Google Drive)
-- Configure Git
+- Install Office
+
+`ConfigurePackages.ps1`
+
 - Configure pwsh (Oh My Posh, Ghost Text)
-- Install Node.js
-- Install Python
-- Install Rust? How does rustup work?
+- Configure Git
 - Configure PowerToys
 - Configure Windhawk (Better file sizes in Explorer details, Taskbar Volume Control)
 - Configure Spotify (Ad Removal)
 - Check if needing config? (7-Zip, Everything, LocalSend, Unified Remote, Chrome Remote Desktop)
+
+`InstallDev.ps1`
+
+- Install Node.js
+- Install Python
+- Install Rust? How does rustup work?
+
+`PostSetup.ps1`
+
+- Activate Windows+Office (https://massgrave.dev/)
+- Sign In (Chrome, Spotify, WhatsApp, Discord, Steam, VSCode, Docker Desktop, Google Drive)
 - Mention Driver Software (NVIDIA , Afterburner, Razer Chroma, iCUE, Armoury Crate)
