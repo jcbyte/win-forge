@@ -1,3 +1,11 @@
+# Self-elevate the script if required
+if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
+  # $CommandLine = "-File `"" + $MyInvocation.MyCommand.Path + "`" " + $MyInvocation.UnboundArguments
+  Start-Process -FilePath PowerShell.exe -ArgumentList "-File `"$PSCommandPath`" -NoProfile -ExecutionPolicy Bypass" -Verb Runas
+  Exit
+}
+
+
 $REPO_NAME = "win-forge"
 $REPO_URL = "https://github.com/jcbyte/$REPO_NAME.git"
 
