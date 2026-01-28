@@ -14,8 +14,8 @@ function Write-Todo ([string]$Title, [string]$ActionText, [ScriptBlock]$Action )
     # If action is provided, ask for confirmation
     Write-Host " - $ActionText [y?]" -NoNewline -ForegroundColor DarkGray
 
-    $key = [Console]::ReadKey($true)
-    if ($key.Key -in @('y', 'Y')) {
+    $Key = [Console]::ReadKey($true)
+    if ($Key.Key -in @('y', 'Y')) {
       Write-Host "`r   $Title" -ForegroundColor DarkGray 
       & $Action
     }
