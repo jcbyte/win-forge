@@ -7,3 +7,6 @@
 
 Write-Host "Install Packages"
 # todo
+
+# Todo Install winget Apps
+# Todo Install Office
