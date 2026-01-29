@@ -36,7 +36,6 @@ if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
   if ($Dev) { $ArgList += "-Dev" } # Forward `Dev` switch
   Start-Process -FilePath PowerShell.exe -ArgumentList $ArgList -Verb RunAs
 
-  Read-Host "HOLD HERE"
   Exit
 }
 
