@@ -1,3 +1,4 @@
+﻿
 # Setup Script which should be run, to gain elevated privileges and download the repository
 
 param (
