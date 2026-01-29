@@ -2,7 +2,8 @@
   [string]$RepoDir
 )
 
-Import-Module Utils
+$UtilsModule = Join-Path $RepoDir "Utils"
+Import-Module $UtilsModule
 
 # Get credentials for underprivileged operations
 function Get-Cred([string]$Username, [int]$MaxAttempts = 3) {

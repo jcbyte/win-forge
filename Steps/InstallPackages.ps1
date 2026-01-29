@@ -4,7 +4,8 @@ param(
   [PSCredential]$Cred
 )
 
-Import-Module ..\Utils
+$UtilsModule = Join-Path $RepoDir "Utils"
+Import-Module $UtilsModule
 
 $WinGetPackages = @(
   # Daily Software
