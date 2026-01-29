@@ -1,4 +1,4 @@
-﻿
+
 # Setup Script which should be run, to gain elevated privileges and download the repository
 
 param (
@@ -44,7 +44,8 @@ if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 Write-Host "Installing Git"
 winget install -e --id Git.Git --silent --accept-source-agreements --accept-package-agreements --source winget
 
-# todo will need to reset path before continuing
+# Refresh PATH from the systems environment variables
+$env:PATH = [System.Environment]::GetEnvironmentVariable("PATH", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH", "User")
 
 if (-not $Dev) {
   # Clone repository
@@ -64,10 +65,10 @@ $SetupPipelineScript = Join-Path $RepoDir "Pipeline.ps1"
 
 # Indicate success/failure
 if ($?) {
-  Write-Host "`n✅ Setup Script Succeeded" -ForegroundColor Green
+  Write-Host "`nSetup Script Succeeded" -ForegroundColor Green
 }
 else {
-  Write-Host "`n❌ Setup Script Failed" -ForegroundColor Red
+  Write-Host "`nSetup Script Failed" -ForegroundColor Red
 }
 
 # Wait for user input before closing
