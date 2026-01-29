@@ -1,9 +1,9 @@
 # Configure Packages
-
-Write-Host "Configure Packages"
 # todo
 
-# Todo Configure pwsh (Oh My Posh, Ghost Text)
+Write-Host "Configure Packages"
+
+# Todo Configure pwsh (Oh My Posh, Ghost Text, FiraCode Nerd Font)
 # Todo Configure Git
 # Todo Configure PowerToys
 # Todo Configure Windhawk (Better file sizes in Explorer details, Taskbar Volume Control)

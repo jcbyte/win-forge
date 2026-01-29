@@ -1,4 +1,7 @@
-﻿param(
+﻿# Setup Pipeline Orchestrator
+# Collects user credentials and executes setup steps in sequence
+
+param(
   [string]$RepoDir
 )
 
@@ -6,7 +9,6 @@ Import-Module (Join-Path $RepoDir "Utils")
 
 # Get credentials for underprivileged operations
 function Get-Cred([string]$Username, [int]$MaxAttempts = 3) {
-
   # Try a limited number of attempts before failing
   for ($i = 0; $i -lt $MaxAttempts; $i++) {
     $Password = Read-Host "🔒 Password" -AsSecureString
@@ -39,20 +41,18 @@ Write-Host "👤 Enter Password for $($env:USERNAME):" -ForegroundColor Yellow
 $Cred = Get-Cred $env:USERNAME
 if (-not $Cred) { Exit 1 }
 
-$StepsPath = Join-Path $RepoDir "Steps"
-
 # Execute each stage of the setup
+$StepsPath = Join-Path $RepoDir "Steps"
 $SetupSteps = @(
-  [PSCustomObject]@{File = "ConfigureWindows.ps1"; Title = "Configure Windows" },
-  [PSCustomObject]@{File = "InstallPackages.ps1"; Title = "Install Packages"; RefreshPath = $true },
-  [PSCustomObject]@{File = "ConfigurePackages.ps1"; Title = "Configure Packages" },
-  [PSCustomObject]@{File = "InstallLang.ps1"; Title = "Install Languages"; RefreshPath = $true },
-  [PSCustomObject]@{File = "PostSetup.ps1"; Title = "Post Setup" }
+  [PSCustomObject]@{File = "ConfigureWindows.ps1"; Title = "Configuring Windows" },
+  [PSCustomObject]@{File = "InstallPackages.ps1"; Title = "Installing Packages"; RefreshPath = $true },
+  [PSCustomObject]@{File = "ConfigurePackages.ps1"; Title = "Configuring Packages" },
+  [PSCustomObject]@{File = "InstallLang.ps1"; Title = "Installing Languages"; RefreshPath = $true },
+  [PSCustomObject]@{File = "PostSetup.ps1"; Title = "Performing Post Setup" }
 )
 
-Write-Host "Performing Setup"
 foreach ($Step in $SetupSteps) {
-  Write-Host "Performing Step: $($Step.Title)"
+  Write-Host "`n⚡ $($Step.Title)" -ForegroundColor Cyan
   $ScriptFile = Join-Path $StepsPath $Step.File
   & $ScriptFile -Cred $Cred
 

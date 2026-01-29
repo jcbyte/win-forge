@@ -1,4 +1,6 @@
-# Setup Script which should be run, to gain elevated privileges and download the repository
+# Setup Script for Win-Forge
+# Ensures elevated privileges, installs Git early and downloads the repository
+# Can be run in Dev mode using local modules using `-Dev` switch
 
 param (
   [switch]$Dev

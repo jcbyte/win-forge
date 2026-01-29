@@ -1,4 +1,5 @@
-﻿# Post Setup
+﻿# Post-Setup Tasks
+# Guides the user through remaining manual configuration steps though interactive prompts
 
 function Write-Todo ([string]$Title, [string]$ActionText, [ScriptBlock]$Action ) {
   Write-Host "   $Title" -NoNewline -ForegroundColor Yellow

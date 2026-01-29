@@ -1,4 +1,6 @@
-# Install Packages though WinGet and separately
+# Package Installation Stage
+# Installs common software, development tools, and languages using WinGet.
+# Will install Office via ODT.
 
 param(
   [PSCredential]$Cred
@@ -6,6 +8,7 @@ param(
 
 Import-Module (Join-Path $RepoDir "Utils")
 
+# List of WinGet packages to install
 $WinGetPackages = @(
   # Daily Software
   [PSCustomObject]@{Id = "Google.Chrome"; Title = "Google Chrome" },
@@ -37,7 +40,7 @@ $WinGetPackages = @(
   [PSCustomObject]@{Id = "Oracle.JDK.25"; Title = "Java JDK 25" } # ? This will always install JDK 25 
 )
 
-foreach ($Package in $WinGetPackages) { Install-WinGetUnattended $Package }
+foreach ($Package in $WinGetPackages) { Install-WinGetUnattended $Package $Cred }
 
 # Install Office using Office Deployment Tool
 
