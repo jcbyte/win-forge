@@ -40,7 +40,7 @@ foreach ($Package in $WinGetPackages) {
 
   # Add override to command if set
   $WinGetCmd = "winget install -e --id $($Package.Id) --silent --accept-source-agreements --accept-package-agreements --source winget"
-  if ($Package.Override) { $WinGetCmd += " --override $($Package.Override)" }
+  if ($Package.Override) { $WinGetCmd += " --override `"$($Package.Override)`"" }
 
   # Default to admin privilege unless explicitly set
   $Privilege = $Package.Privilege
