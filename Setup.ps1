@@ -1,4 +1,4 @@
-# Setup Script which should be run, to gain elevated privileges and download the repository
+﻿# Setup Script which should be run, to gain elevated privileges and download the repository
 
 # Set constants
 $REPO_NAME = "win-forge"
@@ -42,8 +42,16 @@ git clone "$REPO_URL" "$RepoDir" --quiet
 
 # Execute the setup pipeline
 $SetupPipelineScript = Join-Path $RepoDir "SetupPipeline.ps1"
-& $SetupPipelineScript $RepoDir # todo what if this fails, i.e. exit 1
+& $SetupPipelineScript $RepoDir
+
+# Indicate success/failure
+if ($?) {
+  Write-Host "`n✅ Setup Script Succeeded" -ForegroundColor Green
+}
+else {
+  Write-Host "`n❌ Setup Script Failed" -ForegroundColor Red
+}
 
 # Wait for user input before closing
-Write-Host "Setup Complete. Press Enter to Exit" -NoNewline
+Write-Host "Press Enter to Exit..." -NoNewline
 [Console]::ReadKey() | Out-Null
