@@ -3,45 +3,39 @@
 )
 
 # Get credentials for underprivileged operations
-function Get-Cred([string]$Username, [int]$Count = 0) {
-  # Try up to 3 times before failing
-  if ($Count -ge 3) { return $null }
+function Get-Cred([string]$Username, [int]$MaxAttempts = 3) {
 
-  # Ask the user for their credentials
-  $Password = Read-Host "🔒 Password" -AsSecureString
-  $Cred = [PSCredential]::new($Username, $Password)
+  # Try a limited number of attempts before failing
+  for ($i = 0; $i -lt $MaxAttempts; $i++) {
+    $Password = Read-Host "🔒 Password" -AsSecureString
+    $Cred = [PSCredential]::new($Username, $Password)
 
-  try {
-    Start-Process -FilePath PowerShell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -Command `"Exit`"" -Credential $Cred -Wait -WindowStyle Hidden -ErrorAction Stop
     # If the `Start`Process` proceeds the credentials are valid
+    try {
+      Start-Process -FilePath PowerShell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -Command `"Exit`"" -Credential $Cred -Wait -WindowStyle Hidden -ErrorAction Stop
+      return $Cred
+    }
+    catch {
+      $Cred = $null
+    }
+    finally {
+      # THis will always run (for UI) even after returning
+      [System.Console]::SetCursorPosition(0, [System.Console]::CursorTop - 1)
+      [Console]::Write(" " * [Console]::WindowWidth)
+      [System.Console]::SetCursorPosition(0, [System.Console]::CursorTop)
 
-    [System.Console]::SetCursorPosition(0, [System.Console]::CursorTop - 1)
-    [Console]::Write(" " * [Console]::WindowWidth)
-    [System.Console]::SetCursorPosition(0, [System.Console]::CursorTop)
-    
-    Write-Host "✅ Password: ********" -ForegroundColor Green
-
-    return $Cred
+      if ($Cred) { Write-Host "✅ Password: ********" -ForegroundColor Green }
+      else { Write-Host "❌ Password: ********" -ForegroundColor Red }
+    }
   }
-  catch {
-    # If the `Start`Process` fails its because the credentials are invalid, so retry getting them
-    [System.Console]::SetCursorPosition(0, [System.Console]::CursorTop - 1)
-    [Console]::Write(" " * [Console]::WindowWidth)
-    [System.Console]::SetCursorPosition(0, [System.Console]::CursorTop)
 
-    Write-Host "❌ Password: ********" -ForegroundColor Red
-
-    return Get-Cred $Username ($Count + 1)
-  }
+  return $null
 }
 
 Write-Host "User credentials required for underprivileged operations" -ForegroundColor DarkGray
 Write-Host "👤 Enter Password for $($env:USERNAME):" -ForegroundColor Yellow
 $Cred = Get-Cred $env:USERNAME
 if (-not $Cred) { Exit 1 }
-
-Read-Host "sd"
-Exit
 
 $StepsPath = Join-Path $RepoDir "Steps"
 
