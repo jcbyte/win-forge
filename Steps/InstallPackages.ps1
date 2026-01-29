@@ -1,5 +1,9 @@
 # Install Packages though WinGet and separately
 
+param(
+  [PSCredential]$Cred
+)
+
 $WinGetPackages = @(
   # Daily Software
   [PSCustomObject]@{Id = "Google.Chrome"; Title = "Google Chrome" },
@@ -42,7 +46,10 @@ foreach ($Package in $WinGetPackages) {
 
   switch ($Privilege) {
     "admin" { Invoke-Expression $WinGetCmd }
-    "user" { } # todo run as user
+    "user" { 
+      if ($Cred) { Start-Process -FilePath PowerShell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -Command `"$WinGetCmd`"" -Credential $Cred -Wait }
+      else { Write-Host "Require user privilege, ignoring" }
+    }
   }
 }
 

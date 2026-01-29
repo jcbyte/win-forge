@@ -42,7 +42,7 @@ git clone "$REPO_URL" "$RepoDir" --quiet
 
 # Execute the setup pipeline
 $SetupPipelineScript = Join-Path $RepoDir "SetupPipeline.ps1"
-& $SetupPipelineScript $RepoDir
+& $SetupPipelineScript $RepoDir # todo what if this fails, i.e. exit 1
 
 # Wait for user input before closing
 Write-Host "Setup Complete. Press Enter to Exit" -NoNewline
