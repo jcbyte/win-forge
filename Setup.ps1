@@ -1,5 +1,7 @@
 ﻿# Setup Script which should be run, to gain elevated privileges and download the repository
 
+# todo shows some error when running
+
 param (
   [switch]$Dev
 )
@@ -8,7 +10,7 @@ param (
 $REPO_NAME = "win-forge"
 $REPO_URL = "https://github.com/jcbyte/$REPO_NAME.git"
 $SETUP_SCRIPT_NAME = "Setup.ps1"
-$SETUP_SCRIPT_URL = "https://raw.githubusercontent.com/jcbyte/$REPO_NAME/refs/heads/main/$SETUP_SCRIPT_NAME"
+$SETUP_SCRIPT_URL = "https://raw.githubusercontent.com/jcbyte/$REPO_NAME/main/$SETUP_SCRIPT_NAME"
 
 # Creates a new temporary directory and returns its path
 function New-TemporaryDirectory {
@@ -34,6 +36,8 @@ if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
   $ArgList = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $CmdPath)
   if ($Dev) { $ArgList += "-Dev" } # Forward `Dev` switch
   Start-Process -FilePath PowerShell.exe -ArgumentList $ArgList -Verb RunAs
+
+  Read-Host "HOLD HERE"
   Exit
 }
 
@@ -41,6 +45,7 @@ if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 Write-Host "Installing Git"
 winget install -e --id Git.Git --silent --accept-source-agreements --accept-package-agreements --source winget
 
+# todo will need to reset path before continuing
 
 if (-not $Dev) {
   # Clone repository

@@ -3,13 +3,13 @@
 > Very unfinished, much draft
 
 ```
-irm https://raw.githubusercontent.com/jcbyte/win-forge/refs/heads/main/Setup.ps1 | iex
+irm https://raw.githubusercontent.com/jcbyte/win-forge/main/Setup.ps1 | iex
 ```
 
 > Dev: For testing (no cache):
 
 ```
-irm "https://raw.githubusercontent.com/jcbyte/win-forge/refs/heads/main/Setup.ps1?nocache=$(Get-Random)" | iex
+irm "https://raw.githubusercontent.com/jcbyte/win-forge/main/Setup.ps1?nocache=$(Get-Random)" | iex
 ```
 
 > todo: Make nice terminal colours
@@ -20,7 +20,6 @@ irm "https://raw.githubusercontent.com/jcbyte/win-forge/refs/heads/main/Setup.ps
 
 - Google Chrome
 - Spotify
-- WhatsApp
 - Discord
 - Steam
 
