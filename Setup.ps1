@@ -27,7 +27,7 @@ if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
   }
 
   # Relaunch the script with elevated privileges
-  Start-Process -FilePath PowerShell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$CmdPath`"" -Verb Runas
+  Start-Process -FilePath PowerShell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$CmdPath`"" -Verb RunAs
   Exit
 }
 

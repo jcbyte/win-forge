@@ -9,7 +9,7 @@ $SetupSteps = @(
   [PSCustomObject]@{File = "ConfigureWindows.ps1"; Title = "Configure Windows" },
   [PSCustomObject]@{File = "InstallPackages.ps1"; Title = "Install Packages" },
   [PSCustomObject]@{File = "ConfigurePackages.ps1"; Title = "Configure Packages" },
-  [PSCustomObject]@{File = "InstallDev.ps1"; Title = "Install Dev" },
+  [PSCustomObject]@{File = "InstallLang.ps1"; Title = "Install Languages" },
   [PSCustomObject]@{File = "PostSetup.ps1"; Title = "Post Setup" }
 )
 
