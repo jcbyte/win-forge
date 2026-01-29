@@ -11,13 +11,16 @@ $REPO_URL = "https://github.com/jcbyte/$REPO_NAME.git"
 $SETUP_SCRIPT_NAME = "Setup.ps1"
 $SETUP_SCRIPT_URL = "https://raw.githubusercontent.com/jcbyte/$REPO_NAME/main/$SETUP_SCRIPT_NAME"
 
-# Creates a new temporary directory and returns its path
-function New-TemporaryDirectory {
-  $TmpDir = [System.IO.Path]::GetTempPath()
-  $Name = (New-Guid).ToString("N")
-  $Path = Join-Path $TmpDir $Name
-  New-Item -ItemType Directory -Path $Path | Out-Null
-  return $Path
+if (-not $Dev) {
+  # Import utils module though github
+  $UTILS_MODULE_URL = "https://raw.githubusercontent.com/jcbyte/$REPO_NAME/main/Utils/Utils.psm1"
+  $ModuleCode = Invoke-RestMethod $UTILS_MODULE_URL
+  Invoke-Expression $ModuleCode
+}
+else {
+  # Use local Utils modules
+  $RepoDir = Split-Path -Parent $PSCommandPath
+  Import-Module (Join-Path $RepoDir "Utils")
 }
 
 # Check if the script is running as administrator; if not, relaunch it with elevation
@@ -43,8 +46,8 @@ if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 Write-Host "Installing Git"
 winget install -e --id Git.Git --silent --accept-source-agreements --accept-package-agreements --source winget
 
-# Refresh PATH from the systems environment variables
-$env:PATH = [System.Environment]::GetEnvironmentVariable("PATH", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH", "User")
+# Refresh PATH to use Git
+Sync-Path
 
 if (-not $Dev) {
   # Clone repository
@@ -53,8 +56,7 @@ if (-not $Dev) {
   git clone "$REPO_URL" "$RepoDir" --quiet
 }
 else {
-  # If in Dev use local repo
-  $RepoDir = Split-Path -Parent $PSCommandPath
+  # If in Dev use local repo, this is already set above in dev mode
   Write-Host "Using local '$RepoDir' repository"
 }
 

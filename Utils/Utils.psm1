@@ -1,3 +1,4 @@
+# Creates a new temporary directory and returns its path
 function New-TemporaryDirectory {
   $TmpDir = [System.IO.Path]::GetTempPath()
   $Name = (New-Guid).ToString("N")
@@ -6,6 +7,7 @@ function New-TemporaryDirectory {
   return $Path
 }
 
+# Sync the systems PATH back to our environments path
 function Sync-Path {
   $MachinePath = [System.Environment]::GetEnvironmentVariable("PATH", "Machine")
   $UserPath = [System.Environment]::GetEnvironmentVariable("PATH", "User")
