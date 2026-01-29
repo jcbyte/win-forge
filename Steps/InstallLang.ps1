@@ -2,13 +2,15 @@
 # Installs and configures latest languages from version managers
 
 # Install and use latest Node.js LTS
-Write-Host "🔷 Installing " -NoNewline
+Write-Host "🔷" -NoNewline -ForegroundColor DarkCyan
+Write-Host "Installing " -NoNewline
 Write-Host "Latest Node.js LTS" -ForegroundColor Cyan
 nvm install lts
 nvm use lts
 
 # Install latest Python3
-Write-Host "🔷 Installing" -NoNewline
+Write-Host "🔷" -NoNewline -ForegroundColor DarkCyan
+Write-Host "Installing " -NoNewline
 Write-Host "Latest Python 3" -ForegroundColor Cyan
 py install 3
 # Add pythons global shortcuts directory to PATH

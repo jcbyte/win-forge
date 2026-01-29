@@ -15,7 +15,8 @@ function Write-Todo ([string]$Title, [string]$ActionText, [ScriptBlock]$Action )
 
     $Key = [Console]::ReadKey($true)
     if ($Key.Key -in @('y', 'Y')) {
-      Write-Host "`r   $Title" -ForegroundColor DarkGray 
+      Write-Host "`r⏳" -NoNewline
+      Write-Host " $Title" -ForegroundColor DarkGray 
       & $Action
     }
   }
@@ -25,7 +26,8 @@ function Write-Todo ([string]$Title, [string]$ActionText, [ScriptBlock]$Action )
 
   }
 
-  Write-Host "`r✅ $Title" -ForegroundColor DarkGray 
+  Write-Host "`r✅" -NoNewline -ForegroundColor Green
+  Write-Host " $Title" -ForegroundColor DarkGray 
 }
 
 # Remind user to Activate Windows, using advanced MAS Troubleshooting if required

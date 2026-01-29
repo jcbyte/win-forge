@@ -37,7 +37,9 @@ function Get-Cred([string]$Username, [int]$MaxAttempts = 3) {
 }
 
 Write-Host "User credentials required for underprivileged operations" -ForegroundColor DarkGray
-Write-Host "👤 Enter Password for $($env:USERNAME):" -ForegroundColor Yellow
+Write-Host "👤 Enter Password for " -NoNewline -ForegroundColor Cyan
+Write-Host $env:USERNAME -NoNewline -ForegroundColor DarkCyan
+Write-Host ":" -ForegroundColor Cyan
 $Cred = Get-Cred $env:USERNAME
 if (-not $Cred) { Exit 1 }
 
@@ -52,7 +54,8 @@ $SetupSteps = @(
 )
 
 foreach ($Step in $SetupSteps) {
-  Write-Host "`n⚡ $($Step.Title)" -ForegroundColor Cyan
+  Write-Host "`n⚡" -NoNewline -ForegroundColor DarkCyan
+  Write-Host $Step.Title -ForegroundColor Cyan
   $ScriptFile = Join-Path $StepsPath $Step.File
   & $ScriptFile -Cred $Cred
 

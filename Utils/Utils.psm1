@@ -1,4 +1,5 @@
-﻿# Creates a new temporary directory and returns its path
+﻿
+# Creates a new temporary directory and returns its path
 function New-TemporaryDirectory {
   $TmpDir = [System.IO.Path]::GetTempPath()
   $Name = (New-Guid).ToString("N") # ? HIghly unlikely change of collision
@@ -18,7 +19,8 @@ function Sync-Path {
 # $Package = {Id:string; Title?:string; Privilege?:string; Override?:string}
 # User credentials in $Cred are required when installing with "user" privilege
 function Install-WinGetUnattended([PSCustomObject]$Package, [PSCredential]$Cred = $null) {
-  Write-Host "🔷 Installing " -NoNewline
+  Write-Host "🔷" -NoNewline -ForegroundColor DarkCyan
+  Write-Host " Installing " -NoNewline
   if ($Package.Title) { Write-Host $Package.Title -ForegroundColor Cyan }
   else { Write-Host $Package.Id -ForegroundColor Cyan }
 
