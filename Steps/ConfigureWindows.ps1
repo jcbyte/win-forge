@@ -5,11 +5,25 @@ Write-Host "🛠️ Configuring and Debloating Windows using" -NoNewline
 Write-Host " Win11Debloat" -NoNewline -ForegroundColor Cyan
 Write-Host " (https://github.com/Raphire/Win11Debloat)" -ForegroundColor DarkGray
 
+$WindowsConfigSwitches = @(
+  "DisableTelemetry", "DisableSuggestions", "DisableEdgeAds",
+  "DisableDesktopSpotlight", "DisableLockscreenTips",
+  "DisableBing", "DisableCopilot", "DisableRecall", "DisableEdgeAI", "DisableNotepadAI",
+  "RevertContextMenu", "DisableStickyKeys",
+  "ShowHiddenFolders", "ShowKnownFileExt",
+  "EnableDarkMode",
+  "CombineTaskbarAlways", "CombineMMTaskbarAlways", "MMTaskbarModeActive",
+  "HideSearchTb", "HideTaskview", "HideChat", "EnableEndTask", "EnableLastActiveClick",
+  "HideHome", "HideGallery", "ExplorerToThisPC"
+)
+$WindowsConfigParams = @{}
+$WindowsConfigSwitches | ForEach-Object { $WindowsConfigParams[$_] = $true }
+
 $RemoveApps = @(
   # Default removal - Microsoft apps
   "Clipchamp.Clipchamp",
   "Microsoft.3DBuilder",
-  "Microsoft.549981C3F5F10",
+  "Microsoft.549981C3F5F10", # Cortana app
   "Microsoft.BingFinance",
   "Microsoft.BingFoodAndDrink",
   "Microsoft.BingHealthAndFitness",
@@ -101,20 +115,9 @@ $RemoveApps = @(
 
 # Configure and Debloat Windows using `Win11Debloat` (https://github.com/Raphire/Win11Debloat)
 $Win11Debloat = Invoke-RestMethod "https://debloat.raphi.re/"
-& ([scriptblock]::Create($Win11Debloat)) `
-  -Silent `
-  # Windows Configurations
-  -DisableTelemetry -DisableSuggestions -DisableEdgeAds `
-  -DisableDesktopSpotlight -DisableLockscreenTips `
-  -DisableBing -DisableCopilot -DisableRecall -DisableEdgeAI -DisableNotepadAI `
-  -RevertContextMenu -DisableStickyKeys `
-  -ShowHiddenFolders -ShowKnownFileExt `
-  -EnableDarkMode `
-  -CombineTaskbarAlways -CombineMMTaskbarAlways -MMTaskbarModeActive `
-  -HideSearchTb -HideTaskview -HideChat -EnableEndTask -EnableLastActiveClick `
-  -HideHome -HideGallery -ExplorerToThisPC `
-  # App Removal
-  -RemoveApps -Apps $RemoveApps
+& ([scriptblock]::Create($Win11Debloat)) -Silent @WindowsConfigParams -RemoveApps -Apps $RemoveApps
+# Windows Configurations
+
 
 
 # Todo Install WSL + Ubuntu
