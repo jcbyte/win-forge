@@ -2,6 +2,8 @@
   [string]$RepoDir
 )
 
+Import-Module Utils
+
 # Get credentials for underprivileged operations
 function Get-Cred([string]$Username, [int]$MaxAttempts = 3) {
 
@@ -55,7 +57,5 @@ foreach ($Step in $SetupSteps) {
   & $ScriptFile -Cred $Cred
 
   # Refresh PATH from the systems environment variables if required
-  if ($Step.RefreshPath) {
-    $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH", "User")
-  }
+  if ($Step.RefreshPath) { Sync-Path }
 }
