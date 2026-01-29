@@ -38,16 +38,21 @@ $WinGetPackages = @(
 foreach ($Package in $WinGetPackages) {
   Write-Host "Installing $($Package.Title)"
 
-  # Default to admin privilege unless explicitly set
-  $Privilege = ($Package.Privilege -or "admin").ToLower()
-
+  # Add override to command if set
   $WinGetCmd = "winget install -e --id $Package.Id --silent --accept-source-agreements --accept-package-agreements --source winget"
   if ($Package.Override) { $WinGetCmd += " --override $($Package.Override)" }
 
+  # Default to admin privilege unless explicitly set
+  $Privilege = $Package.Privilege -or "admin"
+
   switch ($Privilege) {
-    "admin" { Invoke-Expression $WinGetCmd }
+    "admin" {
+      # Perform the install in this elevated shell
+      Invoke-Expression $WinGetCmd
+    }
     "user" { 
       if ($Cred) {
+        # Perform the install in a new shell with user permission
         $ArgList = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", $WinGetCmd)
         Start-Process -FilePath PowerShell.exe -ArgumentList $ArgList -Credential $Cred -Wait
       }
