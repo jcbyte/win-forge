@@ -1,5 +1,9 @@
 ﻿# Setup Script which should be run, to gain elevated privileges and download the repository
 
+param (
+  [switch]$Dev
+)
+
 # Set constants
 $REPO_NAME = "win-forge"
 $REPO_URL = "https://github.com/jcbyte/$REPO_NAME.git"
@@ -18,7 +22,7 @@ function New-TemporaryDirectory {
 # Check if the script is running as administrator; if not, relaunch it with elevation
 if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
   $CmdPath = $PSCommandPath
-  # If the script is running directly from memory (`irm`), download it to a temporary file
+  # If the script is running directly from memory (`irm`), download it to a temporary file, this should never happen in Dev
   if (-not $CmdPath) {
     $TempSetupDir = New-TemporaryDirectory
     $TempSetupFile = Join-Path $TempSetupDir $SETUP_SCRIPT_NAME
@@ -27,7 +31,9 @@ if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
   }
 
   # Relaunch the script with elevated privileges
-  Start-Process -FilePath PowerShell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$CmdPath`"" -Verb RunAs
+  $ArgList = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $CmdPath)
+  if ($Dev) { $ArgList += "-Dev" } # Forward `Dev` switch
+  Start-Process -FilePath PowerShell.exe -ArgumentList $ArgList -Verb RunAs
   Exit
 }
 
@@ -35,10 +41,18 @@ if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 Write-Host "Installing Git"
 winget install -e --id Git.Git --silent --accept-source-agreements --accept-package-agreements --source winget
 
-# Clone repository
-Write-Host "Cloning ``$REPO_NAME`` Repository"
-$RepoDir = New-TemporaryDirectory
-git clone "$REPO_URL" "$RepoDir" --quiet
+
+if (-not $Dev) {
+  # Clone repository
+  Write-Host "Cloning '$REPO_NAME' repository"
+  $RepoDir = New-TemporaryDirectory
+  git clone "$REPO_URL" "$RepoDir" --quiet
+}
+else {
+  # If in Dev use local repo
+  $RepoDir = Split-Path -Parent $PSCommandPath
+  Write-Host "Using local '$RepoDir' repository"
+}
 
 # Execute the setup pipeline
 $SetupPipelineScript = Join-Path $RepoDir "SetupPipeline.ps1"
