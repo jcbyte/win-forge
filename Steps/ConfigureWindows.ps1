@@ -112,10 +112,11 @@ $RemoveApps = @(
   "Microsoft.Whiteboard",
   "Microsoft.windowscommunicationsapps"
 )
+$RemoveAppsList = $RemoveApps -join ","
 
 # Configure and Debloat Windows using `Win11Debloat` (https://github.com/Raphire/Win11Debloat)
 $Win11Debloat = Invoke-RestMethod "https://debloat.raphi.re/"
-& ([scriptblock]::Create($Win11Debloat)) -Silent @WindowsConfigParams -RemoveApps -Apps $RemoveApps
+& ([scriptblock]::Create($Win11Debloat)) -Silent @WindowsConfigParams -RemoveApps -Apps $RemoveAppsList
 # Windows Configurations
 
 

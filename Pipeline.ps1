@@ -54,8 +54,7 @@ $SetupSteps = @(
 )
 
 foreach ($Step in $SetupSteps) {
-  Write-Host "`n⚡" -NoNewline -ForegroundColor DarkCyan
-  Write-Host $Step.Title -ForegroundColor Cyan
+  Write-Host "`n⚡ $($Step.Title)" -ForegroundColor Cyan
   $ScriptFile = Join-Path $StepsPath $Step.File
   & $ScriptFile -Cred $Cred
 
