@@ -1,4 +1,4 @@
-# Windows Configuration and De-bloating
+﻿# Windows Configuration and De-bloating
 # todo doc
 
 Write-Host "🛠️ Configuring and Debloating Windows using" -NoNewline

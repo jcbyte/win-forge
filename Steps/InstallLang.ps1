@@ -1,4 +1,4 @@
-# Development Environment Setup
+﻿# Development Environment Setup
 # Installs and configures latest languages from version managers
 
 # Install and use latest Node.js LTS

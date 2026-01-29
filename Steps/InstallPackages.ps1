@@ -1,4 +1,4 @@
-# Package Installation Stage
+﻿# Package Installation Stage
 # Installs common software, development tools, and languages using WinGet.
 # Will install Office via ODT.
 
