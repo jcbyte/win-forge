@@ -4,6 +4,8 @@ param(
   [PSCredential]$Cred
 )
 
+Import-Module ..\Utils
+
 $WinGetPackages = @(
   # Daily Software
   [PSCustomObject]@{Id = "Google.Chrome"; Title = "Google Chrome" },
@@ -27,7 +29,7 @@ $WinGetPackages = @(
   [PSCustomObject]@{Id = "JanDeDobbeleer.OhMyPosh"; Title = "Oh My Posh" },
   # Languages
   [PSCustomObject]@{Id = "Microsoft.VisualStudio.2022.BuildTools"; Title = "Visual Studio BuildTools 2022 & Core C++ Toolchain";
-    Override = "--wait --quiet --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --add Microsoft.VisualStudio.Component.VC.CoreBuildTools --add Microsoft.VisualStudio.Component.Windows11SDK.26100" 
+    Override = "--wait --quiet --norestart --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --add Microsoft.VisualStudio.Component.VC.CoreBuildTools --add Microsoft.VisualStudio.Component.Windows11SDK.26100" 
   } # ? This will always install BuildTools 2022, and Windows SDK (10.0.26100)
   [PSCustomObject]@{Id = "CoreyButler.NVMforWindows"; Title = "NVM" },
   [PSCustomObject]@{Id = "Python.PythonInstallManager"; Title = "Python Install Manager" },
@@ -62,5 +64,14 @@ foreach ($Package in $WinGetPackages) {
   }
 }
 
+# Install office using Office Deployment Tool
+# ? This will always install Office 2024 LTSC (Word, PowerPoint, Excel), unless  `OfficeConfiguration` is modified
 
-# Todo Install Office
+$ODTUrl = "https://officecdn.microsoft.com/pr/wsus/setup.exe"
+$TempSetupDir = New-TemporaryDirectory
+$ODTExe = Join-Path $TempSetupDir "setup.exe"
+$OfficeConfiguration = Join-Path $RepoDir "config\OfficeConfiguration.xml"
+
+Write-Host "Installing Office 2024 LTSC (Word, PowerPoint, Excel)"
+Start-BitsTransfer -Source $ODTUrl -Destination $ODTExe
+& $ODTExe /configure $OfficeConfiguration
