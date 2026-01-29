@@ -42,9 +42,9 @@ $StepsPath = Join-Path $RepoDir "Steps"
 # Execute each stage of the setup
 $SetupSteps = @(
   [PSCustomObject]@{File = "ConfigureWindows.ps1"; Title = "Configure Windows" },
-  [PSCustomObject]@{File = "InstallPackages.ps1"; Title = "Install Packages" },
+  [PSCustomObject]@{File = "InstallPackages.ps1"; Title = "Install Packages"; RefreshPath = $true },
   [PSCustomObject]@{File = "ConfigurePackages.ps1"; Title = "Configure Packages" },
-  [PSCustomObject]@{File = "InstallLang.ps1"; Title = "Install Languages" },
+  [PSCustomObject]@{File = "InstallLang.ps1"; Title = "Install Languages"; RefreshPath = $true },
   [PSCustomObject]@{File = "PostSetup.ps1"; Title = "Post Setup" }
 )
 
@@ -53,4 +53,9 @@ foreach ($Step in $SetupSteps) {
   Write-Host "Performing Step: $($Step.Title)"
   $ScriptFile = Join-Path $StepsPath $Step.File
   & $ScriptFile -Cred $Cred
+
+  # Refresh PATH from the systems environment variables if required
+  if ($Step.RefreshPath) {
+    $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH", "User")
+  }
 }
