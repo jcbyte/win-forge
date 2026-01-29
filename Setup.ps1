@@ -55,7 +55,7 @@ else {
 }
 
 # Execute the setup pipeline
-$SetupPipelineScript = Join-Path $RepoDir "SetupPipeline.ps1"
+$SetupPipelineScript = Join-Path $RepoDir "Pipeline.ps1"
 & $SetupPipelineScript $RepoDir
 
 # Indicate success/failure

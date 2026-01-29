@@ -47,7 +47,10 @@ foreach ($Package in $WinGetPackages) {
   switch ($Privilege) {
     "admin" { Invoke-Expression $WinGetCmd }
     "user" { 
-      if ($Cred) { Start-Process -FilePath PowerShell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -Command `"$WinGetCmd`"" -Credential $Cred -Wait }
+      if ($Cred) {
+        $ArgList = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", $WinGetCmd)
+        Start-Process -FilePath PowerShell.exe -ArgumentList $ArgList -Credential $Cred -Wait
+      }
       else { Write-Host "Require user privilege, ignoring" }
     }
   }
