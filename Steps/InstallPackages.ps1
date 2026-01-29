@@ -37,39 +37,14 @@ $WinGetPackages = @(
   [PSCustomObject]@{Id = "Oracle.JDK.25"; Title = "Java JDK 25" } # ? This will always install JDK 25 
 )
 
-foreach ($Package in $WinGetPackages) {
-  Write-Host "Installing $($Package.Title)"
+foreach ($Package in $WinGetPackages) { Install-WinGetUnattended $Package }
 
-  # Add override to command if set
-  $WinGetCmd = "winget install -e --id $($Package.Id) --silent --accept-source-agreements --accept-package-agreements --source winget"
-  if ($Package.Override) { $WinGetCmd += " --override `"$($Package.Override)`"" }
-
-  # Default to admin privilege unless explicitly set
-  $Privilege = $Package.Privilege
-  if (-not $Privilege) { $Privilege = "admin" }
-
-  switch ($Privilege) {
-    "admin" {
-      # Perform the install in this elevated shell
-      Invoke-Expression $WinGetCmd
-    }
-    "user" { 
-      if ($Cred) {
-        # Perform the install in a new shell with user permission
-        $ArgList = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", $WinGetCmd)
-        Start-Process -FilePath PowerShell.exe -ArgumentList $ArgList -Credential $Cred -Wait
-      }
-      else { Write-Host "Require user privilege, ignoring" }
-    }
-  }
-}
-
-# Install office using Office Deployment Tool
-# ? This will always install Office 2024 LTSC (Word, PowerPoint, Excel), unless  `OfficeConfiguration` is modified
+# Install Office using Office Deployment Tool
 
 $ODTUrl = "https://officecdn.microsoft.com/pr/wsus/setup.exe"
 $TempSetupDir = New-TemporaryDirectory
 $ODTExe = Join-Path $TempSetupDir "setup.exe"
+# ? This configuration will always install Office 2024 LTSC (Word, PowerPoint, Excel)
 $OfficeConfiguration = Join-Path $RepoDir "config\OfficeConfiguration.xml"
 
 Write-Host "Installing Office 2024 LTSC (Word, PowerPoint, Excel)"

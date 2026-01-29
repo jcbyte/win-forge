@@ -1,4 +1,3 @@
-
 # Setup Script which should be run, to gain elevated privileges and download the repository
 
 param (
@@ -14,8 +13,8 @@ $SETUP_SCRIPT_URL = "https://raw.githubusercontent.com/jcbyte/$REPO_NAME/main/$S
 if (-not $Dev) {
   # Import utils module though github
   $UTILS_MODULE_URL = "https://raw.githubusercontent.com/jcbyte/$REPO_NAME/main/Utils/Utils.psm1"
-  $ModuleCode = Invoke-RestMethod $UTILS_MODULE_URL
-  Invoke-Expression $ModuleCode
+  $UtilModuleCode = Invoke-RestMethod $UTILS_MODULE_URL
+  Invoke-Expression $UtilModuleCode
 }
 else {
   # Use local Utils modules
@@ -43,8 +42,7 @@ if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 }
 
 # Install Git early to clone the repo
-Write-Host "Installing Git"
-winget install -e --id Git.Git --silent --accept-source-agreements --accept-package-agreements --source winget
+Install-WinGetUnattended ([PSCustomObject]@{ Id = "Git.Git"; Title = "Git" })
 
 # Refresh PATH to use Git
 Sync-Path
