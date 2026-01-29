@@ -1,7 +1,5 @@
 ﻿# Post Setup
 
-[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-
 function Write-Todo ([string]$Title, [string]$ActionText, [ScriptBlock]$Action ) {
   Write-Host "   $Title" -NoNewline -ForegroundColor Yellow
 

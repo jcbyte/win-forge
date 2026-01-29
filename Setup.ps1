@@ -1,6 +1,4 @@
-﻿# Setup Script which should be run, to gain elevated privileges and download the repository
-
-# todo shows some error when running
+# Setup Script which should be run, to gain elevated privileges and download the repository
 
 param (
   [switch]$Dev
