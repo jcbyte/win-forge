@@ -3,7 +3,7 @@
 $WinGetPackages = @(
   # Daily Software
   [PSCustomObject]@{Id = "Google.Chrome"; Title = "Google Chrome" },
-  [PSCustomObject]@{Id = "Spotify.Spotify"; Title = "Spotify" }, # Todo requires unprivileged session
+  [PSCustomObject]@{Id = "Spotify.Spotify"; Title = "Spotify"; Privilege = "user" }, # ? Spotify install requires unprivileged session
   [PSCustomObject]@{Id = "Discord.Discord"; Title = "Discord" }, # ? This will request admin, and then open
   [PSCustomObject]@{Id = "Valve.Steam"; Title = "Steam" },
   # Tools
@@ -22,15 +22,29 @@ $WinGetPackages = @(
   [PSCustomObject]@{Id = "Microsoft.PowerShell"; Title = "Modern Powershell" },
   [PSCustomObject]@{Id = "JanDeDobbeleer.OhMyPosh"; Title = "Oh My Posh" },
   # Languages
+  [PSCustomObject]@{Id = "Microsoft.VisualStudio.2022.BuildTools"; Title = "Visual Studio BuildTools 2022 & Core C++ Toolchain";
+    Override = "--wait --quiet --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --add Microsoft.VisualStudio.Component.VC.CoreBuildTools --add Microsoft.VisualStudio.Component.Windows11SDK.26100" 
+  } # ? This will always install BuildTools 2022, and Windows SDK (10.0.26100)
   [PSCustomObject]@{Id = "CoreyButler.NVMforWindows"; Title = "NVM" },
   [PSCustomObject]@{Id = "Python.PythonInstallManager"; Title = "Python Install Manager" },
-  [PSCustomObject]@{Id = "Rustlang.Rustup"; Title = "Rust Toolchain" }, # Todo this opens a new terminal and seems to hang?
-  [PSCustomObject]@{Id = "Oracle.JDK.25"; Title = "Java JDK 25" }  # ? This will always install JDK 25 
+  [PSCustomObject]@{Id = "Rustlang.Rustup"; Title = "Rust Toolchain" },
+  [PSCustomObject]@{Id = "Oracle.JDK.25"; Title = "Java JDK 25" } # ? This will always install JDK 25 
 )
 
 foreach ($Package in $WinGetPackages) {
   Write-Host "Installing $($Package.Title)"
-  winget install -e --id $Package.Id --silent --accept-source-agreements --accept-package-agreements --source winget
+
+  # Default to admin privilege unless explicitly set
+  $Privilege = ($Package.Privilege -or "admin").ToLower()
+
+  $WinGetCmd = "winget install -e --id $Package.Id --silent --accept-source-agreements --accept-package-agreements --source winget"
+  if ($Package.Override) { $WinGetCmd += " --override $($Package.Override)" }
+
+  switch ($Privilege) {
+    "admin" { Invoke-Expression $WinGetCmd }
+    "user" { } # todo run as user
+  }
 }
+
 
 # Todo Install Office
