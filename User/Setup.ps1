@@ -57,22 +57,26 @@ if (Test-IsAdmin) {
 
 Import-Module (Join-Path $PSScriptRoot "..\IPC")
 
-$ServerReady = Get-EventHandle("ServerReady")
-$ClientReady = Get-EventHandle("ClientReady")
-$ClientDone = Get-EventHandle("ClientDone")
+$ClientReady = Get-GlobalEventHandle("ClientReady")
+$ServerAck = Get-GlobalEventHandle("ServerAck")
+$ClientDone = Get-GlobalEventHandle("ClientDone")
 
-$ClientReady.Set();
-if ($ServerReady.WaitOne(30000)) {
-  Write-Host "server ready"
+Write-Host "📢 Notifying admin setup that we are ready" -ForegroundColor Yellow
+
+$ClientReady.Set() | Out-Null
+if (-not $ServerAck.WaitOne(5000)) {
+  Write-Host "❌ Admin setup did not respond, possible timeout" -ForegroundColor Red
+  Exit
 }
-else {
-  Write-Error "Client did not ready in time"
-}
 
-Start-Sleep 3  # simulate work
+# todo work here
 
-$ClientDone.Set()
+Write-Host "✅ User setup completed" -ForegroundColor Green
+$ClientDone.Set() | Out-Null
 
 
+
+
+
+# todo remove after dev
 [Console]::ReadKey() | Out-Null
-Exit

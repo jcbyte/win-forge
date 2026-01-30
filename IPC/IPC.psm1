@@ -1,4 +1,4 @@
-
+﻿
 Import-Module (Join-Path $PSScriptRoot "..\Utils")
 
 # Open or create a global event handle with a specified name

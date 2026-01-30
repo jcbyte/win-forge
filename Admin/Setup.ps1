@@ -1,26 +1,39 @@
-Import-Module (Join-Path $PSScriptRoot "..\IPC")
+﻿Import-Module (Join-Path $PSScriptRoot "..\IPC")
 
-$ServerReady = Get-EventHandle("ServerReady")
-$ClientReady = Get-EventHandle("ClientReady")
-$ClientDone = Get-EventHandle("ClientDone")
+$ClientReady = Get-GlobalEventHandle("ClientReady")
+$ServerAck = Get-GlobalEventHandle("ServerAck")
+$ClientDone = Get-GlobalEventHandle("ClientDone")
 
-Write-Host "wairting"
+Write-Host "⏳ Waiting for user setup..." -ForegroundColor Yellow
 
 if ($ClientReady.WaitOne(30000)) {
-  $ServerReady.Set();
-  Write-Host "Client ready"
+  Write-Host "✅ user setup is ready!" -ForegroundColor Green
+  $ServerAck.Set() | Out-Null
 }
 else {
-  Write-Error "Client did not ready in time"
+  Write-Host "❌ user setup did not become ready in time!" -NoNewline -ForegroundColor Red
+  Write-Host " (Timeout)" -ForegroundColor DarkGray
+  Exit
 }
 
-if ($ClientDone.WaitOne(30000)) {
-  Write-Host "Client done, server continuing..."
+# todo work here
+
+Write-Host "⏳ Ensuring user script has completed" -ForegroundColor Yellow
+
+if ($ClientDone.WaitOne(120000)) {
+  Write-Host "✅ User script has completed" -ForegroundColor Green
 }
 else {
-  Write-Error "Client did not finish in time"
+  Write-Host "❌ User script did not complete in time" -ForegroundColor Red
+  Write-Host "⚠️ This is unusual, and may have caused side effects" -ForegroundColor Red
+  Exit
 }
 
+# todo work after user completes here
 
 
+
+
+
+# todo remove after dev
 [Console]::ReadKey() | Out-Null
