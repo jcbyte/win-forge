@@ -1,4 +1,4 @@
-$REPO_NAME = "win-forge"
+﻿$REPO_NAME = "win-forge"
 $LocalDir = Join-Path $env:LOCALAPPDATA "jcbyte.$REPO_NAME"
 $RepoDir = Join-Path $LocalDir "$REPO_NAME-main"
 
@@ -40,10 +40,9 @@ function Get-Cred([string]$Username, [int]$MaxAttempts = 3) {
   return $null
 }
 
-
-# If the script is running as Admin, we need to relaunch it as user level
+# # If the script is running as Admin, we need to relaunch it as user level
 if (Test-IsAdmin) {
-  Write-Host "THis script is running as Admin, User credentials are required for underprivileged operations" -ForegroundColor DarkGray
+  Write-Host "This script is running as Admin, User credentials are required for underprivileged operations" -ForegroundColor DarkGray
   Write-Host "👤 Enter Password for " -NoNewline -ForegroundColor Cyan
   Write-Host $env:USERNAME -NoNewline -ForegroundColor DarkCyan
   Write-Host ":" -ForegroundColor Cyan
@@ -53,14 +52,13 @@ if (Test-IsAdmin) {
   if (-not $Cred) { Exit 1 }
 
   # Restart the script with user privilege
-  $UserSetup = Join-Path $RepoDir "UserSetup.ps1"
-  $ArgList = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $UserSetup)
+  $ArgList = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $PSCommandPath)
   Start-Process -FilePath PowerShell.exe -ArgumentList $ArgList -Credential $Cred
   Exit
 }
 
 
-Write-Host "I should be running in user (but could be admin)!!"
+Write-Host "I should be running in user!!!!"
 
 [Console]::ReadKey() | Out-Null
 Exit

@@ -42,13 +42,13 @@ Write-Host "Running Setup Scripts"
 
 try {
   # Try to run admin setup (with UAC prompt)
-  $AdminSetup = Join-Path $RepoDir "AdminSetup.ps1"
+  $AdminSetup = Join-Path $RepoDir "Admin\Setup.ps1"
   $AdminArgList = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $AdminSetup)
   # Start-Process will fail with `InvalidOperationException` if permission is not given
   Start-Process -FilePath PowerShell.exe -ArgumentList $AdminArgList -Verb RunAs
 
   # If the admin script was started, run the user setup with current privilege (this may be admin)
-  $UserSetup = Join-Path $RepoDir "UserSetup.ps1"
+  $UserSetup = Join-Path $RepoDir "User\Setup.ps1"
   $UserArgList = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $UserSetup)
   Start-Process -FilePath PowerShell.exe -ArgumentList $UserArgList
 }
