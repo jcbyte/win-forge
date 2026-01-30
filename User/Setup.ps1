@@ -53,8 +53,30 @@ if (Test-IsAdmin) {
   Exit
 }
 
+$PipeName = "TestPipe"
 
-Write-Host "I should be running in user!!!!"
+# Connect to the named pipe server
+$PipeClient = [System.IO.Pipes.NamedPipeClientStream]::new(
+  ".",
+  $PipeName,
+  [System.IO.Pipes.PipeDirection]::Out
+)
+
+Write-Host "Connecting to server..."
+$PipeClient.Connect()  # Waits until the server is ready
+Write-Host "Connected to server."
+
+$Writer = [System.IO.StreamWriter]::new($PipeClient)
+$Writer.AutoFlush = $true  # Ensure messages are sent immediately
+
+$Writer.WriteLine("Send a ready message!")
+
+$Writer.Close()
+$PipeClient.Dispose()
+
+
+
+
 
 [Console]::ReadKey() | Out-Null
 Exit

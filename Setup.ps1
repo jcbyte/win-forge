@@ -63,7 +63,3 @@ catch <#[System.InvalidOperationException]#> {
   $CleanupScript = Join-Path $RepoDir "Cleanup.ps1"
   & $CleanupScript
 }
-
-# todo these two processes need to communicate with each-other
-
-
