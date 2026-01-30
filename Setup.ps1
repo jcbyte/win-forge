@@ -9,7 +9,7 @@ param (
 # * Must ensure these are synchronised with the values in `Utils\Utils.psm1`
 $RepoName = "win-forge"
 $RepoLocalDir = Join-Path $env:LOCALAPPDATA "jcbyte.win-forge"
-$RepoDIr = $null # ? This is defined later dynamically
+$RepoDir = $null # ? This is defined later dynamically
 # This script cannot import the module as it must be standalone
 
 $REPO_ARCHIVE_URL = "https://github.com/jcbyte/$RepoName/archive/refs/heads/main.zip"
