@@ -2,17 +2,13 @@
 # Installs common software, development tools, and languages using WinGet.
 # Will install Office via ODT.
 
-param(
-  [PSCredential]$Cred
-)
-
-Import-Module (Join-Path $RepoDir "Utils")
+Import-Module (Join-Path $PSScriptRoot "..\..\Utils")
 
 # List of WinGet packages to install
 $WinGetPackages = @(
   # Daily Software
   [PSCustomObject]@{Id = "Google.Chrome"; Title = "Google Chrome" },
-  [PSCustomObject]@{Id = "Spotify.Spotify"; Title = "Spotify"; Privilege = "user" }, # ? Spotify install requires unprivileged session
+  # [PSCustomObject]@{Id = "Spotify.Spotify"; Title = "Spotify"; }, # ? Spotify install requires unprivileged session
   [PSCustomObject]@{Id = "Discord.Discord"; Title = "Discord" }, # ? This will request admin, and then open
   [PSCustomObject]@{Id = "Valve.Steam"; Title = "Steam" },
   # Tools
@@ -25,7 +21,7 @@ $WinGetPackages = @(
   [PSCustomObject]@{Id = "Google.ChromeRemoteDesktopHost"; Title = "Chrome Remote Desktop" },
   [PSCustomObject]@{Id = "RamenSoftware.Windhawk"; Title = "Windhawk" },
   # Dev Software/Tools
-  # [PSCustomObject]@{Id = "Git.Git"; Title = "Git" }, # ? This is installed within `Setup.ps1`
+  [PSCustomObject]@{Id = "Git.Git"; Title = "Git" }, # ? This is installed within `Setup.ps1`
   [PSCustomObject]@{Id = "Microsoft.VisualStudioCode"; Title = "Visual Studio Code" },
   [PSCustomObject]@{Id = "Docker.DockerDesktop"; Title = "Docker Desktop" },
   [PSCustomObject]@{Id = "Microsoft.PowerShell"; Title = "Modern Powershell" },

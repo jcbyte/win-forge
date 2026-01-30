@@ -2,12 +2,12 @@
 
 Import-Module (Join-Path $PSScriptRoot "..\Utils")
 
+# CHeck if the current shell is at privileged level
 function Test-IsAdmin {
   $CurrentUser = [Security.Principal.WindowsIdentity]::GetCurrent()
   $Principal = New-Object Security.Principal.WindowsPrincipal($CurrentUser)
   return $Principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 }
-
 
 # Get credentials for underprivileged operations
 function Get-Cred([string]$Username, [int]$MaxAttempts = 3) {
@@ -38,7 +38,7 @@ function Get-Cred([string]$Username, [int]$MaxAttempts = 3) {
   return $null
 }
 
-# # If the script is running as Admin, we need to relaunch it as user level
+# If the script is running as Admin, we need to relaunch it as user level
 if (Test-IsAdmin) {
   Write-Host "This script is running as Admin, User credentials are required for underprivileged operations" -ForegroundColor DarkGray
   Write-Host "👤 Enter Password for " -NoNewline -ForegroundColor Cyan
@@ -57,26 +57,22 @@ if (Test-IsAdmin) {
 
 Import-Module (Join-Path $PSScriptRoot "..\IPC")
 
+# Get Event handles shared between user and admin setup scripts
 $ClientReady = Get-GlobalEventHandle("ClientReady")
 $ServerAck = Get-GlobalEventHandle("ServerAck")
 $ClientDone = Get-GlobalEventHandle("ClientDone")
 
+# Notify admin setup script that we are ready as this could've taken some time if we had to sign in.
 Write-Host "📢 Notifying admin setup that we are ready" -ForegroundColor Yellow
-
 $ClientReady.Set() | Out-Null
+# Ensure that the admin setup script is still active so that we don't perform user setup without admin setup (causing side effects)
 if (-not $ServerAck.WaitOne(5000)) {
   Write-Host "❌ Admin setup did not respond, possible timeout" -ForegroundColor Red
   Exit
 }
 
-# todo work here
+# todo user work here
 
+# Notify admin setup that we have completed, allowing restarting
 Write-Host "✅ User setup completed" -ForegroundColor Green
 $ClientDone.Set() | Out-Null
-
-
-
-
-
-# todo remove after dev
-[Console]::ReadKey() | Out-Null
