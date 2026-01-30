@@ -1,4 +1,11 @@
-﻿
+﻿# Export constants for repo details
+$Repo = [PSCustomObject]@{
+  Name     = "win-forge"
+  LocalDir = Join-Path $env:LOCALAPPDATA "jcbyte.win-forge"
+  Dir      = (Get-Item $PSScriptRoot).Parent.FullName
+}
+Export-ModuleMember -Variable Repo
+
 # Creates a new temporary directory and returns its path
 function New-TemporaryDirectory {
   $TmpDir = [System.IO.Path]::GetTempPath()

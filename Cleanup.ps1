@@ -1,13 +1,9 @@
-$REPO_NAME = "win-forge"
-$LocalDir = Join-Path $env:LOCALAPPDATA "jcbyte.$REPO_NAME"
-$RepoDir = Join-Path $LocalDir "$REPO_NAME-main"
-
-# todo how do i share these variables around (and Dev)
+Import-Module (Join-Path $PSScriptRoot "Utils")
 
 # Remove the cloned repository to cleanup
-if ((Test-Path $LocalDir)) {
-  Write-Host "del $LocalDir"
-  Remove-Item $LocalDir -Recurse -Force -ErrorAction SilentlyContinue
+if ((Test-Path $Repo.LocalDir)) {
+  Write-Host "del $($Repo.LocalDir)"
+  Remove-Item $Repo.LocalDir -Recurse -Force -ErrorAction SilentlyContinue
 }
 
 # Wait for user input before closing

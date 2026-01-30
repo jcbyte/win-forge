@@ -6,35 +6,39 @@ param (
   [switch]$Dev
 )
 
-$REPO_NAME = "win-forge"
-$REPO_ARCHIVE_URL = "https://github.com/jcbyte/$REPO_NAME/archive/refs/heads/main.zip"
+# * Must ensure these are synchronised with the values in `Utils\Utils.psm1`
+$RepoName = "win-forge"
+$RepoLocalDir = Join-Path $env:LOCALAPPDATA "jcbyte.win-forge"
+$RepoDIr = $null # ? This is defined later dynamically
+# This script cannot import the module as it must be standalone
+
+$REPO_ARCHIVE_URL = "https://github.com/jcbyte/$RepoName/archive/refs/heads/main.zip"
 
 if (-not $Dev) {
   Write-Host "Cloning" -NoNewline
-  Write-Host " $REPO_NAME" -ForegroundColor Cyan
+  Write-Host " $RepoName" -ForegroundColor Cyan
 
   # Download the full repo and save it in temp files
-  $OutputZip = Join-Path $env:TEMP "$REPO_NAME-main.zip"
+  $OutputZip = Join-Path $env:TEMP "$RepoName-main.zip"
   Invoke-WebRequest -Uri $REPO_ARCHIVE_URL -OutFile $OutputZip
 
   # Create/empty the known local path for the repo
-  $LocalDir = Join-Path $env:LOCALAPPDATA "jcbyte.$REPO_NAME"
-  if (Test-Path $LocalDir) { Remove-Item $LocalDir -Recurse -Force }
-  else { New-Item -ItemType Directory -Path $LocalDir | Out-Null }
+  if (Test-Path $RepoLocalDir) { Remove-Item $RepoLocalDir -Recurse -Force }
+  else { New-Item -ItemType Directory -Path $RepoLocalDir | Out-Null }
 
   Write-Host "Extracting" -NoNewline
-  Write-Host " $REPO_NAME" -ForegroundColor Cyan
+  Write-Host " $RepoName" -ForegroundColor Cyan
 
   # Extract the repository 
-  Expand-Archive $OutputZip $LocalDir
-  $RepoDir = Join-Path $LocalDir "$REPO_NAME-main"
+  Expand-Archive $OutputZip $RepoLocalDir
+  $RepoDir = Join-Path $RepoLocalDir "$RepoName-main"
 
   # Remove the temporary repo archive
   Remove-Item $OutputZip
 }
 else {
   # If in Dev use local repo
-  $RepoDir = Split-Path -Parent $PSCommandPath
+  $RepoDir = $PSScriptRoot
   Write-Host "Using local '$RepoDir' repository" -ForegroundColor Yellow
 }
 

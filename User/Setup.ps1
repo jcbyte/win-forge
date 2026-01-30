@@ -1,8 +1,4 @@
-﻿$REPO_NAME = "win-forge"
-$LocalDir = Join-Path $env:LOCALAPPDATA "jcbyte.$REPO_NAME"
-$RepoDir = Join-Path $LocalDir "$REPO_NAME-main"
-
-# todo how do i share these variables around (and Dev)
+﻿# todo doc
 
 function Test-IsAdmin {
   $CurrentUser = [Security.Principal.WindowsIdentity]::GetCurrent()
