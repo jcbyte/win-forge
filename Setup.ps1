@@ -6,6 +6,36 @@ param (
   [switch]$Dev
 )
 
+if (-not $Dev) {
+  $REPO_ARCHIVE_URL = "https://github.com/jcbyte/win-forge/archive/refs/heads/main.zip"
+  $OutputZip = Join-Path $env:TEMP "win-forge-main.zip"
+  Invoke-WebRequest -Uri $REPO_ARCHIVE_URL -OutFile $OutputZip
+
+  $LocalDir = Join-Path $env:LOCALAPPDATA "win-forge"
+  New-Item -ItemType Directory -Path $LocalDir | Out-Null
+  Expand-Archive $OutputZip $LocalDir
+
+  Remove-Item $OutputZip
+
+  $RepoDir = Join-Path $LocalDir "win-forge-main"
+}
+else {
+  $RepoDir = Split-Path -Parent $PSCommandPath
+}
+
+$AdminSetup = Join-Path $RepoDir "AdminSetup.ps1"
+$AdminArgList = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $AdminSetup)
+Start-Process -FilePath PowerShell.exe -ArgumentList $AdminArgList -Verb RunAs
+$UserSetup = Join-Path $RepoDir "UserSetup.ps1"
+$UserArgList = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $UserSetup)
+Start-Process -FilePath PowerShell.exe -ArgumentList $UserArgList
+
+# todo these two processes need to communicate with each-other
+
+Exit
+# todo which parts below do we need
+
+
 # Set constants
 $REPO_NAME = "win-forge"
 $REPO_URL = "https://github.com/jcbyte/$REPO_NAME.git"
@@ -42,6 +72,8 @@ if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 
   Exit
 }
+
+# Todo can i run a separate user/elevated processes
 
 # Install Git early to clone the repo
 Install-WinGetUnattended ([PSCustomObject]@{ Id = "Git.Git"; Title = "Git" })
