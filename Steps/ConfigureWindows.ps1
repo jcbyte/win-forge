@@ -122,7 +122,7 @@ $Win11Debloat = Invoke-RestMethod "https://debloat.raphi.re/"
 
 
 Write-Host "🐧" -NoNewline -ForegroundColor Blue
-wRITE-hOST " Installing" -NoNewline
+Write-Host " Installing" -NoNewline
 Write-Host " WSL" -NoNewline -ForegroundColor Cyan
 
 # Install WSL
