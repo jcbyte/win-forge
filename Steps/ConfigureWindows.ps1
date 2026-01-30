@@ -1,10 +1,12 @@
 ﻿# Windows Configuration and De-bloating
 # todo doc
 
-Write-Host "🛠️ Configuring and Debloating Windows using" -NoNewline
+Write-Host "🛠️" -NoNewline -ForegroundColor Blue
+Write-Host " Configuring and Debloating Windows using" -NoNewline
 Write-Host " Win11Debloat" -NoNewline -ForegroundColor Cyan
 Write-Host " (https://github.com/Raphire/Win11Debloat)" -ForegroundColor DarkGray
 
+# Windows Configurations
 $WindowsConfigSwitches = @(
   "DisableTelemetry", "DisableSuggestions", "DisableEdgeAds",
   "DisableDesktopSpotlight", "DisableLockscreenTips",
@@ -13,7 +15,7 @@ $WindowsConfigSwitches = @(
   "ShowHiddenFolders", "ShowKnownFileExt",
   "EnableDarkMode",
   "CombineTaskbarAlways", "CombineMMTaskbarAlways", "MMTaskbarModeActive",
-  "HideSearchTb", "HideTaskview", "HideChat", "EnableEndTask", "EnableLastActiveClick",
+  "HideSearchTb", "HideTaskview", "EnableEndTask", "EnableLastActiveClick",
   "HideHome", "HideGallery", "ExplorerToThisPC"
 )
 $WindowsConfigParams = @{}
@@ -116,9 +118,25 @@ $RemoveAppsList = $RemoveApps -join ","
 
 # Configure and Debloat Windows using `Win11Debloat` (https://github.com/Raphire/Win11Debloat)
 $Win11Debloat = Invoke-RestMethod "https://debloat.raphi.re/"
-& ([scriptblock]::Create($Win11Debloat)) -Silent @WindowsConfigParams -RemoveApps -Apps $RemoveAppsList
-# Windows Configurations
+& ([scriptblock]::Create($Win11Debloat)) -Silent @WindowsConfigParams -RemoveApps -Apps "$RemoveAppsList"
 
 
+Write-Host "🐧" -NoNewline -ForegroundColor Blue
+wRITE-hOST " Installing" -NoNewline
+Write-Host " WSL" -NoNewline -ForegroundColor Cyan
 
-# Todo Install WSL + Ubuntu
+# Install WSL
+wsl --install
+# todo do i need to enable these or does wsl do it already
+# dism /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+# dism /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+# dism /online /enable-feature /featurename:Microsoft-Hyper-V-All /all /norestart
+
+# Reboot
+# todo i should use RunOnce for this
+# todo i then need to continue the script, + how do i pass 
+
+wsl --set-default-version 2
+
+# Install Ubuntu on WSL
+wsl --install Ubuntu-24.04 # ? This will always install Ubuntu 24.04 LTS 

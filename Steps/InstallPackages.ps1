@@ -42,6 +42,7 @@ $WinGetPackages = @(
 
 foreach ($Package in $WinGetPackages) { Install-WinGetUnattended $Package $Cred }
 
+
 # Install Office using Office Deployment Tool
 
 $ODTUrl = "https://officecdn.microsoft.com/pr/wsus/setup.exe"
