@@ -1,5 +1,7 @@
 ﻿# todo doc
 
+Import-Module (Join-Path $PSScriptRoot "..\Utils")
+
 function Test-IsAdmin {
   $CurrentUser = [Security.Principal.WindowsIdentity]::GetCurrent()
   $Principal = New-Object Security.Principal.WindowsPrincipal($CurrentUser)
@@ -53,29 +55,23 @@ if (Test-IsAdmin) {
   Exit
 }
 
-$PipeName = "TestPipe"
+Import-Module (Join-Path $PSScriptRoot "..\IPC")
 
-# Connect to the named pipe server
-$PipeClient = [System.IO.Pipes.NamedPipeClientStream]::new(
-  ".",
-  $PipeName,
-  [System.IO.Pipes.PipeDirection]::Out
-)
+$ServerReady = Get-EventHandle("ServerReady")
+$ClientReady = Get-EventHandle("ClientReady")
+$ClientDone = Get-EventHandle("ClientDone")
 
-Write-Host "Connecting to server..."
-$PipeClient.Connect()  # Waits until the server is ready
-Write-Host "Connected to server."
+$ClientReady.Set();
+if ($ServerReady.WaitOne(30000)) {
+  Write-Host "server ready"
+}
+else {
+  Write-Error "Client did not ready in time"
+}
 
-$Writer = [System.IO.StreamWriter]::new($PipeClient)
-$Writer.AutoFlush = $true  # Ensure messages are sent immediately
+Start-Sleep 3  # simulate work
 
-$Writer.WriteLine("Send a ready message!")
-
-$Writer.Close()
-$PipeClient.Dispose()
-
-
-
+$ClientDone.Set()
 
 
 [Console]::ReadKey() | Out-Null
