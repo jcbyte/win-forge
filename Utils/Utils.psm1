@@ -22,6 +22,20 @@ function Sync-Path {
   $env:PATH = "$MachinePath;$UserPath"
 }
 
+# Sequentially invoke given scripts from a parent directory
+# $Scripts = { File:string; Title:string; RefreshPath?:boolean }[]
+function Invoke-ScriptPipeline([string]$ParentDir, [PSCustomObject[]]$Scripts) {
+  # todo could this take a "reset" parameter??
+  foreach ($Step in $Steps) {
+    Write-Host "`n⚡ $($Step.Title)" -ForegroundColor Cyan
+    $ScriptFile = Join-Path $ParentDir $Step.File
+    & $ScriptFile -Cred $Cred
+  
+    # Refresh PATH from the systems environment variables if required
+    if ($Step.RefreshPath) { Sync-Path }
+  }
+}
+
 # Install WinGet packages unattended
 # $Package = {Id:string; Title?:string; Override?:string}
 function Install-WinGetUnattended([PSCustomObject]$Package) {

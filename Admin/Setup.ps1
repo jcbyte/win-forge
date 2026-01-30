@@ -1,5 +1,9 @@
 ﻿# todo doc
 
+param (
+  [switch]$InitialRun
+)
+
 Import-Module (Join-Path $PSScriptRoot "..\Utils")
 Import-Module (Join-Path $PSScriptRoot "..\IPC")
 
@@ -22,25 +26,13 @@ else {
   Exit
 }
 
-
 # Execute each stage of the admin setup
 $StepsPath = Join-Path $PSScriptRoot "Steps"
 $SetupSteps = @(
   [PSCustomObject]@{File = "ConfigureWindows.ps1"; Title = "Configuring Windows" },
-  [PSCustomObject]@{File = "InstallPackages.ps1"; Title = "Installing Packages"; RefreshPath = $true },
-  [PSCustomObject]@{File = "ConfigurePackages.ps1"; Title = "Configuring Packages" },
-  [PSCustomObject]@{File = "InstallLang.ps1"; Title = "Installing Languages"; RefreshPath = $true },
-  [PSCustomObject]@{File = "PostSetup.ps1"; Title = "Performing Post Setup" }
+  [PSCustomObject]@{File = "EnableWSL.ps1"; Title = "Enabling WSL" }
 )
-
-foreach ($Step in $SetupSteps) {
-  Write-Host "`n⚡ $($Step.Title)" -ForegroundColor Cyan
-  $ScriptFile = Join-Path $StepsPath $Step.File
-  & $ScriptFile -Cred $Cred
-
-  # Refresh PATH from the systems environment variables if required
-  if ($Step.RefreshPath) { Sync-Path }
-}
+Invoke-ScriptPipeline $StepsPath $SetupSteps
 
 # Ensure the user script has completed before we restart the computer
 Write-Host "⏳ Ensuring user script has completed" -ForegroundColor Yellow
@@ -54,8 +46,16 @@ else {
   Exit
 }
 
-# todo restart and continue setup, for wsl
+# todo restart and continue below setup
 
-# todo work after user completes here
+$SetupSteps = @(
+  [PSCustomObject]@{File = "ConfigureWSL.ps1"; Title = "Configure WSL" },
+  [PSCustomObject]@{File = "InstallPackages.ps1"; Title = "Installing Packages"; RefreshPath = $true },
+  [PSCustomObject]@{File = "ConfigurePackages.ps1"; Title = "Configuring Packages" },
+  [PSCustomObject]@{File = "InstallLang.ps1"; Title = "Installing Languages"; RefreshPath = $true },
+  [PSCustomObject]@{File = "PostSetup.ps1"; Title = "Performing Post Setup" }
+)
+Invoke-ScriptPipeline $StepsPath $SetupSteps
+
 
 # todo cleanup when exiting
