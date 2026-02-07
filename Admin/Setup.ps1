@@ -9,6 +9,35 @@ param (
 
 Import-Module (Join-Path $PSScriptRoot "..\Utils")
 
+
+# Ask if any extra packages should be included
+
+$ExtraPackages = @()
+
+Write-Prompt -Question "Install Nvidia GeForceExperience" { 
+  $script:ExtraPackages += [PSCustomObject]@{Id = "Nvidia.GeForceExperience"; Title = "Nvidia GeForceExperience" } 
+}
+Write-Prompt -Question "Install MSI Afterburner" { 
+  $script:ExtraPackages += [PSCustomObject]@{Id = "Guru3D.Afterburner"; Title = "MSI Afterburner" } 
+}
+Write-Prompt -Question "Install Razer Synapse" { 
+  # ? This will always install Synapse 3
+  $script:ExtraPackages += [PSCustomObject]@{Id = "RazerInc.RazerInstaller.Synapse3"; Title = "Razer Synapse 3" } 
+}
+Write-Prompt -Question "Install Corsair iCUE" { 
+  # ? This will always install iCUE 5
+  $script:ExtraPackages += [PSCustomObject]@{Id = "Corsair.iCUE.5"; Title = "Corsair iCUE" }
+}
+Write-Prompt -Question "Install Asus ArmouryCrate" {
+  $script:ExtraPackages += [PSCustomObject]@{Id = "Asus.ArmouryCrate"; Title = "Asus ArmouryCrate" }
+}
+
+
+# todo load/save this state between restart
+# todo install these
+# todo add these to postsetup todos
+
+
 # Only communicate with client before the restart
 if ($ResumeStep -eq 0) {
   Import-Module (Join-Path $PSScriptRoot "..\IPC")

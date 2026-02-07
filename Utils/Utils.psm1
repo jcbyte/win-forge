@@ -58,3 +58,48 @@ function Install-WinGetUnattended([PSCustomObject]$Package) {
   Invoke-Expression $WinGetCmd
 }
 Export-ModuleMember -Function Install-WinGetUnattended
+
+# Write a todo/question prompt awaiting user response
+# Default as a "todo", can become a "Question" using the switch
+function Write-Prompt ([string]$Title, [scriptblock]$Action = $null, [string]$ActionText = $null, [switch]$Question) {
+  Write-Host "   $Title" -NoNewline -ForegroundColor Yellow
+
+  if ($Question) {
+    Write-Host " [y/n]" -NoNewline -ForegroundColor DarkGray
+  }
+  elseif ($Action) {
+    if ($ActionText) {
+      Write-Host " - $ActionText" -NoNewline -ForegroundColor DarkGray
+    }
+    Write-Host " [y?]" -NoNewline -ForegroundColor DarkGray
+  }
+
+  # Wait for a key to be pressed and check if it is an accept key
+  $Key = [Console]::ReadKey($true)
+  $AcceptAction = $Key.Key -in @('y', 'Y')
+
+  if ($Question) {
+    if ($AcceptAction) {
+      Write-Host "`r✅" -NoNewline -ForegroundColor Green
+      Write-Host " $Title" -ForegroundColor White 
+
+      & $Action
+    }
+    else {
+      Write-Host "`r❌" -NoNewline -ForegroundColor Red
+      Write-Host " $Title" -ForegroundColor White 
+    }
+  }
+  else {
+    if ($AcceptAction) {
+      Write-Host "`r⏳" -NoNewline
+      Write-Host " $Title" -ForegroundColor DarkGray 
+
+      & $Action
+    }
+
+    Write-Host "`r✅" -NoNewline -ForegroundColor Green
+    Write-Host " $Title" -ForegroundColor DarkGray 
+  }
+}
+Export-ModuleMember -Function Write-Prompt

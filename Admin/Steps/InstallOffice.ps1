@@ -1,5 +1,7 @@
 # Installs Office using Office Deployment Tool
 
+Import-Module (Join-Path $PSScriptRoot "..\..\Utils")
+
 $ODTUrl = "https://officecdn.microsoft.com/pr/wsus/setup.exe"
 $TempSetupDir = New-TemporaryDirectory
 $ODTExe = Join-Path $TempSetupDir "setup.exe"

@@ -1,43 +1,16 @@
 ﻿# Post-Setup Tasks
 # Guides the user through remaining manual configuration steps though interactive prompts
 
-function Write-Todo ([string]$Title, [string]$ActionText, [ScriptBlock]$Action ) {
-  Write-Host "   $Title" -NoNewline -ForegroundColor Yellow
-
-  if ($Action -ne $null) {
-    # Throw is provided an action without description
-    if (-not $ActionText) {
-      Throw "ActionText is required when Action is provided."
-    }
-    
-    # If action is provided, ask for confirmation
-    Write-Host " - $ActionText [y?]" -NoNewline -ForegroundColor DarkGray
-
-    $Key = [Console]::ReadKey($true)
-    if ($Key.Key -in @('y', 'Y')) {
-      Write-Host "`r⏳" -NoNewline
-      Write-Host " $Title" -ForegroundColor DarkGray 
-      & $Action
-    }
-  }
-  else {
-    # Otherwise wait for any key to be pressed to confirm
-    [Console]::ReadKey() | Out-Null
-
-  }
-
-  Write-Host "`r✅" -NoNewline -ForegroundColor Green
-  Write-Host " $Title" -ForegroundColor DarkGray 
-}
+Import-Module (Join-Path $PSScriptRoot "..\..\Utils")
 
 # Remind user to Activate Windows, using advanced MAS Troubleshooting if required
-Write-Todo "Activate Windows (and Office)" "Open troubleshooting: https://massgrave.dev/" { irm https://get.activated.win | iex }
+Write-Prompt "Activate Windows (and Office)" { Invoke-RestMethod https://get.activated.win | Invoke-Expression } "Open troubleshooting: https://massgrave.dev/" 
 
 # Remind User to Sign In to installed Applications
-Write-Todo "Sign In to Chrome"
-Write-Todo "Sign In to Spotify"
-Write-Todo "Sign In to Steam"
-Write-Todo "Sign In to VSCode"
+Write-Prompt "Sign In to Chrome"
+Write-Prompt "Sign In to Spotify"
+Write-Prompt "Sign In to Steam"
+Write-Prompt "Sign In to VSCode"
 
 # Todo could these be installed automatically if approving (winget again)
-Write-Todo "Install Driver Software (NVIDIA, Afterburner, Razer Synapse, iCUE, Armoury Crate)"
+Write-Prompt "Install Driver Software (NVIDIA, Afterburner, Razer Synapse, iCUE, Armoury Crate)"

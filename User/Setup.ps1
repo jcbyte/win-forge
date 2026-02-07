@@ -76,8 +76,8 @@ if (-not $ServerAck.WaitOne(5000)) {
 # Do user setup here:
 
 # Install spotify as it requires a underprivileged session
-$SpotifyPackage = [PSCustomObject]@{Id = "Spotify.Spotify"; Title = "Spotify"; }
-Install-WinGetUnattended $SpotifyPackage
+# $SpotifyPackage = [PSCustomObject]@{Id = "Spotify.Spotify"; Title = "Spotify"; }
+# Install-WinGetUnattended $SpotifyPackage
 
 # Notify admin setup that we have completed, allowing restarting
 Write-Host "✅ User setup completed" -ForegroundColor Green
