@@ -1,4 +1,6 @@
-﻿# todo doc
+﻿# Performs underprivileged (user-level) setup tasks
+# Ensures credentials are provided if the script is running as Admin
+# Signals with the admin script, allowing safe continuation and system restart
 
 Import-Module (Join-Path $PSScriptRoot "..\Utils")
 

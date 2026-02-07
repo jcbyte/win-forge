@@ -12,8 +12,6 @@ irm https://raw.githubusercontent.com/jcbyte/win-forge/main/Setup.ps1 | iex
 irm "https://raw.githubusercontent.com/jcbyte/win-forge/main/Setup.ps1?nocache=$(Get-Random)" | iex
 ```
 
-> todo: Make nice terminal colours
-
 ## Installs
 
 ### Daily Software

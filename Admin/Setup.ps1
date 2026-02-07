@@ -1,4 +1,7 @@
-﻿# todo doc
+﻿# Performs privileged (admin-level) setup tasks done in `/steps`
+# Signals with the user script, allowing safe continuation and system restart
+# Handles system restart when needed, resuming execution automatically
+# Performs cleanup after all setup stages complete.
 
 param (
   [int]$ResumeStep = 0
@@ -26,6 +29,10 @@ if ($ResumeStep -eq 0) {
   else {
     Write-Host "❌ user setup did not become ready in time!" -NoNewline -ForegroundColor Red
     Write-Host " (Timeout)" -ForegroundColor DarkGray
+
+    # Perform cleanup and stop the script (host)
+    $CleanupScript = Join-Path $Repo.Dir "Cleanup.ps1"
+    & $CleanupScript
     Exit
   }
 }
@@ -48,11 +55,9 @@ $SetupSteps = @(
         Write-Host "❌ User script did not complete in time" -ForegroundColor Red
         Write-Host "⚠️ This is unusual, and may have caused side effects" -ForegroundColor Red
         
-        # Perform cleanup
+        # Perform cleanup and stop the script (host)
         $CleanupScript = Join-Path $Repo.Dir "Cleanup.ps1"
         & $CleanupScript
-
-        # Stop the script (host)
         Exit
       }
       

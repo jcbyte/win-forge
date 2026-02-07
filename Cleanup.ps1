@@ -1,4 +1,5 @@
-﻿# todo doc
+﻿# Perform cleanup actions after setup completes (or fails)
+# Removes the temporary cloned repository
 
 Import-Module (Join-Path $PSScriptRoot "Utils")
 
