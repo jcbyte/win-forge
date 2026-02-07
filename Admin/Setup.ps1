@@ -63,6 +63,8 @@ if ($ResumeStep -eq 0) {
   }
 }
 else {
+  Write-Host "▶️ Continuing $($Repo.Name) Setup" -ForegroundColor Magenta
+
   # Load the extra packages from the file
   $ExtraPackages = Import-Clixml -Path $ExtraPackagesPath
 }
