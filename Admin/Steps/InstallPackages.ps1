@@ -1,10 +1,14 @@
 ﻿# Package Installation Stage
 # Installs common software, development tools, and languages using WinGet.
 
+param(
+  [PSCustomObject[]]$ExtraPackages
+)
+
 Import-Module (Join-Path $PSScriptRoot "..\..\Utils")
 
 # List of WinGet packages to install
-$WinGetPackages = @(
+$Packages = @(
   # Daily Software
   [PSCustomObject]@{Id = "Google.Chrome"; Title = "Google Chrome" },
   # [PSCustomObject]@{Id = "Spotify.Spotify"; Title = "Spotify"; }, # ? Spotify install requires unprivileged session
@@ -34,5 +38,6 @@ $WinGetPackages = @(
   [PSCustomObject]@{Id = "Rustlang.Rustup"; Title = "Rust Toolchain" },
   [PSCustomObject]@{Id = "Oracle.JDK.25"; Title = "Java JDK 25" } # ? This will always install JDK 25 
 )
+$FullPackageList = $Packages = $ExtraPackages
 
-foreach ($Package in $WinGetPackages) { Install-WinGetUnattended $Package }
+foreach ($Package in $FullPackageList) { Install-WinGetUnattended $Package }

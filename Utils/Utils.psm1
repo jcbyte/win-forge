@@ -24,14 +24,15 @@ function Sync-Path {
 }
 
 # Sequentially invoke given scripts from a parent directory
-# $Scripts = { File:string; Title:string; RefreshPath?:boolean; PostScript?:ScriptBlock }[]
+# $Scripts = { File:string; Title:string; RefreshPath?:boolean; Args?:hashtable; PostScript?:ScriptBlock }[]
 function Invoke-ScriptPipeline([string]$ParentDir, [PSCustomObject[]]$Scripts, [int]$StartAt = 0) {
   for ($i = $StartAt; $i -lt $Scripts.Count; $i++) {
     $Script = $Scripts[$i];
 
     Write-Host "`n⚡ $($Script.Title)" -ForegroundColor Cyan
     $ScriptFile = Join-Path $ParentDir $Script.File
-    & $ScriptFile
+    $ScriptArgs = if ($Script.Args) { $Script.Args } else { @{} }
+    & $ScriptFile @ScriptArgs
   
     # Refresh PATH from the systems environment variables if required
     if ($Script.RefreshPath) { Sync-Path }
