@@ -23,16 +23,20 @@ function Sync-Path {
 }
 
 # Sequentially invoke given scripts from a parent directory
-# $Scripts = { File:string; Title:string; RefreshPath?:boolean }[]
-function Invoke-ScriptPipeline([string]$ParentDir, [PSCustomObject[]]$Scripts) {
-  # todo could this take a "reset" parameter??
-  foreach ($Step in $Steps) {
-    Write-Host "`n⚡ $($Step.Title)" -ForegroundColor Cyan
-    $ScriptFile = Join-Path $ParentDir $Step.File
-    & $ScriptFile -Cred $Cred
+# $Scripts = { File:string; Title:string; RefreshPath?:boolean; PostScript?:ScriptBlock }[]
+function Invoke-ScriptPipeline([string]$ParentDir, [PSCustomObject[]]$Scripts, [int]$StartAt = 0) {
+  for ($i = $StartAt; $i -lt $Scripts.Count; $i++) {
+    $Script = $Scripts[$i];
+
+    Write-Host "`n⚡ $($Script.Title)" -ForegroundColor Cyan
+    $ScriptFile = Join-Path $ParentDir $Script.File
+    & $ScriptFile
   
     # Refresh PATH from the systems environment variables if required
-    if ($Step.RefreshPath) { Sync-Path }
+    if ($Script.RefreshPath) { Sync-Path }
+
+    # Perform the PostScript if provided
+    if ($Script.PostScript) { & $Script.PostScript }
   }
 }
 

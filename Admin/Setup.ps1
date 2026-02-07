@@ -30,25 +30,24 @@ else {
 $StepsPath = Join-Path $PSScriptRoot "Steps"
 $SetupSteps = @(
   [PSCustomObject]@{File = "ConfigureWindows.ps1"; Title = "Configuring Windows" },
-  [PSCustomObject]@{File = "EnableWSL.ps1"; Title = "Enabling WSL" }
-)
-Invoke-ScriptPipeline $StepsPath $SetupSteps
+  [PSCustomObject]@{File = "EnableWSL.ps1"; Title = "Enabling WSL"; PostScript = {
+      # After this we must restart the computer
 
-# Ensure the user script has completed before we restart the computer
-Write-Host "⏳ Ensuring user script has completed" -ForegroundColor Yellow
-if ($ClientDone.WaitOne(120000)) {
-  Write-Host "✅ User script has completed" -ForegroundColor Green
-}
-else {
-  # ? This could fail if user setup takes substantially longer than admin setup to this point, if so we could increase timeout
-  Write-Host "❌ User script did not complete in time" -ForegroundColor Red
-  Write-Host "⚠️ This is unusual, and may have caused side effects" -ForegroundColor Red
-  Exit
-}
-
-# todo restart and continue below setup
-
-$SetupSteps = @(
+      # Ensure the user script has completed before we restart the computer
+      Write-Host "⏳ Ensuring user script has completed" -ForegroundColor Yellow
+      if ($ClientDone.WaitOne(120000)) {
+        Write-Host "✅ User script has completed" -ForegroundColor Green
+      }
+      else {
+        # ? This could fail if user setup takes substantially longer than admin setup to this point, if so we could increase timeout
+        Write-Host "❌ User script did not complete in time" -ForegroundColor Red
+        Write-Host "⚠️ This is unusual, and may have caused side effects" -ForegroundColor Red
+        Exit
+      }
+      
+      # todo restart and continue below setup
+    }
+  }
   [PSCustomObject]@{File = "ConfigureWSL.ps1"; Title = "Configure WSL" },
   [PSCustomObject]@{File = "InstallPackages.ps1"; Title = "Installing Packages"; RefreshPath = $true },
   [PSCustomObject]@{File = "ConfigurePackages.ps1"; Title = "Configuring Packages" },
