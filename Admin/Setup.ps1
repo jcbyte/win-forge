@@ -53,8 +53,8 @@ $SetupSteps = @(
       }
 
       # Restart the computer and running this script afterwards
-      New-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\RunOnce" -Name "ResumeSetup" -Value "PowerShell -ExecutionPolicy Bypass -File `"$PSScriptPath`" -ResumeStep $i" -PropertyType String -Force
-      Restart-Computer -Force # todo will this stop execution here
+      New-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\RunOnce" -Name "ResumeSetup" -Value "PowerShell -ExecutionPolicy Bypass -File `"$PSCommandPath`" -ResumeStep $($i + 1)" -PropertyType String -Force
+      Restart-Computer -Force # todo will this stop execution here, i dont think so
     };
     RestartComputer = $true;
   }

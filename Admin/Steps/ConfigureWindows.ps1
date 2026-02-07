@@ -119,24 +119,3 @@ $RemoveAppsList = $RemoveApps -join ","
 # Configure and Debloat Windows using `Win11Debloat` (https://github.com/Raphire/Win11Debloat)
 $Win11Debloat = Invoke-RestMethod "https://debloat.raphi.re/"
 & ([scriptblock]::Create($Win11Debloat)) -Silent @WindowsConfigParams -RemoveApps -Apps "$RemoveAppsList"
-
-
-Write-Host "🐧" -NoNewline -ForegroundColor Blue
-Write-Host " Installing" -NoNewline
-Write-Host " WSL" -NoNewline -ForegroundColor Cyan
-
-# Install WSL
-wsl --install
-# todo do i need to enable these or does wsl do it already
-# dism /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
-# dism /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
-# dism /online /enable-feature /featurename:Microsoft-Hyper-V-All /all /norestart
-
-# Reboot
-# todo i should use RunOnce for this
-# todo i then need to continue the script, + how do i pass 
-
-wsl --set-default-version 2
-
-# Install Ubuntu on WSL
-wsl --install Ubuntu-24.04 # ? This will always install Ubuntu 24.04 LTS 
