@@ -1,4 +1,5 @@
-﻿# todo doc
+﻿# Configures WSL and installs Ubuntu
+# WSL should be installed and system restarted before running this script
 
 Write-Host "🛠️" -NoNewline -ForegroundColor Blue
 Write-Host " Configuring" -NoNewline

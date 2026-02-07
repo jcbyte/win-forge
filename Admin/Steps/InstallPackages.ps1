@@ -36,7 +36,7 @@ $WinGetPackages = @(
   [PSCustomObject]@{Id = "Oracle.JDK.25"; Title = "Java JDK 25" } # ? This will always install JDK 25 
 )
 
-foreach ($Package in $WinGetPackages) { Install-WinGetUnattended $Package $Cred }
+foreach ($Package in $WinGetPackages) { Install-WinGetUnattended $Package }
 
 
 # Install Office using Office Deployment Tool

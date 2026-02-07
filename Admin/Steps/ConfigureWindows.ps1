@@ -1,5 +1,6 @@
 ﻿# Windows Configuration and De-bloating
-# todo doc
+# Enables/Disables features and uninstall pre-installed apps using Win11Debloat
+# https://github.com/Raphire/Win11Debloat
 
 Write-Host "🛠️" -NoNewline -ForegroundColor Blue
 Write-Host " Configuring and Debloating Windows using" -NoNewline
