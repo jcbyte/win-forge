@@ -1,29 +1,33 @@
 ﻿# todo doc
 
 param (
-  [int]$ResumeStep
+  [int]$ResumeStep = 0
 )
 
 Import-Module (Join-Path $PSScriptRoot "..\Utils")
-Import-Module (Join-Path $PSScriptRoot "..\IPC")
 
-# Get Event handles shared between user and admin setup scripts
-$ClientReady = Get-GlobalEventHandle("ClientReady")
-$ServerAck = Get-GlobalEventHandle("ServerAck")
-$ClientDone = Get-GlobalEventHandle("ClientDone")
+# Only communicate with client before the restart
+if ($ResumeStep -eq 0) {
+  Import-Module (Join-Path $PSScriptRoot "..\IPC")
 
-Write-Host "⏳ Waiting for user setup..." -ForegroundColor Yellow
+  # Get Event handles shared between user and admin setup scripts
+  $ClientReady = Get-GlobalEventHandle("ClientReady")
+  $ServerAck = Get-GlobalEventHandle("ServerAck")
+  $ClientDone = Get-GlobalEventHandle("ClientDone")
 
-# Ensure the user setup script is ready so that we don't perform admin setup without user setup (causing side effects)
-if ($ClientReady.WaitOne(30000)) {
-  Write-Host "✅ user setup is ready!" -ForegroundColor Green
-  # Ensure the user setup we have not timed out yet
-  $ServerAck.Set() | Out-Null
-}
-else {
-  Write-Host "❌ user setup did not become ready in time!" -NoNewline -ForegroundColor Red
-  Write-Host " (Timeout)" -ForegroundColor DarkGray
-  Exit
+  Write-Host "⏳ Waiting for user setup..." -ForegroundColor Yellow
+
+  # Ensure the user setup script is ready so that we don't perform admin setup without user setup (causing side effects)
+  if ($ClientReady.WaitOne(30000)) {
+    Write-Host "✅ user setup is ready!" -ForegroundColor Green
+    # Ensure the user setup we have not timed out yet
+    $ServerAck.Set() | Out-Null
+  }
+  else {
+    Write-Host "❌ user setup did not become ready in time!" -NoNewline -ForegroundColor Red
+    Write-Host " (Timeout)" -ForegroundColor DarkGray
+    Exit
+  }
 }
 
 # Execute each stage of the admin setup
@@ -60,6 +64,6 @@ $SetupSteps = @(
   [PSCustomObject]@{File = "InstallLang.ps1"; Title = "Installing Languages"; RefreshPath = $true },
   [PSCustomObject]@{File = "PostSetup.ps1"; Title = "Performing Post Setup" }
 )
-Invoke-ScriptPipeline $StepsPath $SetupSteps $ResumeStep # todo is this okay if it is 0
+Invoke-ScriptPipeline $StepsPath $SetupSteps $ResumeStep
 
 # todo cleanup
