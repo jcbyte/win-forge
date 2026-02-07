@@ -1,6 +1,10 @@
 ﻿# Post-Setup Tasks
 # Guides the user through remaining manual configuration steps though interactive prompts
 
+param(
+  [PSCustomObject[]]$ExtraPackages
+)
+
 Import-Module (Join-Path $PSScriptRoot "..\..\Utils")
 
 # Remind user to Activate Windows, using advanced MAS Troubleshooting if required
@@ -12,5 +16,4 @@ Write-Prompt "Sign In to Spotify"
 Write-Prompt "Sign In to Steam"
 Write-Prompt "Sign In to VSCode"
 
-# Todo could these be installed automatically if approving (winget again)
-Write-Prompt "Install Driver Software (NVIDIA, Afterburner, Razer Synapse, iCUE, Armoury Crate)"
+foreach ($ExtraPackage in $ExtraPackages) { Write-Prompt "Sign In/Configure $($ExtraPackage.Title)" }

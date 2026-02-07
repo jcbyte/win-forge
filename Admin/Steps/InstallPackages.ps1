@@ -38,6 +38,6 @@ $Packages = @(
   [PSCustomObject]@{Id = "Rustlang.Rustup"; Title = "Rust Toolchain" },
   [PSCustomObject]@{Id = "Oracle.JDK.25"; Title = "Java JDK 25" } # ? This will always install JDK 25 
 )
-$FullPackageList = $Packages = $ExtraPackages
+$FullPackageList = $Packages + $ExtraPackages
 
 foreach ($Package in $FullPackageList) { Install-WinGetUnattended $Package }

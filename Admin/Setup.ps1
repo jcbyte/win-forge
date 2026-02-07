@@ -104,7 +104,7 @@ $SetupSteps = @(
   [PSCustomObject]@{File = "InstallOffice.ps1"; Title = "Installing Office" },
   [PSCustomObject]@{File = "ConfigurePackages.ps1"; Title = "Configuring Packages" },
   [PSCustomObject]@{File = "InstallLang.ps1"; Title = "Installing Languages"; RefreshPath = $true },
-  [PSCustomObject]@{File = "PostSetup.ps1"; Title = "Performing Post Setup" }
+  [PSCustomObject]@{File = "PostSetup.ps1"; Title = "Performing Post Setup"; Args = @{"ExtraPackages" = $ExtraPackages } }
 )
 Invoke-ScriptPipeline $StepsPath $SetupSteps $ResumeStep
 
