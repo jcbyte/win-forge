@@ -1,4 +1,4 @@
-# Installs Office using Office Deployment Tool
+﻿# Installs Office using Office Deployment Tool
 
 Import-Module (Join-Path $PSScriptRoot "..\..\Utils")
 
@@ -9,7 +9,11 @@ $ODTExe = Join-Path $TempSetupDir "setup.exe"
 # ? This configuration will always install Office 2024 LTSC (Word, PowerPoint, Excel)
 $OfficeConfiguration = Join-Path $RepoDir "config\OfficeConfiguration.xml"
 
+Write-Host "🔷" -NoNewline -ForegroundColor DarkCyan
+Write-Host " Installing " -NoNewline
+Write-Host "Office 2024 LTSC" -NoNewline -ForegroundColor Cyan
+Write-Host "(Word, PowerPoint, Excel)" -ForegroundColor DarkGray
+
 # Download ODT tool and install ("configure") though file
-Write-Host "Installing Office 2024 LTSC (Word, PowerPoint, Excel)"
 Start-BitsTransfer -Source $ODTUrl -Destination $ODTExe
 & $ODTExe /configure $OfficeConfiguration

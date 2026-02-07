@@ -9,11 +9,43 @@ param (
 
 Import-Module (Join-Path $PSScriptRoot "..\Utils")
 
+function Invoke-Cleanup {
+  # Perform cleanup and stop the script (host)
+  $CleanupScript = Join-Path $Repo.Dir "Cleanup.ps1"
+  & $CleanupScript
+  Exit
+}
+
 $ExtraPackagesPath = Join-Path $Repo.Dir ".extra-packages.xml"
 
 # Perform first time steps
 if ($ResumeStep -eq 0) {
-  # Ask if any extra packages should be included
+  # Communicate with client script
+  Import-Module (Join-Path $PSScriptRoot "..\IPC")
+
+  # Get Event handles shared between user and admin setup scripts
+  $UserReady = Get-GlobalEventHandle("UserReady")
+  $AdminReady = Get-GlobalEventHandle("AdminReady")
+  $UserAck = Get-GlobalEventHandle("UserAck")
+  $UserDone = Get-GlobalEventHandle("UserDone")
+
+  Write-Host "⏳ Waiting for user setup..." -ForegroundColor Yellow
+
+  # Ensure the user setup script is ready so that we don't perform admin setup without user setup (causing side effects)
+  if ($UserReady.WaitOne(60000)) {
+    Write-Host "✅ User setup is ready!" -ForegroundColor Green
+  }
+  else {
+    Write-Host "❌ User setup did not become ready in time!" -NoNewline -ForegroundColor Red
+    Write-Host " (Timeout)" -ForegroundColor DarkGray
+
+    Invoke-Cleanup
+  }
+
+  Write-Host "🧩" -NoNewline -ForegroundColor DarkCyan
+  Write-Host "Pick Additional Software:" -ForegroundColor Cyan
+
+  # Ask which extra packages should be included
   $ExtraPackages = @()
   Write-Prompt -Question "Install Nvidia GeForceExperience" { 
     $script:ExtraPackages += [PSCustomObject]@{Id = "Nvidia.GeForceExperience"; Title = "Nvidia GeForceExperience" } 
@@ -21,13 +53,13 @@ if ($ResumeStep -eq 0) {
   Write-Prompt -Question "Install MSI Afterburner" { 
     $script:ExtraPackages += [PSCustomObject]@{Id = "Guru3D.Afterburner"; Title = "MSI Afterburner" } 
   }
-  Write-Prompt -Question "Install Razer Synapse" { 
+  Write-Prompt -Question "Install Razer Synapse 3" { 
     # ? This will always install Synapse 3
     $script:ExtraPackages += [PSCustomObject]@{Id = "RazerInc.RazerInstaller.Synapse3"; Title = "Razer Synapse 3" } 
   }
-  Write-Prompt -Question "Install Corsair iCUE" { 
+  Write-Prompt -Question "Install Corsair iCUE 5" { 
     # ? This will always install iCUE 5
-    $script:ExtraPackages += [PSCustomObject]@{Id = "Corsair.iCUE.5"; Title = "Corsair iCUE" }
+    $script:ExtraPackages += [PSCustomObject]@{Id = "Corsair.iCUE.5"; Title = "Corsair iCUE 5" }
   }
   Write-Prompt -Question "Install Asus ArmouryCrate" {
     $script:ExtraPackages += [PSCustomObject]@{Id = "Asus.ArmouryCrate"; Title = "Asus ArmouryCrate" }
@@ -36,30 +68,16 @@ if ($ResumeStep -eq 0) {
   # Save them in a file so they are not lost when restarting
   $ExtraPackages | Export-Clixml -Path $ExtraPackagesPath
 
-  # Communicate with client script
-  Import-Module (Join-Path $PSScriptRoot "..\IPC")
+  # Notify user setup script that we are ready as this could've taken some time answering questions
+  Write-Host "📢 Notifying user setup that we are ready" -ForegroundColor Yellow
+  $AdminReady.Set() | Out-Null
 
-  # Get Event handles shared between user and admin setup scripts
-  $ClientReady = Get-GlobalEventHandle("ClientReady")
-  $ServerAck = Get-GlobalEventHandle("ServerAck")
-  $ClientDone = Get-GlobalEventHandle("ClientDone")
-
-  Write-Host "⏳ Waiting for user setup..." -ForegroundColor Yellow
-
-  # Ensure the user setup script is ready so that we don't perform admin setup without user setup (causing side effects)
-  if ($ClientReady.WaitOne(30000)) {
-    Write-Host "✅ user setup is ready!" -ForegroundColor Green
-    # Ensure the user setup we have not timed out yet
-    $ServerAck.Set() | Out-Null
-  }
-  else {
-    Write-Host "❌ user setup did not become ready in time!" -NoNewline -ForegroundColor Red
+  # Ensure that the user setup script is still active so that we don't perform admin setup without user setup (causing side effects)
+  if (-not $UserAck.WaitOne(5000)) {
+    Write-Host "❌ User setup did not respond" -NoNewline -ForegroundColor Red
     Write-Host " (Timeout)" -ForegroundColor DarkGray
 
-    # Perform cleanup and stop the script (host)
-    $CleanupScript = Join-Path $Repo.Dir "Cleanup.ps1"
-    & $CleanupScript
-    Exit
+    Invoke-Cleanup
   }
 }
 else {
@@ -79,7 +97,7 @@ $SetupSteps = @(
 
       # Ensure the user script has completed before we restart the computer
       Write-Host "⏳ Ensuring user script has completed" -ForegroundColor Yellow
-      if ($ClientDone.WaitOne(120000)) {
+      if ($UserDone.WaitOne(180000)) {
         Write-Host "✅ User script has completed" -ForegroundColor Green
       }
       else {
@@ -111,5 +129,4 @@ $SetupSteps = @(
 Invoke-ScriptPipeline $StepsPath $SetupSteps $ResumeStep
 
 # Perform cleanup
-$CleanupScript = Join-Path $Repo.Dir "Cleanup.ps1"
-& $CleanupScript
+Invoke-Cleanup

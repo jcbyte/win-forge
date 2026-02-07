@@ -60,25 +60,37 @@ if (Test-IsAdmin) {
 Import-Module (Join-Path $PSScriptRoot "..\IPC")
 
 # Get Event handles shared between user and admin setup scripts
-$ClientReady = Get-GlobalEventHandle("ClientReady")
-$ServerAck = Get-GlobalEventHandle("ServerAck")
-$ClientDone = Get-GlobalEventHandle("ClientDone")
+$UserReady = Get-GlobalEventHandle("UserReady")
+$AdminReady = Get-GlobalEventHandle("AdminReady")
+$UserAck = Get-GlobalEventHandle("UserAck")
+$UserDone = Get-GlobalEventHandle("UserDone")
 
-# Notify admin setup script that we are ready as this could've taken some time if we had to sign in.
+# Notify admin setup script that we are ready as this could've taken some time if we had to sign in
 Write-Host "📢 Notifying admin setup that we are ready" -ForegroundColor Yellow
-$ClientReady.Set() | Out-Null
-# Ensure that the admin setup script is still active so that we don't perform user setup without admin setup (causing side effects)
-if (-not $ServerAck.WaitOne(5000)) {
-  Write-Host "❌ Admin setup did not respond, possible timeout" -ForegroundColor Red
+$UserReady.Set() | Out-Null
+
+Write-Host "⏳ Waiting for admin setup..." -ForegroundColor Yellow
+
+# Ensure the admin setup script is ready so that we don't perform user setup without admin setup (causing side effects)
+if ($AdminReady.WaitOne(60000)) {
+  Write-Host "✅ Admin setup is ready!" -ForegroundColor Green
+  # Ensure the admin setup we have not timed out yet
+  $UserAck.Set() | Out-Null
+}
+else {
+  Write-Host "❌ Admin setup did not become ready in time!" -NoNewline -ForegroundColor Red
+  Write-Host " (Timeout)" -ForegroundColor DarkGray
+
+  # Stop the script (host)
   Exit
 }
 
 # Do user setup here:
 
 # Install spotify as it requires a underprivileged session
-# $SpotifyPackage = [PSCustomObject]@{Id = "Spotify.Spotify"; Title = "Spotify"; }
-# Install-WinGetUnattended $SpotifyPackage
+$SpotifyPackage = [PSCustomObject]@{Id = "Spotify.Spotify"; Title = "Spotify"; }
+Install-WinGetUnattended $SpotifyPackage
 
 # Notify admin setup that we have completed, allowing restarting
 Write-Host "✅ User setup completed" -ForegroundColor Green
-$ClientDone.Set() | Out-Null
+$UserDone.Set() | Out-Null
