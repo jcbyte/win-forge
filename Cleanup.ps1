@@ -1,10 +1,12 @@
-# todo doc
+﻿# todo doc
 
 Import-Module (Join-Path $PSScriptRoot "Utils")
 
+Write-Host "🧹" -NoNewline -ForegroundColor Blue
+Write-Host " Performing Cleanup" -ForegroundColor Cyan
+
 # Remove the cloned repository to cleanup
 if ((Test-Path $Repo.LocalDir)) {
-  Write-Host "del $($Repo.LocalDir)"
   Remove-Item $Repo.LocalDir -Recurse -Force -ErrorAction SilentlyContinue
 }
 

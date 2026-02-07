@@ -47,14 +47,20 @@ $SetupSteps = @(
         # ? This could fail if user setup takes substantially longer than admin setup to this point, if so we could increase timeout
         Write-Host "❌ User script did not complete in time" -ForegroundColor Red
         Write-Host "⚠️ This is unusual, and may have caused side effects" -ForegroundColor Red
-        # todo cleanup
-        # todo need to permanently stop script
+        
+        # Perform cleanup
+        $CleanupScript = Join-Path $Repo.Dir "Cleanup.ps1"
+        & $CleanupScript
+
+        # Stop the script (host)
         Exit
       }
-
-      # Restart the computer and running this script afterwards
+      
+      # Restart the computer and running this script afterwards continuing from the next stage
       New-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\RunOnce" -Name "ResumeSetup" -Value "PowerShell -ExecutionPolicy Bypass -File `"$PSCommandPath`" -ResumeStep $($i + 1)" -PropertyType String -Force
-      Restart-Computer -Force # todo will this stop execution here, i dont think so
+      Restart-Computer -Force
+      # Stop continued execution
+      Exit 
     };
     RestartComputer = $true;
   }
@@ -66,4 +72,6 @@ $SetupSteps = @(
 )
 Invoke-ScriptPipeline $StepsPath $SetupSteps $ResumeStep
 
-# todo cleanup
+# Perform cleanup
+$CleanupScript = Join-Path $Repo.Dir "Cleanup.ps1"
+& $CleanupScript
