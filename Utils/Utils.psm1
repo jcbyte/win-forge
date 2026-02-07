@@ -36,7 +36,7 @@ function Invoke-ScriptPipeline([string]$ParentDir, [PSCustomObject[]]$Scripts, [
     if ($Script.RefreshPath) { Sync-Path }
 
     # Perform the PostScript if provided
-    if ($Script.PostScript) { & $Script.PostScript }
+    if ($Script.PostScript) { & $Script.PostScript $i }
   }
 }
 

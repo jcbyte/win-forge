@@ -1,7 +1,7 @@
 ﻿# todo doc
 
 param (
-  [switch]$InitialRun
+  [int]$ResumeStep
 )
 
 Import-Module (Join-Path $PSScriptRoot "..\Utils")
@@ -31,7 +31,8 @@ $StepsPath = Join-Path $PSScriptRoot "Steps"
 $SetupSteps = @(
   [PSCustomObject]@{File = "ConfigureWindows.ps1"; Title = "Configuring Windows" },
   [PSCustomObject]@{File = "EnableWSL.ps1"; Title = "Enabling WSL"; PostScript = {
-      # After this we must restart the computer
+      # After this script, we must restart the computer
+      param([int]$i)
 
       # Ensure the user script has completed before we restart the computer
       Write-Host "⏳ Ensuring user script has completed" -ForegroundColor Yellow
@@ -42,11 +43,16 @@ $SetupSteps = @(
         # ? This could fail if user setup takes substantially longer than admin setup to this point, if so we could increase timeout
         Write-Host "❌ User script did not complete in time" -ForegroundColor Red
         Write-Host "⚠️ This is unusual, and may have caused side effects" -ForegroundColor Red
+        # todo cleanup
+        # todo need to permanently stop script
         Exit
       }
-      
-      # todo restart and continue below setup
-    }
+
+      # Restart the computer and running this script afterwards
+      New-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\RunOnce" -Name "ResumeSetup" -Value "PowerShell -ExecutionPolicy Bypass -File `"$PSScriptPath`" -ResumeStep $i" -PropertyType String -Force
+      Restart-Computer -Force # todo will this stop execution here
+    };
+    RestartComputer = $true;
   }
   [PSCustomObject]@{File = "ConfigureWSL.ps1"; Title = "Configure WSL" },
   [PSCustomObject]@{File = "InstallPackages.ps1"; Title = "Installing Packages"; RefreshPath = $true },
@@ -54,7 +60,6 @@ $SetupSteps = @(
   [PSCustomObject]@{File = "InstallLang.ps1"; Title = "Installing Languages"; RefreshPath = $true },
   [PSCustomObject]@{File = "PostSetup.ps1"; Title = "Performing Post Setup" }
 )
-Invoke-ScriptPipeline $StepsPath $SetupSteps
+Invoke-ScriptPipeline $StepsPath $SetupSteps $ResumeStep # todo is this okay if it is 0
 
-
-# todo cleanup when exiting
+# todo cleanup
