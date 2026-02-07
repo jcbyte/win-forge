@@ -16,4 +16,4 @@ Write-Prompt "Sign In to Spotify"
 Write-Prompt "Sign In to Steam"
 Write-Prompt "Sign In to VSCode"
 
-foreach ($ExtraPackage in $ExtraPackages) { Write-Prompt "Sign In/Configure $($ExtraPackage.Title)" }
+foreach ($ExtraPackage in $ExtraPackages) { Write-Prompt "Configure $($ExtraPackage.Title)" }

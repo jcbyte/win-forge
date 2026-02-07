@@ -47,23 +47,28 @@ if ($ResumeStep -eq 0) {
 
   # Ask which extra packages should be included
   $ExtraPackages = @()
-  Write-Prompt -Question "Install Nvidia GeForceExperience" { 
-    $script:ExtraPackages += [PSCustomObject]@{Id = "Nvidia.GeForceExperience"; Title = "Nvidia GeForceExperience" } 
-  }
+  # ! Nvidia App is currently not within the WinGet repository
+  # ! https://github.com/microsoft/winget-pkgs/discussions/200910
+  # Write-Prompt -Question "Install Nvidia App" { 
+  #   $script:ExtraPackages += [PSCustomObject]@{Id = "Nvidia.??"; Title = "Nvidia GeForceExperience" } 
+  # }
   Write-Prompt -Question "Install MSI Afterburner" { 
     $script:ExtraPackages += [PSCustomObject]@{Id = "Guru3D.Afterburner"; Title = "MSI Afterburner" } 
   }
-  Write-Prompt -Question "Install Razer Synapse 3" { 
-    # ? This will always install Synapse 3
-    $script:ExtraPackages += [PSCustomObject]@{Id = "RazerInc.RazerInstaller.Synapse3"; Title = "Razer Synapse 3" } 
+  Write-Prompt -Question "Install Razer Synapse 4" { 
+    # ? This will open, and will always install Synapse 4
+    $script:ExtraPackages += [PSCustomObject]@{Id = "RazerInc.RazerInstaller.Synapse4"; Title = "Razer Synapse 3" } 
   }
   Write-Prompt -Question "Install Corsair iCUE 5" { 
     # ? This will always install iCUE 5
     $script:ExtraPackages += [PSCustomObject]@{Id = "Corsair.iCUE.5"; Title = "Corsair iCUE 5" }
   }
+  # todo verify armoury crate, it seems to be fail and ideally I want to use different software
+  # winget install -e --id Asus.ArmouryCrate --silent --accept-source-agreements --accept-package-agreements --source winget
   Write-Prompt -Question "Install Asus ArmouryCrate" {
     $script:ExtraPackages += [PSCustomObject]@{Id = "Asus.ArmouryCrate"; Title = "Asus ArmouryCrate" }
   }
+  # todo rgb sync openrgb/signalrgb
 
   # Save them in a file so they are not lost when restarting
   $ExtraPackages | Export-Clixml -Path $ExtraPackagesPath
@@ -110,6 +115,8 @@ $SetupSteps = @(
         & $CleanupScript
         Exit
       }
+
+      Write-Host "🔄️ Restarting System" -ForegroundColor Magenta
       
       # Restart the computer and running this script afterwards continuing from the next stage
       New-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\RunOnce" -Name "ResumeSetup" -Value "PowerShell -ExecutionPolicy Bypass -File `"$PSCommandPath`" -ResumeStep $($i + 1)" -PropertyType String -Force
@@ -117,7 +124,6 @@ $SetupSteps = @(
       # Stop continued execution
       Exit 
     };
-    RestartComputer = $true;
   }
   [PSCustomObject]@{File = "ConfigureWSL.ps1"; Title = "Configure WSL" },
   [PSCustomObject]@{File = "InstallPackages.ps1"; Title = "Installing Packages"; Args = @{"ExtraPackages" = $ExtraPackages }; RefreshPath = $true },
@@ -127,6 +133,8 @@ $SetupSteps = @(
   [PSCustomObject]@{File = "PostSetup.ps1"; Title = "Performing Post Setup"; Args = @{"ExtraPackages" = $ExtraPackages } }
 )
 Invoke-ScriptPipeline $StepsPath $SetupSteps $ResumeStep
+
+Write-Host "✅ Setup Complete" -ForegroundColor Green
 
 # Perform cleanup
 Invoke-Cleanup

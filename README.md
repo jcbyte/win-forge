@@ -1,5 +1,7 @@
 # win-forge
 
+<!-- todo write readme -->
+
 > Very unfinished, much draft
 
 ```
@@ -46,3 +48,10 @@ irm "https://raw.githubusercontent.com/jcbyte/win-forge/main/Setup.ps1?nocache=$
 - Python (Python Install Manager)
 - Rust (Rustup)
 - Java (JDK 25)
+
+# Todo
+
+- Verify WSL success on a machine with virtualisation
+- Verify Docker install works (failed due to WSL previously)
+- Verify Office install works (failed previously)
+- Verify NVM works (failed previously)

@@ -7,7 +7,7 @@ $TempSetupDir = New-TemporaryDirectory
 $ODTExe = Join-Path $TempSetupDir "setup.exe"
 # Use local configuration file for office version
 # ? This configuration will always install Office 2024 LTSC (Word, PowerPoint, Excel)
-$OfficeConfiguration = Join-Path $RepoDir "config\OfficeConfiguration.xml"
+$OfficeConfiguration = Join-Path $Repo.Dir "config\OfficeConfiguration.xml"
 
 Write-Host "🔷" -NoNewline -ForegroundColor DarkCyan
 Write-Host " Installing " -NoNewline
