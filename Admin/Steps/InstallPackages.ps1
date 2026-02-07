@@ -1,6 +1,5 @@
 ﻿# Package Installation Stage
 # Installs common software, development tools, and languages using WinGet.
-# Will install Office via ODT.
 
 Import-Module (Join-Path $PSScriptRoot "..\..\Utils")
 
@@ -37,16 +36,3 @@ $WinGetPackages = @(
 )
 
 foreach ($Package in $WinGetPackages) { Install-WinGetUnattended $Package }
-
-
-# Install Office using Office Deployment Tool
-
-$ODTUrl = "https://officecdn.microsoft.com/pr/wsus/setup.exe"
-$TempSetupDir = New-TemporaryDirectory
-$ODTExe = Join-Path $TempSetupDir "setup.exe"
-# ? This configuration will always install Office 2024 LTSC (Word, PowerPoint, Excel)
-$OfficeConfiguration = Join-Path $RepoDir "config\OfficeConfiguration.xml"
-
-Write-Host "Installing Office 2024 LTSC (Word, PowerPoint, Excel)"
-Start-BitsTransfer -Source $ODTUrl -Destination $ODTExe
-& $ODTExe /configure $OfficeConfiguration
