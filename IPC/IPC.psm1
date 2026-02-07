@@ -24,3 +24,4 @@ function Get-GlobalEventHandle([string]$Name) {
     $security
   )
 }
+Export-ModuleMember -Function Get-GlobalEventHandle

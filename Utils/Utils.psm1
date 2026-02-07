@@ -14,6 +14,7 @@ function New-TemporaryDirectory {
   New-Item -ItemType Directory -Path $Path | Out-Null
   return $Path
 }
+Export-ModuleMember -Function New-TemporaryDirectory
 
 # Sync the systems PATH back to our environments path
 function Sync-Path {
@@ -39,6 +40,7 @@ function Invoke-ScriptPipeline([string]$ParentDir, [PSCustomObject[]]$Scripts, [
     if ($Script.PostScript) { & $Script.PostScript $i }
   }
 }
+Export-ModuleMember -Function Invoke-ScriptPipeline
 
 # Install WinGet packages unattended
 # $Package = {Id:string; Title?:string; Override?:string}
@@ -55,3 +57,4 @@ function Install-WinGetUnattended([PSCustomObject]$Package) {
   # Perform the install
   Invoke-Expression $WinGetCmd
 }
+Export-ModuleMember -Function Install-WinGetUnattended
