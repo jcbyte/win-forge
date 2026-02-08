@@ -3,6 +3,9 @@
 
 Import-Module (Join-Path $PSScriptRoot "..\..\Utils")
 
+$GIT_NAME = "Joel Cutler"
+$GIT_EMAIL = "joelcutler108@gmail.com"
+
 # Configure PowerShell with Oh My Posh
 
 # Install FiraCode Nerd Font
@@ -36,9 +39,22 @@ Add-Content -Path $PROFILE -Value "oh-my-posh init pwsh --config `"$ThemeDist`" 
 
 # todo check ghost texts work, and check Ubuntu also exists in the terminal
 
+# Configure Git
+
+Write-Host "🛠️" -NoNewline -ForegroundColor DarkCyan
+Write-Host " Configuring" -NoNewline
+Write-Host " Git" -ForegroundColor Cyan
+
+git config --global user.name $GIT_NAME
+git config --global user.email $GIT_EMAIL
+git config --global core.autocrlf input
+git config --global init.defaultBranch main
+git config --global pull.rebase true
+git config --global core.editor "code --wait"
+git config --global fetch.prune true
+git config --global fetch.pruneTags true
 
 
-# Todo Configure Git
 # Todo Configure PowerToys
 # Todo Configure Windhawk (Better file sizes in Explorer details, Taskbar Volume Control)
 # Todo Configure Spotify (SpotX/BlockTHeSpot, should these be included?)
