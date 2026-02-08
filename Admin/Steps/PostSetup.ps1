@@ -2,7 +2,7 @@
 # Guides the user through remaining manual configuration steps though interactive prompts
 
 param(
-  [PSCustomObject[]]$ExtraPackages
+  [PSCustomObject[]]$ExtraPostPrompts
 )
 
 Import-Module (Join-Path $PSScriptRoot "..\..\Utils")
@@ -16,4 +16,4 @@ Write-Prompt "Sign In to Spotify"
 Write-Prompt "Sign In to Steam"
 Write-Prompt "Sign In to VSCode"
 
-foreach ($ExtraPackage in $ExtraPackages) { Write-Prompt "Configure $($ExtraPackage.Title)" }
+foreach ($ExtraPrompt in $ExtraPostPrompts) { Write-Prompt @ExtraPrompt }

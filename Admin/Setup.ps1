@@ -16,7 +16,7 @@ function Invoke-Cleanup {
   Exit
 }
 
-$ExtraPackagesPath = Join-Path $Repo.Dir ".extra-packages.xml"
+$ExtrasPath = Join-Path $Repo.Dir ".extras-config.xml"
 
 # Perform first time steps
 if ($ResumeStep -eq 0) {
@@ -47,31 +47,37 @@ if ($ResumeStep -eq 0) {
 
   # Ask which extra packages should be included
   $ExtraPackages = @()
-  # ! Nvidia App is currently not within the WinGet repository
-  # ! https://github.com/microsoft/winget-pkgs/discussions/200910
-  # Write-Prompt -Question "Install Nvidia App" { 
-  #   $script:ExtraPackages += [PSCustomObject]@{Id = "Nvidia.??"; Title = "Nvidia GeForceExperience" } 
-  # }
+  $ExtraPostPrompts = @()
+  Write-Prompt -Question "Install Nvidia App" { 
+    # ! Nvidia App is currently not within the WinGet repository
+    # ! https://github.com/microsoft/winget-pkgs/discussions/200910
+    $script:ExtraPostPrompts += , @("Manually install Nvidia App", { Start-Process chrome '--new-window https://www.nvidia.com/en-eu/software/nvidia-app/' }, "Open Download Page")
+    $script:ExtraPostPrompts += , @("Install Graphics Drivers from Nvidia App")
+  }
   Write-Prompt -Question "Install MSI Afterburner" { 
-    $script:ExtraPackages += [PSCustomObject]@{Id = "Guru3D.Afterburner"; Title = "MSI Afterburner" } 
+    $script:ExtraPackages += [PSCustomObject]@{Id = "Guru3D.Afterburner"; Title = "MSI Afterburner" }
   }
   Write-Prompt -Question "Install Razer Synapse 4" { 
     # ? This will open, and will always install Synapse 4
-    $script:ExtraPackages += [PSCustomObject]@{Id = "RazerInc.RazerInstaller.Synapse4"; Title = "Razer Synapse 3" } 
+    $script:ExtraPackages += [PSCustomObject]@{Id = "RazerInc.RazerInstaller.Synapse4"; Title = "Razer Synapse 4" }
+    $script:ExtraPostPrompts += , @("Sign In and Configure Razer Synapse 4")
   }
   Write-Prompt -Question "Install Corsair iCUE 5" { 
     # ? This will always install iCUE 5
     $script:ExtraPackages += [PSCustomObject]@{Id = "Corsair.iCUE.5"; Title = "Corsair iCUE 5" }
+    $script:ExtraPostPrompts += , @("Configure iCUE 5")
   }
-  # todo verify armoury crate, it seems to be fail and ideally I want to use different software
-  # winget install -e --id Asus.ArmouryCrate --silent --accept-source-agreements --accept-package-agreements --source winget
-  Write-Prompt -Question "Install Asus ArmouryCrate" {
-    $script:ExtraPackages += [PSCustomObject]@{Id = "Asus.ArmouryCrate"; Title = "Asus ArmouryCrate" }
+  Write-Prompt -Question "Install OpenRGB" {
+    $script:ExtraPackages += [PSCustomObject]@{Id = "OpenRGB.OpenRGB"; Title = "OpenRGB" }
+    $script:ExtraPostPrompts += , @("Configure OpenRGB")
   }
-  # todo rgb sync openrgb/signalrgb
-
+  
   # Save them in a file so they are not lost when restarting
-  $ExtraPackages | Export-Clixml -Path $ExtraPackagesPath
+  $Extras = [PSCustomObject]@{
+    Packages    = $ExtraPackages
+    PostPrompts = $ExtraPostPrompts
+  }
+  $Extras | Export-Clixml -Path $ExtrasPath
 
   # Notify user setup script that we are ready as this could've taken some time answering questions
   Write-Host "📢 Notifying user setup that we are ready" -ForegroundColor Yellow
@@ -89,7 +95,15 @@ else {
   Write-Host "▶️ Continuing $($Repo.Name) Setup" -ForegroundColor Magenta
 
   # Load the extra packages from the file
-  $ExtraPackages = Import-Clixml -Path $ExtraPackagesPath
+  $Extras = Import-Clixml -Path $ExtrasPath
+
+  # Re-hydrate ScriptBlocks
+  foreach ($Prompt in $Extras.PostPrompts) {
+    # If there is a second item and it's a string rebuild it as a ScriptBlock
+    if ($Prompt.Count -ge 2 -and $Prompt[1] -is [string]) {
+      $Prompt[1] = [ScriptBlock]::Create($Prompt[1].Trim())
+    }
+  }
 }
 
 # Execute each stage of the admin setup
@@ -126,11 +140,11 @@ $SetupSteps = @(
     };
   }
   [PSCustomObject]@{File = "ConfigureWSL.ps1"; Title = "Configure WSL" },
-  [PSCustomObject]@{File = "InstallPackages.ps1"; Title = "Installing Packages"; Args = @{"ExtraPackages" = $ExtraPackages }; RefreshPath = $true },
+  [PSCustomObject]@{File = "InstallPackages.ps1"; Title = "Installing Packages"; Args = @{"ExtraPackages" = $Extras.Packages }; RefreshPath = $true },
   [PSCustomObject]@{File = "InstallOffice.ps1"; Title = "Installing Office" },
   [PSCustomObject]@{File = "ConfigurePackages.ps1"; Title = "Configuring Packages" },
   [PSCustomObject]@{File = "InstallLang.ps1"; Title = "Installing Languages"; RefreshPath = $true },
-  [PSCustomObject]@{File = "PostSetup.ps1"; Title = "Performing Post Setup"; Args = @{"ExtraPackages" = $ExtraPackages } }
+  [PSCustomObject]@{File = "PostSetup.ps1"; Title = "Performing Post Setup"; Args = @{"ExtraPostPrompts" = $Extras.PostPrompts } }
 )
 Invoke-ScriptPipeline $StepsPath $SetupSteps $ResumeStep
 
