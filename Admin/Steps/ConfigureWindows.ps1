@@ -2,7 +2,7 @@
 # Enables/Disables features and uninstall pre-installed apps using Win11Debloat
 # https://github.com/Raphire/Win11Debloat
 
-Write-Host "🛠️" -NoNewline -ForegroundColor Blue
+Write-Host "🛠️" -NoNewline -ForegroundColor DarkCyan
 Write-Host " Configuring and Debloating Windows using" -NoNewline
 Write-Host " Win11Debloat" -NoNewline -ForegroundColor Cyan
 Write-Host " (https://github.com/Raphire/Win11Debloat)" -ForegroundColor DarkGray

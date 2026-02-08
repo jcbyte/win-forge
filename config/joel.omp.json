@@ -1,0 +1,75 @@
+{
+	"$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+	"blocks": [
+		{
+			"type": "prompt",
+			"alignment": "left",
+			"segments": [
+				{
+					"properties": {
+						"always_enabled": true,
+						"folder_separator_icon": "/",
+						"style": "agnoster_full",
+						"mapped_locations_enabled": false
+					},
+					"template": "{{ .Path }}",
+					"foreground": "#ffffff",
+					"background": "transparent",
+					"type": "path",
+					"style": "plain"
+				},
+				{
+					"properties": {
+						"branch_icon": "\ue725",
+						"fetch_status": true,
+						"fetch_upstream_icon": true
+					},
+					"template": " {{ .HEAD }}",
+					"foreground": "#f1b80c",
+					"background": "transparent",
+					"type": "git",
+					"style": "plain"
+				},
+				{
+					"properties": {
+						"always_enabled": true,
+						"cache_duration": "none"
+					},
+					"template": " \uf054 ",
+					"foreground": "#ffffff",
+					"type": "status",
+					"style": "plain"
+				}
+			]
+		},
+		{
+			"type": "rprompt",
+			"alignment": "right",
+			"segments": [
+				{
+					"properties": {
+						"always_enabled": true
+					},
+					"template": "{{ if gt .Code 0 }}\uf00d{{ else }}\uf00c{{ end }}",
+					"foreground": "#128853",
+					"background": "transparent",
+					"type": "status",
+					"style": "plain",
+					"foreground_templates": ["{{ if gt .Code 0 }}#bb1e30{{ end }}"]
+				},
+				{
+					"properties": {
+						"always_enabled": true,
+						"style": "roundrock"
+					},
+					"template": " {{ .FormattedMs }}",
+					"foreground": "#ffffff",
+					"background": "transparent",
+					"type": "executiontime",
+					"style": "plain"
+				}
+			]
+		}
+	],
+	"version": 3
+}

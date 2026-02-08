@@ -56,6 +56,7 @@ if ($ResumeStep -eq 0) {
   }
   Write-Prompt -Question "Install MSI Afterburner" { 
     $script:ExtraPackages += [PSCustomObject]@{Id = "Guru3D.Afterburner"; Title = "MSI Afterburner" }
+    # todo do i need to so anything with afterburner
   }
   Write-Prompt -Question "Install Razer Synapse 4" { 
     # ? This will open, and will always install Synapse 4
@@ -66,6 +67,7 @@ if ($ResumeStep -eq 0) {
     # ? This will always install iCUE 5
     $script:ExtraPackages += [PSCustomObject]@{Id = "Corsair.iCUE.5"; Title = "Corsair iCUE 5" }
     $script:ExtraPostPrompts += , @("Configure iCUE 5")
+    # todo do i need to so anything with afterburner
   }
   Write-Prompt -Question "Install OpenRGB" {
     $script:ExtraPackages += [PSCustomObject]@{Id = "OpenRGB.OpenRGB"; Title = "OpenRGB" }

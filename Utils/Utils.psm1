@@ -94,7 +94,7 @@ function Write-Prompt ([string]$Title, [scriptblock]$Action = $null, [string]$Ac
   else {
     if ($AcceptAction) {
       Write-Host "`r⏳" -NoNewline
-      Write-Host " $Title" -ForegroundColor DarkGray 
+      Write-Host " $Title" -NoNewline -ForegroundColor DarkGray 
 
       & $Action
     }
