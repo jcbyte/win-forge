@@ -54,8 +54,25 @@ git config --global core.editor "code --wait"
 git config --global fetch.prune true
 git config --global fetch.pruneTags true
 
+# Configure PowerToys
 
-# Todo Configure PowerToys
+Write-Host "🛠️" -NoNewline -ForegroundColor DarkCyan
+Write-Host " Configuring" -NoNewline
+Write-Host " PowerToys" -ForegroundColor Cyan
+
+$PowerToysDSCFile = Join-Path $Repo.Dir "config/powertoys-dsc-config.json"
+$PowerToysRestore = Get-Content $PowerToysDSCFile | ConvertFrom-Json
+
+# Get PowerToys DSC
+$PowerToysDSCExec = "$env:ProgramFiles\PowerToys\PowerToys.DSC.exe"
+
+# Restore each modules settings
+# ! Note: Command Pallette (CmdPal) is not configurable though DSC yet
+foreach ($Module in $PowerToysRestore.GetEnumerator()) {
+  $ModuleInput = $Module.Value | ConvertTo-Json -Depth 10 -Compress
+  & $PowerToysDSCExec set --resource 'settings' --module $Module.Key --input $ModuleInput
+}
+
 # Todo Configure Windhawk (Better file sizes in Explorer details, Taskbar Volume Control)
 # Todo Configure Spotify (SpotX/BlockTHeSpot, should these be included?)
 # Todo Check if needing config? (7-Zip, Everything, LocalSend, Unified Remote, Chrome Remote Desktop)

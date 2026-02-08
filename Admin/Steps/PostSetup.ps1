@@ -17,3 +17,5 @@ Write-Prompt "Sign In to Steam"
 Write-Prompt "Sign In to VSCode" { code } "Open VSCode"
 
 foreach ($ExtraPrompt in $ExtraPostPrompts) { Write-Prompt @ExtraPrompt }
+
+Write-Prompt "Configure PowerToys Command Pallette" { Start-Process powertoys } "Open PowerToys"
