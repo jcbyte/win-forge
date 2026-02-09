@@ -13,8 +13,9 @@ Write-Prompt "Activate Windows (and Office)" { Invoke-RestMethod https://get.act
 # Remind User to Sign In to installed Applications
 Write-Prompt "Sign In to Chrome" { Start-Process chrome } "Open Chrome"
 Write-Prompt "Sign In to Spotify"
+Write-Prompt -Question "Customise Spotify Client" { Invoke-Expression "& { $(Invoke-WebRequest -useb 'https://raw.githubusercontent.com/SpotX-Official/SpotX/refs/heads/main/run.ps1') } -new_theme" } "Use SpotX: https://github.com/SpotX-Official/SpotX"
 Write-Prompt "Sign In to Steam"
-Write-Prompt "Sign In to VSCode" { code } "Open VSCode"
+Write-Prompt "Sign In to VS Code" { code } "Open VS Code"
 
 foreach ($ExtraPrompt in $ExtraPostPrompts) { Write-Prompt @ExtraPrompt }
 

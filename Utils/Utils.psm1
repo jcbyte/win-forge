@@ -81,14 +81,17 @@ function Write-Prompt ([string]$Title, [scriptblock]$Action = $null, [string]$Ac
 
   if ($Question) {
     if ($AcceptAction) {
-      Write-Host "`r✅" -NoNewline -ForegroundColor Green
-      Write-Host " $Title" -ForegroundColor White 
-
+      Write-Host "`r⏳" -NoNewline
+      Write-Host " $Title" -NoNewline -ForegroundColor DarkGray 
+      
       & $Action
+
+      Write-Host "`r✅" -NoNewline -ForegroundColor Green
+      Write-Host " $Title" 
     }
     else {
       Write-Host "`r❌" -NoNewline -ForegroundColor Red
-      Write-Host " $Title" -ForegroundColor White 
+      Write-Host " $Title" 
     }
   }
   else {
@@ -100,7 +103,7 @@ function Write-Prompt ([string]$Title, [scriptblock]$Action = $null, [string]$Ac
     }
 
     Write-Host "`r✅" -NoNewline -ForegroundColor Green
-    Write-Host " $Title" -ForegroundColor DarkGray 
+    Write-Host " $Title" 
   }
 }
 Export-ModuleMember -Function Write-Prompt
