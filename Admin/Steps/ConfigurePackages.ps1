@@ -73,7 +73,32 @@ foreach ($Module in $PowerToysRestore.GetEnumerator()) {
   & $PowerToysDSCExec set --resource 'settings' --module $Module.Key --input $ModuleInput
 }
 
-# Todo Configure Windhawk (Better file sizes in Explorer details, Taskbar Volume Control)
+# Configure Windhawk
+
+Write-Host "🛠️" -NoNewline -ForegroundColor DarkCyan
+Write-Host " Configuring" -NoNewline
+Write-Host " Windhawk" -ForegroundColor Cyan
+
+# Expand the archive into a temporary folder
+$WindhawkArchive = Join-Path $Repo.Dir "config/windhawk-config-archive.zip"
+$TempWindhawkConfig = New-TemporaryDirectory
+Expand-Archive -Path $WindhawkArchive -DestinationPath $WindhawkConfig
+
+# Copy the mods into the windhawk folder
+$WindhawkDir = "$env:PROGRAMDATA\Windhawk"
+$CollectedModsDir = Join-Path $TempWindhawkConfig "Mods"
+Copy-Item "$CollectedModsDir\Engine\Mods" -Destination "$WindhawkDir\Engine\Mods" -Recurse -Force
+Copy-Item "$CollectedModsDir\ModsSource" -Destination "$WindhawkDir\ModsSource" -Recurse -Force
+
+# Copy the registry back
+$CollectedRegDir = Join-Path $TempWindhawkConfig "Reg"
+reg import "$CollectedRegDir\Engine-Mods.reg" | Out-Null
+reg import "$CollectedRegDir\ENgine-ModsWritable.reg" | Out-Null
+
+# Cleanup the created temporary folder
+Remove-Item $TempWindhawkConfig -Recurse -Force -ErrorAction SilentlyContinue
+
+
 # Todo Configure Spotify (SpotX/BlockTHeSpot, should these be included?)
 # Todo Check if needing config? (7-Zip, Everything, LocalSend, Unified Remote, Chrome Remote Desktop)
 
