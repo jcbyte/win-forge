@@ -52,7 +52,8 @@ function Install-WinGetUnattended([PSCustomObject]$Package) {
   else { Write-Host $Package.Id -ForegroundColor Cyan }
 
   # Add override to command if set
-  $WinGetCmd = "winget install -e --id $($Package.Id) --silent --accept-source-agreements --accept-package-agreements --source winget"
+  $WinGetCmd = "winget install -e --id $($Package.Id) --silent --accept-source-agreements --accept-package-agreements --source winget --scope machine"
+  # todo test all packages with scope machine
   if ($Package.Override) { $WinGetCmd += " --override `"$($Package.Override)`"" }
 
   # Perform the install
