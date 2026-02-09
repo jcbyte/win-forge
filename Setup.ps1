@@ -15,12 +15,14 @@ $RepoDir = $null # ? This is defined later dynamically
 $REPO_ARCHIVE_URL = "https://github.com/jcbyte/$RepoName/archive/refs/heads/main.zip"
 
 if (-not $Dev) {
-  Write-Host "Cloning" -NoNewline
+  Write-Host "Downloading" -NoNewline
   Write-Host " $RepoName" -ForegroundColor Cyan
 
   # Download the full repo and save it in temp files
   $OutputZip = Join-Path $env:TEMP "$RepoName-main.zip"
-  Invoke-WebRequest -Uri $REPO_ARCHIVE_URL -OutFile $OutputZip
+  # ? Use `curl` instead as is is much faster
+  # Invoke-WebRequest -Uri $REPO_ARCHIVE_URL -OutFile $OutputZip
+  curl.exe -L $REPO_ARCHIVE_URL -o $OutputZip
 
   # Create/empty the known local path for the repo
   if (Test-Path $RepoLocalDir) { Remove-Item $RepoLocalDir -Recurse -Force }
