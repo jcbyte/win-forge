@@ -12,6 +12,7 @@ $GIT_EMAIL = "joelcutler108@gmail.com"
 Write-Host "🛠️" -NoNewline -ForegroundColor DarkCyan
 Write-Host " Installing" -NoNewline
 Write-Host " FiraCode Nerd Font" -ForegroundColor Cyan
+
 oh-my-posh font install FiraCode
 
 # Copy Windows Terminal Settings
@@ -22,22 +23,23 @@ Write-Host " Windows Terminal" -ForegroundColor Cyan
 $TerminalSettingsDist = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
 $TerminalSettingsSrc = Join-Path $Repo.Dir "config\windows-terminal.settings.json"
 Copy-Item -Path $TerminalSettingsSrc -Destination $TerminalSettingsDist -Force
-# todo check that the guids are fine being overwritten
 
 # Enable Oh My Posh with custom theme
 Write-Host "🛠️" -NoNewline -ForegroundColor DarkCyan
 Write-Host " Enabling" -NoNewline
 Write-Host " Oh My Posh" -ForegroundColor Cyan
 
-# todo need to check if $PROFILE will be correct in this context
-# C:\Users\vjoel\Documents\PowerShell\Microsoft.PowerShell_profile.ps1
-$ProfileLocation = Split-Path -Path $PROFILE
-$ThemeDist = Join-Path $ProfileLocation "PoshThemes\joel.omp.json"
+$PwshProfile = Join-path ([Environment]::GetFolderPath('MyDocuments')) "PowerShell\Microsoft.PowerShell_profile.ps1"
+$ProfileLocation = Split-Path -Path $PwshProfile
+$ThemeDistLocation = Join-Path $ProfileLocation "PoshThemes"
+$ThemeDist = Join-Path $ThemeDistLocation "joel.omp.json"
 $ThemeSrc = Join-Path $Repo.Dir "config\joel.omp.json"
+if (-not (Test-Path $ProfileLocation)) { New-Item -ItemType Directory -Path $ProfileLocation -Force | Out-Null }
+if (-not (Test-Path $ThemeDistLocation)) { New-Item -ItemType Directory -Path $ThemeDistLocation -Force | Out-Null }
 Copy-Item -Path $ThemeSrc -Destination $ThemeDist -Force
-Add-Content -Path $PROFILE -Value "oh-my-posh init pwsh --config `"$ThemeDist`" | Invoke-Expression"
+Add-Content -Path $PwshProfile -Value "oh-my-posh init pwsh --config `"$ThemeDist`" | Invoke-Expression"
 
-# todo check ghost texts work, and check Ubuntu also exists in the terminal
+# todo Terminal settings with real WSL configuration
 
 # Configure Git
 
@@ -73,6 +75,8 @@ foreach ($Module in $PowerToysRestore.GetEnumerator()) {
   & $PowerToysDSCExec set --resource 'settings' --module $Module.Key --input $ModuleInput
 }
 
+Exit
+
 # todo verify that this powertoys works
 
 # Configure Windhawk
@@ -103,6 +107,5 @@ Remove-Item $TempWindhawkConfig -Recurse -Force -ErrorAction SilentlyContinue
 # todo verify that this windhawk works
 
 
-# Todo Check if needing config? (7-Zip, Everything, LocalSend, Unified Remote, Chrome Remote Desktop)
-
+# Todo Check if needing config? (7-Zip, Everything, LocalSend, Unified Remote, Chrome Remote Desktop, afterburner, corsiar)
 # ? When installing CRDH: "Notes: This is the hosting component for Chrome Remote Desktop. After installation, follow the instructions at https://remotedesktop.google.com/ to get connected."
