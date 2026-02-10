@@ -70,14 +70,12 @@ $PowerToysDSCExec = "$env:ProgramFiles\PowerToys\PowerToys.DSC.exe"
 
 # Restore each modules settings
 # ! Note: Command Pallette (CmdPal) is not configurable though DSC yet
-foreach ($Module in $PowerToysRestore.GetEnumerator()) {
+foreach ($Module in $PowerToysRestore.PSObject.Properties) {
   $ModuleInput = $Module.Value | ConvertTo-Json -Depth 10 -Compress
-  & $PowerToysDSCExec set --resource 'settings' --module $Module.Key --input $ModuleInput
+  # ? Note: DSC Tool internal JSON reader does weird things with quotes so we format them like this
+  $FormattedModuleInput = $ModuleInput -replace '"', '"""'
+  & $PowerToysDSCExec set --resource "settings" --module $Module.Name --input $FormattedModuleInput | Out-Null
 }
-
-Exit
-
-# todo verify that this powertoys works
 
 # Configure Windhawk
 
