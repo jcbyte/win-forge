@@ -16,8 +16,10 @@ Write-Prompt "Sign In to Spotify"
 Write-Prompt -Question "Customise Spotify Client" { Invoke-Expression "& { $(Invoke-WebRequest -useb 'https://raw.githubusercontent.com/SpotX-Official/SpotX/refs/heads/main/run.ps1') } -new_theme" } "Use SpotX: https://github.com/SpotX-Official/SpotX"
 Write-Prompt "Sign In to Discord"
 Write-Prompt "Sign In to Steam"
+Write-Prompt "Sign In to Google Drive"
+Write-Prompt "Configure PowerToys Command Pallette" { Start-Process powertoys } "Open PowerToys"
+# todo Any CRD setup should be placed here
+Write-Prompt "Sign In to Docker Desktop"
 Write-Prompt "Sign In to VS Code" { code } "Open VS Code"
 
 foreach ($ExtraPrompt in $ExtraPostPrompts) { Write-Prompt @ExtraPrompt }
-
-Write-Prompt "Configure PowerToys Command Pallette" { Start-Process powertoys } "Open PowerToys"

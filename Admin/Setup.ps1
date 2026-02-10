@@ -45,6 +45,7 @@ if ($ResumeStep -eq 0) {
   Write-Host "🧩" -NoNewline -ForegroundColor DarkCyan
   Write-Host "Pick Additional Software:" -ForegroundColor Cyan
 
+  # todo should these "extra" packages be handled in a different way
   # Ask which extra packages should be included
   $ExtraPackages = @()
   $ExtraPostPrompts = @()
@@ -61,15 +62,15 @@ if ($ResumeStep -eq 0) {
     # ? This will open, and will always install Synapse 4
     $script:ExtraPackages += [PSCustomObject]@{Id = "RazerInc.RazerInstaller.Synapse4"; Title = "Razer Synapse 4"; Scope = "none" }
     $script:ExtraPostPrompts += , @("Sign In and Configure Razer Synapse 4")
+    # todo Can razer synapse install be unattended?
   }
   Write-Prompt -Question "Install Corsair iCUE 5" { 
     # ? This will always install iCUE 5
     $script:ExtraPackages += [PSCustomObject]@{Id = "Corsair.iCUE.5"; Title = "Corsair iCUE 5" }
-    $script:ExtraPostPrompts += , @("Configure iCUE 5")
   }
   Write-Prompt -Question "Install OpenRGB" {
     $script:ExtraPackages += [PSCustomObject]@{Id = "OpenRGB.OpenRGB"; Title = "OpenRGB" }
-    $script:ExtraPostPrompts += , @("Configure OpenRGB")
+    $script:ExtraPostPrompts += , @("Configure OpenRGB") # todo What configuration is there, can this be unattended?
   }
   
   # Save them in a file so they are not lost when restarting

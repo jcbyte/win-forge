@@ -8,27 +8,28 @@
 # - Steam - In PostSetup
 # - 7-Zip - No Configuration
 # - Everything - Configured Here
-# todo- Google Drive - 
+# - Google Drive - In PostSetup
 # - PowerToys - Configured Here + In PostSetup
-# todo- LocalSend - 
-# todo- Unified Remote - 
+# - LocalSend - No Configuration
+# - Unified Remote - No Configuration
+# ? When installing CRDH: "Notes: This is the hosting component for Chrome Remote Desktop. After installation, follow the instructions at https://remotedesktop.google.com/ to get connected."
 # todo- Chrome Remote Desktop - 
 # - Windhawk - Configured Here
 # - Git = Configured Here
 # - Visual Studio Code - In PostSetup
-# todo- Docker Desktop - 
+# - Docker Desktop - In PostSetup
 # - Modern Powershell - Configured Here
 # - Oh My Posh - Configured Here 
 # - Visual Studios 2022 Build Tools - No Configuration
-# todo- NVM - In InstallLang
-# todo- Python Install Manager - In InstallLang
-# todo- Rustup - No Configuration
-# todo- JDK 25 - No Configuration
+# - NVM - In InstallLang
+# - Python Install Manager - In InstallLang
+# - Rustup - No Configuration
+# - JDK 25 - In InstallLang
 # - NVIDIA App - In PostSetup
 # todo- MSI Afterburner - 
 # todo- Razer Synapse 4 - 
-# todo- Corsair iCUE 5 - 
-# todo- OpenRGB - 
+# - Corsair iCUE 5 - No Configuration
+# - OpenRGB - In PostSetup
 
 Import-Module (Join-Path $PSScriptRoot "..\..\Utils")
 
@@ -141,13 +142,3 @@ reg import "$CollectedRegDir\ENgine-ModsWritable.reg" | Out-Null
 
 # Cleanup the created temporary folder
 Remove-Item $TempWindhawkConfig -Recurse -Force -ErrorAction SilentlyContinue
-
-# todo 7zip
-# todo Everything
-# todo google drive
-# todo localsend
-# todo unified remote
-# todo google remote desktop
-# ? When installing CRDH: "Notes: This is the hosting component for Chrome Remote Desktop. After installation, follow the instructions at https://remotedesktop.google.com/ to get connected."
-# todo visual studios code
-# todo Docker Desktop

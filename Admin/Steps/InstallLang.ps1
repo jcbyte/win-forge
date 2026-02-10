@@ -15,6 +15,15 @@ Write-Host "Latest Python 3" -ForegroundColor Cyan
 py install 3
 # Add pythons global shortcuts directory to PATH
 $PythonBin = "$env:LOCALAPPDATA\Python\bin"
-$path = [Environment]::GetEnvironmentVariable("PATH", "User")
-$newPath = "$path;$PythonBin"
-[Environment]::SetEnvironmentVariable("PATH", $newPath, "User")
+$Path = [Environment]::GetEnvironmentVariable("PATH", "Machine")
+$NewPath = "$Path;$PythonBin"
+[Environment]::SetEnvironmentVariable("PATH", $NewPath, "Machine")
+
+# Set Java system variables
+# todo find correct jdk location (dynamically?)
+$JavaHome = "C:\Program Files\Java\jdk-25.0.2"
+setx JAVA_HOME $JavaHome /M | Out-Null
+$JavaBin = "$JavaHome\bin"
+$Path = [Environment]::GetEnvironmentVariable("PATH", "Machine")
+$NewPath = "$Path;$JavaBin"
+[Environment]::SetEnvironmentVariable("PATH", $NewPath, "Machine")
