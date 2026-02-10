@@ -88,7 +88,7 @@ else {
 # Do user setup here:
 
 # Install spotify as it requires a underprivileged session
-$SpotifyPackage = [PSCustomObject]@{Id = "Spotify.Spotify"; Title = "Spotify"; }
+$SpotifyPackage = [PSCustomObject]@{Id = "Spotify.Spotify"; Title = "Spotify"; Scope = "user" }
 Install-WinGetUnattended $SpotifyPackage
 
 # Notify admin setup that we have completed, allowing restarting

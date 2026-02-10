@@ -86,7 +86,7 @@ Write-Host " Windhawk" -ForegroundColor Cyan
 # Expand the archive into a temporary folder
 $WindhawkArchive = Join-Path $Repo.Dir "config/windhawk-config-archive.zip"
 $TempWindhawkConfig = New-TemporaryDirectory
-Expand-Archive -Path $WindhawkArchive -DestinationPath $WindhawkConfig
+Expand-Archive -Path $WindhawkArchive -DestinationPath $TempWindhawkConfig
 
 # Copy the mods into the windhawk folder
 $WindhawkDir = "$env:PROGRAMDATA\Windhawk"
@@ -101,9 +101,6 @@ reg import "$CollectedRegDir\ENgine-ModsWritable.reg" | Out-Null
 
 # Cleanup the created temporary folder
 Remove-Item $TempWindhawkConfig -Recurse -Force -ErrorAction SilentlyContinue
-
-# todo verify that this windhawk works
-
 
 # Todo Check if needing config? (7-Zip, Everything, LocalSend, Unified Remote, Chrome Remote Desktop, afterburner, corsiar)
 # ? When installing CRDH: "Notes: This is the hosting component for Chrome Remote Desktop. After installation, follow the instructions at https://remotedesktop.google.com/ to get connected."
