@@ -12,7 +12,7 @@ $Packages = @(
   # Daily Software
   [PSCustomObject]@{Id = "Google.Chrome"; Title = "Google Chrome" },
   # [PSCustomObject]@{Id = "Spotify.Spotify"; Title = "Spotify"; }, # ? Spotify install requires unprivileged session
-  [PSCustomObject]@{Id = "Discord.Discord"; Title = "Discord"; Scope = "user" }, # ? This will request admin, and then open # ! todo warning error
+  [PSCustomObject]@{Id = "Discord.Discord"; Title = "Discord"; Scope = "user" }, # ? This will request admin, and then open
   [PSCustomObject]@{Id = "Valve.Steam"; Title = "Steam" },
   # Tools
   [PSCustomObject]@{Id = "7zip.7zip"; Title = "7-Zip" },

@@ -1,10 +1,50 @@
 ﻿# Configure Packages
 # todo
 
+# Package Configurations:
+# - Google Chrome - In PostSetup
+# - Spotify - In PostSetup
+# - Discord - In PostSetup
+# - Steam - In PostSetup
+# - 7-Zip - No Configuration
+# - Everything - Configured Here
+# todo- Google Drive - 
+# - PowerToys - Configured Here + In PostSetup
+# todo- LocalSend - 
+# todo- Unified Remote - 
+# todo- Chrome Remote Desktop - 
+# - Windhawk - Configured Here
+# - Git = Configured Here
+# - Visual Studio Code - In PostSetup
+# todo- Docker Desktop - 
+# - Modern Powershell - Configured Here
+# - Oh My Posh - Configured Here 
+# - Visual Studios 2022 Build Tools - No Configuration
+# todo- NVM - In InstallLang
+# todo- Python Install Manager - In InstallLang
+# todo- Rustup - No Configuration
+# todo- JDK 25 - No Configuration
+# - NVIDIA App - In PostSetup
+# todo- MSI Afterburner - 
+# todo- Razer Synapse 4 - 
+# todo- Corsair iCUE 5 - 
+# todo- OpenRGB - 
+
 Import-Module (Join-Path $PSScriptRoot "..\..\Utils")
 
 $GIT_NAME = "Joel Cutler"
 $GIT_EMAIL = "joelcutler108@gmail.com"
+
+# Configure Everything
+
+Write-Host "🛠️" -NoNewline -ForegroundColor DarkCyan
+Write-Host " Configuring" -NoNewline
+Write-Host " Everything" -ForegroundColor Cyan
+
+$EverythingConfigFile = Join-Path $Repo.Dir "config/everything-config.ini"
+$EverythingExec = "$env:PROGRAMFILES\Everything\Everything.exe"
+
+& $EverythingExec -install-config $EverythingConfigFile
 
 # Configure PowerShell with Oh My Posh
 
@@ -66,7 +106,7 @@ $PowerToysDSCFile = Join-Path $Repo.Dir "config/powertoys-dsc-config.json"
 $PowerToysRestore = Get-Content $PowerToysDSCFile | ConvertFrom-Json
 
 # Get PowerToys DSC
-$PowerToysDSCExec = "$env:ProgramFiles\PowerToys\PowerToys.DSC.exe"
+$PowerToysDSCExec = "$env:PROGRAMFILES\PowerToys\PowerToys.DSC.exe"
 
 # Restore each modules settings
 # ! Note: Command Pallette (CmdPal) is not configurable though DSC yet
@@ -102,5 +142,12 @@ reg import "$CollectedRegDir\ENgine-ModsWritable.reg" | Out-Null
 # Cleanup the created temporary folder
 Remove-Item $TempWindhawkConfig -Recurse -Force -ErrorAction SilentlyContinue
 
-# Todo Check if needing config? (7-Zip, Everything, LocalSend, Unified Remote, Chrome Remote Desktop, afterburner, corsiar)
+# todo 7zip
+# todo Everything
+# todo google drive
+# todo localsend
+# todo unified remote
+# todo google remote desktop
 # ? When installing CRDH: "Notes: This is the hosting component for Chrome Remote Desktop. After installation, follow the instructions at https://remotedesktop.google.com/ to get connected."
+# todo visual studios code
+# todo Docker Desktop
