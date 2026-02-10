@@ -44,7 +44,7 @@ function Invoke-ScriptPipeline([string]$ParentDir, [PSCustomObject[]]$Scripts, [
 Export-ModuleMember -Function Invoke-ScriptPipeline
 
 # Install WinGet packages unattended
-# $Package = {Id:string; Title?:string; Scope?:string Override?:string}
+# $Package = {Id:string; Title?:string; Scope?:"machine"|"user"|"none"="machine" Override?:string}
 function Install-WinGetUnattended([PSCustomObject]$Package) {
   Write-Host "🔷" -NoNewline -ForegroundColor DarkCyan
   Write-Host " Installing " -NoNewline
@@ -52,12 +52,13 @@ function Install-WinGetUnattended([PSCustomObject]$Package) {
   else { Write-Host $Package.Id -ForegroundColor Cyan }
 
   # Default to installing on machine scope
-  if ($Package.Scope) { $Scope = $Package.Scope }
+  if ($Package.Scope -eq "none") { $Scope = $null }
+  elseif ($Package.Scope) { $Scope = $Package.Scope }
   else { $Scope = "machine" }
 
   # Add override to command if set
-  $WinGetCmd = "winget install -e --id $($Package.Id) --silent --accept-source-agreements --accept-package-agreements --source winget --scope $Scope"
-  # todo test all packages with scope machine
+  $WinGetCmd = "winget install -e --id $($Package.Id) --silent --accept-source-agreements --accept-package-agreements --source winget"
+  if ($Scope) { $WinGetCmd += " --scope $Scope" }
   if ($Package.Override) { $WinGetCmd += " --override `"$($Package.Override)`"" }
 
   # Perform the install

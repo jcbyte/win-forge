@@ -19,23 +19,3 @@ reg export "HKLM\SOFTWARE\Windhawk\Engine\ModsWritable" "$CollectedRegDir\ENgine
 
 $Items = Get-ChildItem -Path $TempDir -Force | ForEach-Object { $_.FullName }
 Compress-Archive -Path $Items -DestinationPath $ArchiveFile -Force
-
-# xcopy %ProgramData%\Windhawk\Engine\Mods .\Engine\Mods
-# xcopy %ProgramData%\Windhawk\ModsSource .\ModsSource
-# reg export HKLM\SOFTWARE\Windhawk .\Reg\WindhawkHKLM.reg /y
-
-
-# Exit
-
-# IF EXIST ".\Windhawk\Engine\Mods" (
-#   xcopy .\Windhawk\Engine\Mods\ %ProgramData%\Windhawk\Engine\Mods
-# ) ELSE (
-#   ECHO Run backup first/no files found!
-# )
-
-# IF EXIST "\Windhawk\ModsSource" (
-#   xcopy .\Windhawk\ModsSource\ %ProgramData%\Windhawk\ModsSource
-# ) ELSE (
-#   ECHO Run backup first/no files found!
-
-#   reg import .\Reg\WindhawkHKLM.reg

@@ -10,9 +10,9 @@ $ODTExe = Join-Path $TempSetupDir "setup.exe"
 $OfficeConfiguration = Join-Path $Repo.Dir "config\office-configuration.xml"
 
 Write-Host "🔷" -NoNewline -ForegroundColor DarkCyan
-Write-Host " Installing " -NoNewline
-Write-Host "Office 2024 LTSC" -NoNewline -ForegroundColor Cyan
-Write-Host "(Word, PowerPoint, Excel)" -ForegroundColor DarkGray
+Write-Host " Installing" -NoNewline
+Write-Host " Office 2024 LTSC" -NoNewline -ForegroundColor Cyan
+Write-Host " (Word, PowerPoint, Excel)" -ForegroundColor DarkGray
 
 # Download ODT tool and install ("configure") though file
 Start-BitsTransfer -Source $ODTUrl -Destination $ODTExe

@@ -53,5 +53,5 @@ irm "https://raw.githubusercontent.com/jcbyte/win-forge/main/Setup.ps1?nocache=$
 
 - Verify WSL success on a machine with virtualisation
 - Verify Docker install works (failed due to WSL previously)
-- Verify Office install works (failed previously)
 - Verify NVM works (failed previously)
+- Verify scope="none" works as intended (untested)
