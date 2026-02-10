@@ -41,3 +41,6 @@ $Packages = @(
 $FullPackageList = $Packages + $ExtraPackages
 
 foreach ($Package in $FullPackageList) { Install-WinGetUnattended $Package }
+
+# Synchronise the PATH, as installs may have effected it
+Sync-Path

@@ -8,20 +8,26 @@ Write-Host "Latest Node.js LTS" -ForegroundColor Cyan
 nvm install lts
 nvm use lts
 
+
 # Install latest Python3
 Write-Host "🔷" -NoNewline -ForegroundColor DarkCyan
 Write-Host "Installing " -NoNewline
 Write-Host "Latest Python 3" -ForegroundColor Cyan
 py install 3
+
 # Add pythons global shortcuts directory to PATH
 $PythonBin = "$env:LOCALAPPDATA\Python\bin"
 $Path = [Environment]::GetEnvironmentVariable("PATH", "Machine")
 $NewPath = "$Path;$PythonBin"
 [Environment]::SetEnvironmentVariable("PATH", $NewPath, "Machine")
 
+
+# Find installed Java location
+$JdkRoot = "$env:PROGRAMFILES\Java"
+$JdkPath = Get-ChildItem $JdkRoot -Directory | Where-Object { $_.Name -like "jdk-25*" }
+$JavaHome = $JdkPath.FullName
+
 # Set Java system variables
-# todo find correct jdk location (dynamically?)
-$JavaHome = "C:\Program Files\Java\jdk-25.0.2"
 setx JAVA_HOME $JavaHome /M | Out-Null
 $JavaBin = "$JavaHome\bin"
 $Path = [Environment]::GetEnvironmentVariable("PATH", "Machine")

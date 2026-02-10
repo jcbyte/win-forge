@@ -12,8 +12,7 @@
 # - PowerToys - Configured Here + In PostSetup
 # - LocalSend - No Configuration
 # - Unified Remote - No Configuration
-# ? When installing CRDH: "Notes: This is the hosting component for Chrome Remote Desktop. After installation, follow the instructions at https://remotedesktop.google.com/ to get connected."
-# todo- Chrome Remote Desktop - 
+# - Chrome Remote Desktop - In PostSetup
 # - Windhawk - Configured Here
 # - Git = Configured Here
 # - Visual Studio Code - In PostSetup

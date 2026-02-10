@@ -141,10 +141,10 @@ $SetupSteps = @(
     };
   }
   [PSCustomObject]@{File = "ConfigureWSL.ps1"; Title = "Configure WSL" },
-  [PSCustomObject]@{File = "InstallPackages.ps1"; Title = "Installing Packages"; Args = @{"ExtraPackages" = $Extras.Packages }; RefreshPath = $true },
+  [PSCustomObject]@{File = "InstallPackages.ps1"; Title = "Installing Packages"; Args = @{"ExtraPackages" = $Extras.Packages } },
   [PSCustomObject]@{File = "InstallOffice.ps1"; Title = "Installing Office" },
   [PSCustomObject]@{File = "ConfigurePackages.ps1"; Title = "Configuring Packages" },
-  [PSCustomObject]@{File = "InstallLang.ps1"; Title = "Installing Languages"; RefreshPath = $true },
+  [PSCustomObject]@{File = "InstallLang.ps1"; Title = "Installing Languages" },
   [PSCustomObject]@{File = "PostSetup.ps1"; Title = "Performing Post Setup"; Args = @{"ExtraPostPrompts" = $Extras.PostPrompts } }
 )
 Invoke-ScriptPipeline $StepsPath $SetupSteps $ResumeStep

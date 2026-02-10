@@ -22,9 +22,10 @@ function Sync-Path {
   $UserPath = [System.Environment]::GetEnvironmentVariable("PATH", "User")
   $env:PATH = "$MachinePath;$UserPath"
 }
+Export-ModuleMember -Function Sync-Path
 
 # Sequentially invoke given scripts from a parent directory
-# $Scripts = { File:string; Title:string; RefreshPath?:boolean; Args?:hashtable; PostScript?:ScriptBlock }[]
+# $Scripts = { File:string; Title:string; Args?:hashtable; PostScript?:ScriptBlock }[]
 function Invoke-ScriptPipeline([string]$ParentDir, [PSCustomObject[]]$Scripts, [int]$StartAt = 0) {
   for ($i = $StartAt; $i -lt $Scripts.Count; $i++) {
     $Script = $Scripts[$i];
@@ -33,9 +34,6 @@ function Invoke-ScriptPipeline([string]$ParentDir, [PSCustomObject[]]$Scripts, [
     $ScriptFile = Join-Path $ParentDir $Script.File
     $ScriptArgs = if ($Script.Args) { $Script.Args } else { @{} }
     & $ScriptFile @ScriptArgs
-  
-    # Refresh PATH from the systems environment variables if required
-    if ($Script.RefreshPath) { Sync-Path }
 
     # Perform the PostScript if provided
     if ($Script.PostScript) { & $Script.PostScript $i }
