@@ -2,7 +2,7 @@
 # Installs common software, development tools, and languages using WinGet.
 
 param(
-  [PSCustomObject[]]$ExtraPackages
+  [string[]]$Extras
 )
 
 Import-Module (Join-Path $PSScriptRoot "..\..\Utils")
@@ -38,9 +38,22 @@ $Packages = @(
   [PSCustomObject]@{Id = "Rustlang.Rustup"; Title = "Rust Toolchain"; Scope = "none" },
   [PSCustomObject]@{Id = "Oracle.JDK.25"; Title = "Java JDK 25" } # ? This will always install JDK 25 
 )
-$FullPackageList = $Packages + $ExtraPackages
 
-foreach ($Package in $FullPackageList) { Install-WinGetUnattended $Package }
+# For each extra, add its package if it needs to be installed
+foreach ($Extra in $Extras) {
+  switch ($Extra) {
+    # ! Nvidia App is currently not within the WinGet repository
+    # ! https://github.com/microsoft/winget-pkgs/discussions/200910
+    # "NvidiaApp" { }
+    "MSIAfterburner" { $Packages += [PSCustomObject]@{Id = "Guru3D.Afterburner"; Title = "MSI Afterburner" } }
+    # todo Can razer synapse install be unattended?
+    "RazerSynapse4" { $Packages += [PSCustomObject]@{Id = "RazerInc.RazerInstaller.Synapse4"; Title = "Razer Synapse 4"; Scope = "none" } } 
+    "CorsairICUE5" { $Packages += [PSCustomObject]@{Id = "Corsair.iCUE.5"; Title = "Corsair iCUE 5" } }
+    "OpenRGB" { $Packages += [PSCustomObject]@{Id = "OpenRGB.OpenRGB"; Title = "OpenRGB" } }
+  }
+}
+
+foreach ($Package in $Packages) { Install-WinGetUnattended $Package }
 
 # Synchronise the PATH, as installs may have effected it
 Sync-Path

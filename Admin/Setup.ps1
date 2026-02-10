@@ -45,40 +45,18 @@ if ($ResumeStep -eq 0) {
   Write-Host "🧩" -NoNewline -ForegroundColor DarkCyan
   Write-Host "Pick Additional Software:" -ForegroundColor Cyan
 
-  # todo should these "extra" packages be handled in a different way
   # Ask which extra packages should be included
-  $ExtraPackages = @()
-  $ExtraPostPrompts = @()
-  Write-Prompt -Question "Install Nvidia App" { 
-    # ! Nvidia App is currently not within the WinGet repository
-    # ! https://github.com/microsoft/winget-pkgs/discussions/200910
-    $script:ExtraPostPrompts += , @("Manually install Nvidia App", { Start-Process chrome '--new-window https://www.nvidia.com/en-eu/software/nvidia-app/' }, "Open Download Page")
-    $script:ExtraPostPrompts += , @("Install Graphics Drivers from Nvidia App")
-  }
-  Write-Prompt -Question "Install MSI Afterburner" { 
-    $script:ExtraPackages += [PSCustomObject]@{Id = "Guru3D.Afterburner"; Title = "MSI Afterburner" }
-  }
-  Write-Prompt -Question "Install Razer Synapse 4" { 
-    # ? This will open, and will always install Synapse 4
-    $script:ExtraPackages += [PSCustomObject]@{Id = "RazerInc.RazerInstaller.Synapse4"; Title = "Razer Synapse 4"; Scope = "none" }
-    $script:ExtraPostPrompts += , @("Sign In and Configure Razer Synapse 4")
-    # todo Can razer synapse install be unattended?
-  }
-  Write-Prompt -Question "Install Corsair iCUE 5" { 
-    # ? This will always install iCUE 5
-    $script:ExtraPackages += [PSCustomObject]@{Id = "Corsair.iCUE.5"; Title = "Corsair iCUE 5" }
-  }
-  Write-Prompt -Question "Install OpenRGB" {
-    $script:ExtraPackages += [PSCustomObject]@{Id = "OpenRGB.OpenRGB"; Title = "OpenRGB" }
-    $script:ExtraPostPrompts += , @("Configure OpenRGB") # todo What configuration is there, can this be unattended?
-  }
+  $Extras = @()
+  Write-Prompt -Question "Nvidia App" { $script:Extras += "NvidiaApp" }
+  Write-Prompt -Question "MSI Afterburner" { $script:Extras += "MSIAfterburner" }
+  Write-Prompt -Question "Razer Synapse 4" { $script:Extras += "RazerSynapse4" }
+  Write-Prompt -Question "Corsair iCUE 5" { $script:Extras += "CorsairICUE5" }
+  Write-Prompt -Question "OpenRGB" { $script:Extras += "OpenRGB" }
   
   # Save them in a file so they are not lost when restarting
-  $Extras = [PSCustomObject]@{
-    Packages    = $ExtraPackages
-    PostPrompts = $ExtraPostPrompts
-  }
-  $Extras | Export-Clixml -Path $ExtrasPath
+  $Extras | ConvertTo-Json -Compress | Out-File $ExtrasPath
+
+  Read-Host $ExtrasPath
 
   # Notify user setup script that we are ready as this could've taken some time answering questions
   Write-Host "📢 Notifying user setup that we are ready" -ForegroundColor Yellow
@@ -96,15 +74,7 @@ else {
   Write-Host "▶️ Continuing $($Repo.Name) Setup" -ForegroundColor Magenta
 
   # Load the extra packages from the file
-  $Extras = Import-Clixml -Path $ExtrasPath
-
-  # Re-hydrate ScriptBlocks
-  foreach ($Prompt in $Extras.PostPrompts) {
-    # If there is a second item and it's a string rebuild it as a ScriptBlock
-    if ($Prompt.Count -ge 2 -and $Prompt[1] -is [string]) {
-      $Prompt[1] = [ScriptBlock]::Create($Prompt[1].Trim())
-    }
-  }
+  $Extras = Get-Content $ExtrasPath | ConvertFrom-Json
 }
 
 # Execute each stage of the admin setup
@@ -141,11 +111,11 @@ $SetupSteps = @(
     };
   }
   [PSCustomObject]@{File = "ConfigureWSL.ps1"; Title = "Configure WSL" },
-  [PSCustomObject]@{File = "InstallPackages.ps1"; Title = "Installing Packages"; Args = @{"ExtraPackages" = $Extras.Packages } },
+  [PSCustomObject]@{File = "InstallPackages.ps1"; Title = "Installing Packages"; Args = @{"Extras" = $Extras } },
   [PSCustomObject]@{File = "InstallOffice.ps1"; Title = "Installing Office" },
   [PSCustomObject]@{File = "ConfigurePackages.ps1"; Title = "Configuring Packages" },
   [PSCustomObject]@{File = "InstallLang.ps1"; Title = "Installing Languages" },
-  [PSCustomObject]@{File = "PostSetup.ps1"; Title = "Performing Post Setup"; Args = @{"ExtraPostPrompts" = $Extras.PostPrompts } }
+  [PSCustomObject]@{File = "PostSetup.ps1"; Title = "Performing Post Setup"; Args = @{"Extras" = $Extras } }
 )
 Invoke-ScriptPipeline $StepsPath $SetupSteps $ResumeStep
 

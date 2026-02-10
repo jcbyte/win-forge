@@ -2,7 +2,7 @@
 # Guides the user through remaining manual configuration steps though interactive prompts
 
 param(
-  [PSCustomObject[]]$ExtraPostPrompts
+  [string[]]$Extras
 )
 
 Import-Module (Join-Path $PSScriptRoot "..\..\Utils")
@@ -22,4 +22,16 @@ Write-Prompt "Enable Chrome Remote Desktop" { Start-Process chrome '--new-window
 Write-Prompt "Sign In to Docker Desktop"
 Write-Prompt "Sign In to VS Code" { code } "Open VS Code"
 
-foreach ($ExtraPrompt in $ExtraPostPrompts) { Write-Prompt @ExtraPrompt }
+# For each extra, perform its post setup
+foreach ($Extra in $Extras) {
+  switch ($Extra) {
+    "NvidiaApp" { 
+      Write-Prompt "Manually install Nvidia App" { Start-Process chrome '--new-window https://www.nvidia.com/en-eu/software/nvidia-app/' } "Open Download Page"
+      Write-Prompt "Install Graphics Drivers from Nvidia App"
+    }
+    # "MSIAfterburner" { }
+    "RazerSynapse4" { Write-Prompt "Sign In and Configure Razer Synapse 4" } 
+    # "CorsairICUE5" { }
+    "OpenRGB" { Write-Prompt "Configure OpenRGB" } # todo What configuration is there, can this be unattended?
+  }
+}
