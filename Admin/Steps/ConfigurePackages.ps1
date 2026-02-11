@@ -1,5 +1,13 @@
 ﻿# Configure Packages
-# todo doc
+# Post-install configuration for apps and tools
+# The script applies custom settings, profiles, and themes saved in the `/config` directory
+# Will configure extras installed via $Extras parameter
+
+param(
+  [string[]]$Extras
+)
+
+Import-Module (Join-Path $PSScriptRoot "..\..\Utils")
 
 # Package Configurations:
 # - Google Chrome - In PostSetup
@@ -25,16 +33,10 @@
 # - Rustup - No Configuration
 # - JDK 25 - In InstallLang
 # - NVIDIA App - In PostSetup
-# todo- MSI Afterburner - 
-# todo- Razer Synapse 4 - 
+# - MSI Afterburner - Configured Here
+# - Razer Synapse 4 - In PostSetup
 # - Corsair iCUE 5 - No Configuration
-# - OpenRGB - In PostSetup
-
-param(
-  [string[]]$Extras
-)
-
-Import-Module (Join-Path $PSScriptRoot "..\..\Utils")
+# - OpenRGB - Configured Here
 
 $GIT_NAME = "Joel Cutler"
 $GIT_EMAIL = "joelcutler108@gmail.com"
@@ -64,9 +66,9 @@ Write-Host "🛠️" -NoNewline -ForegroundColor DarkCyan
 Write-Host " Configuring" -NoNewline
 Write-Host " Windows Terminal" -ForegroundColor Cyan
 
-$TerminalSettingsDist = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
+$TerminalSettingsDest = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
 $TerminalSettingsSrc = Join-Path $Repo.Dir "config\windows-terminal.settings.json"
-Copy-Item -Path $TerminalSettingsSrc -Destination $TerminalSettingsDist -Force
+Copy-Item -Path $TerminalSettingsSrc -Destination $TerminalSettingsDest -Force
 
 # Enable Oh My Posh with custom theme
 Write-Host "🛠️" -NoNewline -ForegroundColor DarkCyan
@@ -75,15 +77,13 @@ Write-Host " Oh My Posh" -ForegroundColor Cyan
 
 $PwshProfile = Join-path ([Environment]::GetFolderPath('MyDocuments')) "PowerShell\Microsoft.PowerShell_profile.ps1"
 $ProfileLocation = Split-Path -Path $PwshProfile
-$ThemeDistLocation = Join-Path $ProfileLocation "PoshThemes"
-$ThemeDist = Join-Path $ThemeDistLocation "joel.omp.json"
+$ThemeDestLocation = Join-Path $ProfileLocation "PoshThemes"
+$ThemeDest = Join-Path $ThemeDestLocation "joel.omp.json"
 $ThemeSrc = Join-Path $Repo.Dir "config\joel.omp.json"
 if (-not (Test-Path $ProfileLocation)) { New-Item -ItemType Directory -Path $ProfileLocation -Force | Out-Null }
-if (-not (Test-Path $ThemeDistLocation)) { New-Item -ItemType Directory -Path $ThemeDistLocation -Force | Out-Null }
-Copy-Item -Path $ThemeSrc -Destination $ThemeDist -Force
-Add-Content -Path $PwshProfile -Value "oh-my-posh init pwsh --config `"$ThemeDist`" | Invoke-Expression"
-
-# todo Terminal settings with real WSL configuration
+if (-not (Test-Path $ThemeDestLocation)) { New-Item -ItemType Directory -Path $ThemeDestLocation -Force | Out-Null }
+Copy-Item -Path $ThemeSrc -Destination $ThemeDest -Force
+Add-Content -Path $PwshProfile -Value "oh-my-posh init pwsh --config `"$ThemeDest`" | Invoke-Expression"
 
 # Configure Git
 
@@ -166,7 +166,7 @@ foreach ($Extra in $Extras) {
 
       # Modify the config with our custom config
       foreach ($Section in $CustomConfig.Keys) {
-        if (-not $Config.ContainsKey($Section)) {
+        if (-not $Config.Contains($Section)) {
           $Config[$Section] = @{}
         }
 
@@ -181,6 +181,20 @@ foreach ($Extra in $Extras) {
     }
     # "RazerSynapse4" { } 
     # "CorsairICUE5" { }
-    # "OpenRGB" { }
+    "OpenRGB" {
+      $OpenRgbData = Join-Path $env:APPDATA "OpenRGB"
+      $OpenRgbSettingsSrc = Join-Path $Repo.Dir "config/openrgb-settings.json"
+      $OpenRgbSettingsDest = Join-Path $OpenRgbData "OpenRGB.json"
+      $OpenRgbProfileSrc = Join-Path $Repo.Dir "config/openrgb-profile.PurpleCat.orp"
+      $OpenRgbProfileDest = Join-Path $OpenRgbData "PurpleCat.orp"
+
+      # Copy settings and profile from config
+      Copy-Item -Path $OpenRgbSettingsSrc -Destination $OpenRgbSettingsDest -Force
+      Copy-Item -Path $OpenRgbProfileSrc -Destination $OpenRgbProfileDest -Force
+
+      # Start OpenRGB selecting the copied profile
+      $OpenRgbExec = "$env:PROGRAMFILES\OpenRGB\OpenRGB.exe"
+      & $OpenRgbExec --startminimized --profile $OpenRgbProfileDest
+    }
   }
 }

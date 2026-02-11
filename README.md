@@ -55,3 +55,6 @@ irm "https://raw.githubusercontent.com/jcbyte/win-forge/main/Setup.ps1?nocache=$
 - Verify Docker install works (failed due to WSL previously)
 - Verify NVM works (failed previously)
 - Verify scope="none" works as intended (untested)
+- Verify MSI Afterburner configuration (untested)
+- Verify OpenRGB configuration (untested)
+- Create Windows Terminal Config with WSL
