@@ -30,8 +30,13 @@ foreach ($Extra in $Extras) {
       Write-Prompt "Install Graphics Drivers from Nvidia App"
     }
     # "MSIAfterburner" { }
-    "RazerSynapse4" { Write-Prompt "Sign In and Configure Razer Synapse 4" } 
+    "RazerSynapse4" { 
+      $RazerSynapsePackage += [PSCustomObject]@{Id = "RazerInc.RazerInstaller.Synapse4"; Title = "Razer Synapse 4"; Scope = "none" } # ? This will always install Synapse 4 
+      Install-WinGetUnattended $RazerSynapsePackage
+      Write-Prompt "Install Razer Synapse 4"
+      Write-Prompt "Sign in to Razer Synapse 4"
+    } 
     # "CorsairICUE5" { }
-    "OpenRGB" { Write-Prompt "Configure OpenRGB" } # todo What configuration is there, can this be unattended?
+    # "OpenRGB" { }
   }
 }

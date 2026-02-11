@@ -46,8 +46,8 @@ foreach ($Extra in $Extras) {
     # ! https://github.com/microsoft/winget-pkgs/discussions/200910
     # "NvidiaApp" { }
     "MSIAfterburner" { $Packages += [PSCustomObject]@{Id = "Guru3D.Afterburner"; Title = "MSI Afterburner" } }
-    # todo Can razer synapse install be unattended?
-    "RazerSynapse4" { $Packages += [PSCustomObject]@{Id = "RazerInc.RazerInstaller.Synapse4"; Title = "Razer Synapse 4"; Scope = "none" } } 
+    # ! Razer Synapse cannot be installed Unattended
+    # "RazerSynapse4" { } 
     "CorsairICUE5" { $Packages += [PSCustomObject]@{Id = "Corsair.iCUE.5"; Title = "Corsair iCUE 5" } }
     "OpenRGB" { $Packages += [PSCustomObject]@{Id = "OpenRGB.OpenRGB"; Title = "OpenRGB" } }
   }
