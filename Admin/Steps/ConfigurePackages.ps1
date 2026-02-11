@@ -1,5 +1,5 @@
 ﻿# Configure Packages
-# todo
+# todo doc
 
 # Package Configurations:
 # - Google Chrome - In PostSetup
@@ -29,6 +29,10 @@
 # todo- Razer Synapse 4 - 
 # - Corsair iCUE 5 - No Configuration
 # - OpenRGB - In PostSetup
+
+param(
+  [string[]]$Extras
+)
 
 Import-Module (Join-Path $PSScriptRoot "..\..\Utils")
 
@@ -141,3 +145,42 @@ reg import "$CollectedRegDir\ENgine-ModsWritable.reg" | Out-Null
 
 # Cleanup the created temporary folder
 Remove-Item $TempWindhawkConfig -Recurse -Force -ErrorAction SilentlyContinue
+
+# For each extra, configure it if required
+foreach ($Extra in $Extras) {
+  switch ($Extra) {
+    # "NvidiaApp" { }
+    "MSIAfterburner" {
+      # Install Module for working with ini files
+      Install-PackageProvider -Name NuGet -Force | Out-Null
+      Install-Module PSIni -Force | Out-Null
+      Import-Module PSIni
+
+      $CustomMsiAfterburnerConfig = Join-Path $Repo.Dir "config/msi-afterburner-config.cfg"
+      $PROGRAMFILES86 = [Environment]::GetEnvironmentVariable("ProgramFiles(x86)")
+      $MsiAfterburnerConfig = "$PROGRAMFILES86\MSI Afterburner\MSIAfterburner.cfg"
+
+      # Load our config extra config and the existing
+      $CustomConfig = Import-Ini -Path $CustomMsiAfterburnerConfig
+      $Config = Import-Ini -Path $MsiAfterburnerConfig
+
+      # Modify the config with our custom config
+      foreach ($Section in $CustomConfig.Keys) {
+        if (-not $Config.ContainsKey($Section)) {
+          $Config[$Section] = @{}
+        }
+
+        # Update each key within the section
+        foreach ($Key in $CustomConfig[$Section].Keys) {
+          $Config[$Section][$Key] = $CustomConfig[$Section][$Key]
+        }
+      }
+
+      # Write back the modified content
+      Export-Ini -InputObject $Config -Path $MsiAfterburnerConfig
+    }
+    # "RazerSynapse4" { } 
+    # "CorsairICUE5" { }
+    # "OpenRGB" { }
+  }
+}
