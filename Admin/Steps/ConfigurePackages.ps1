@@ -151,6 +151,10 @@ foreach ($Extra in $Extras) {
   switch ($Extra) {
     # "NvidiaApp" { }
     "MSIAfterburner" {
+      Write-Host "🛠️" -NoNewline -ForegroundColor DarkCyan
+      Write-Host " Configuring" -NoNewline
+      Write-Host " MSI Afterburner" -ForegroundColor Cyan
+      
       # Install Module for working with ini files
       Install-PackageProvider -Name NuGet -Force | Out-Null
       Install-Module PSIni -Force | Out-Null
@@ -182,6 +186,10 @@ foreach ($Extra in $Extras) {
     # "RazerSynapse4" { } 
     # "CorsairICUE5" { }
     "OpenRGB" {
+      Write-Host "🛠️" -NoNewline -ForegroundColor DarkCyan
+      Write-Host " Configuring" -NoNewline
+      Write-Host " OpenRGB" -ForegroundColor Cyan
+      
       $OpenRgbData = Join-Path $env:APPDATA "OpenRGB"
       $OpenRgbSettingsSrc = Join-Path $Repo.Dir "config/openrgb-settings.json"
       $OpenRgbSettingsDest = Join-Path $OpenRgbData "OpenRGB.json"
