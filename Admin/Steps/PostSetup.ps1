@@ -17,7 +17,7 @@ Write-Prompt -Question "Customise Spotify Client" { Invoke-Expression "& { $(Inv
 Write-Prompt "Sign In to Discord"
 Write-Prompt "Sign In to Steam"
 Write-Prompt "Sign In to Google Drive"
-Write-Prompt "Configure PowerToys Command Pallette" { Start-Process powertoys } "Open PowerToys"
+Write-Prompt "Configure PowerToys Command Pallette" { Start-Process powertoys: } "Open PowerToys"
 Write-Prompt "Enable Chrome Remote Desktop" { Start-Process chrome '--new-window https://remotedesktop.google.com/access' } "Open https://remotedesktop.google.com/access"
 Write-Prompt "Sign In to Docker Desktop"
 Write-Prompt "Sign In to VS Code" { code } "Open VS Code"

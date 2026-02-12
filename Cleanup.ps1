@@ -13,4 +13,4 @@ if ((Test-Path $Repo.LocalDir)) {
 
 # Wait for user input before closing
 Write-Host "Press Enter to Exit..." -NoNewline
-[Console]::ReadKey() | Out-Null
+Read-Host

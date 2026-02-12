@@ -80,8 +80,8 @@ function Write-Prompt ([string]$Title, [scriptblock]$Action = $null, [string]$Ac
   }
 
   # Wait for a key to be pressed and check if it is an accept key
-  $Key = [Console]::ReadKey($true)
-  $AcceptAction = $Key.Key -in @('y', 'Y')
+  $Key = Read-Host
+  $AcceptAction = $Key -in @('y', 'Y')
 
   if ($Question) {
     if ($AcceptAction) {

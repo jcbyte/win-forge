@@ -43,12 +43,9 @@ $Packages = @(
 # For each extra, add its package if it needs to be installed
 foreach ($Extra in $Extras) {
   switch ($Extra) {
-    # ! Nvidia App is currently not within the WinGet repository
-    # ! https://github.com/microsoft/winget-pkgs/discussions/200910
-    # "NvidiaApp" { }
+    # "NvidiaApp" { } # ! Nvidia App is currently not within the WinGet repository (https://github.com/microsoft/winget-pkgs/discussions/200910)
     "MSIAfterburner" { $Packages += [PSCustomObject]@{Id = "Guru3D.Afterburner"; Title = "MSI Afterburner" } }
-    # ! Razer Synapse cannot be installed Unattended
-    # "RazerSynapse4" { } 
+    # "RazerSynapse4" { } # ! Razer Synapse cannot be installed Unattended
     "CorsairICUE5" { $Packages += [PSCustomObject]@{Id = "Corsair.iCUE.5"; Title = "Corsair iCUE 5" } }
     "OpenRGB" { $Packages += [PSCustomObject]@{Id = "OpenRGB.OpenRGB"; Title = "OpenRGB" } }
   }

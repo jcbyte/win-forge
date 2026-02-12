@@ -24,7 +24,7 @@ These scripts automate installing a custom list of apps and configuring them.
 
 - **Daily apps**: Chrome, Spotify, Discord, Steam, Office 2024 (Word, PowerPoint, Excel)
 - **Utilities**: 7-Zip, Everything, Google Drive PowerToys, LocalSend, Unified Remote, Chrome Remote Desktop, Windhawk
-- **Developer tools**: Git, VS Code, Docker Desktop, modern PowerShell, Oh My Posh, Visual Studios 2022 Build Tools
+- **Developer tools**: Git, VS Code, Docker Desktop, Windows Terminal, modern PowerShell, Oh My Posh, Visual Studios 2022 Build Tools
 - **Languages**: Node.js (nvm), Python (Python Install Manager), Rust, Java (JDK 25)
 - **Optional Software**: NVIDIA App, MSI Afterburner, Razer Synapse 4, Corsair iCUE 5, OpenRGB
 
