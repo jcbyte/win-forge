@@ -107,6 +107,9 @@ Write-Host "🛠️" -NoNewline -ForegroundColor DarkCyan
 Write-Host " Configuring" -NoNewline
 Write-Host " PowerToys" -ForegroundColor Cyan
 
+# Ensure PowerToys is closed when applying configuration
+Get-Process PowerToys -ErrorAction SilentlyContinue | Stop-Process -Force
+
 $PowerToysDSCFile = Join-Path $Repo.Dir "config/powertoys-dsc-config.json"
 $PowerToysRestore = Get-Content $PowerToysDSCFile | ConvertFrom-Json
 
