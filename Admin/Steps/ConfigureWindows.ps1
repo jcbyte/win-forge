@@ -120,3 +120,6 @@ $RemoveAppsList = $RemoveApps -join ","
 # Configure and Debloat Windows using `Win11Debloat` (https://github.com/Raphire/Win11Debloat)
 $Win11Debloat = Invoke-RestMethod "https://debloat.raphi.re/"
 & ([scriptblock]::Create($Win11Debloat)) -Silent @WindowsConfigParams -RemoveApps -Apps "$RemoveAppsList"
+
+# Enable hibernation
+powercfg /hibernate on
