@@ -8,4 +8,4 @@ Write-Host " WSL" -ForegroundColor Cyan
 wsl --set-default-version 2
 
 # Install Ubuntu on WSL
-wsl --install Ubuntu-24.04 # ? This will always install Ubuntu 24.04 LTS 
+wsl --install Ubuntu-24.04 --no-launch # ? This will always install Ubuntu 24.04 LTS 
