@@ -56,7 +56,16 @@ if ($ResumeStep -eq 0) {
   # Save them in a file so they are not lost when restarting
   $Extras | ConvertTo-Json -Compress | Out-File $ExtrasPath
 
-  Read-Host $ExtrasPath
+  # Ensure WinGet is installed
+  if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
+    Write-Host "🔷" -NoNewline -ForegroundColor DarkCyan
+    Write-Host " Installing" -NoNewline
+    Write-Host " WinGet" -ForegroundColor Cyan
+  
+    Install-PackageProvider -Name NuGet -Force | Out-Null
+    Install-Module -Name Microsoft.WinGet.Client -Force -Repository PSGallery | Out-Null
+    Repair-WinGetPackageManager -AllUsers -ErrorAction SilentlyContinue
+  }
 
   # Notify user setup script that we are ready as this could've taken some time answering questions
   Write-Host "📢 Notifying user setup that we are ready" -ForegroundColor Yellow

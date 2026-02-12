@@ -27,6 +27,7 @@ $Packages = @(
   [PSCustomObject]@{Id = "Git.Git"; Title = "Git" },
   [PSCustomObject]@{Id = "Microsoft.VisualStudioCode"; Title = "Visual Studio Code" },
   [PSCustomObject]@{Id = "Docker.DockerDesktop"; Title = "Docker Desktop" },
+  [PSCustomObject]@{Id = "Microsoft.WindowsTerminal"; Title = "Windows Terminal" },
   [PSCustomObject]@{Id = "Microsoft.PowerShell"; Title = "Modern Powershell" },
   [PSCustomObject]@{Id = "JanDeDobbeleer.OhMyPosh"; Title = "Oh My Posh"; Scope = "user" },
   # Languages

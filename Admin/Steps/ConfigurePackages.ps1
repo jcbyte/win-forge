@@ -25,6 +25,7 @@ Import-Module (Join-Path $PSScriptRoot "..\..\Utils")
 # - Git = Configured Here
 # - Visual Studio Code - In PostSetup
 # - Docker Desktop - In PostSetup
+# - Windows Terminal - Configured Here
 # - Modern Powershell - Configured Here
 # - Oh My Posh - Configured Here 
 # - Visual Studios 2022 Build Tools - No Configuration
