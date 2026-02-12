@@ -14,6 +14,10 @@ This will clone the repo and begin setup scripts.
 
 ## Setup Result
 
+### Windows Configuration
+
+The scripts debloat windows from commonly installed and unused apps, and configure to desired settings
+
 ### Installed Application
 
 These scripts automate installing a custom list of apps and configuring them.
