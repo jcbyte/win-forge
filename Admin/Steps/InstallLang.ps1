@@ -5,9 +5,13 @@
 Write-Host "🔷" -NoNewline -ForegroundColor DarkCyan
 Write-Host "Installing " -NoNewline
 Write-Host "Latest Node.js LTS" -ForegroundColor Cyan
-nvm install lts
-nvm use lts
 
+$env:NVM_HOME = [Environment]::GetEnvironmentVariable("NVM_HOME", "User")
+$env:NVM_SYMLINK = [Environment]::GetEnvironmentVariable("NVM_SYMLINK", "User")
+$NvmExec = "$env:NVM_HOME\nvm.exe"
+
+& $NvmExec install lts
+& $NvmExec use lts
 
 # Install latest Python3
 Write-Host "🔷" -NoNewline -ForegroundColor DarkCyan

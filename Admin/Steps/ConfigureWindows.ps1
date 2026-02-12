@@ -16,7 +16,7 @@ $WindowsConfigSwitches = @(
   "ShowHiddenFolders", "ShowKnownFileExt",
   "EnableDarkMode",
   "CombineTaskbarAlways", "CombineMMTaskbarAlways", "MMTaskbarModeActive",
-  "HideSearchTb", "HideTaskview", "EnableEndTask", "EnableLastActiveClick",
+  "HideSearchTb", "HideTaskview", "EnableEndTask", "EnableLastActiveClick", "-DisableWidgets"
   "HideHome", "HideGallery", "ExplorerToThisPC"
 )
 $WindowsConfigParams = @{}

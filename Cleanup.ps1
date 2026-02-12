@@ -12,5 +12,6 @@ if ((Test-Path $Repo.LocalDir)) {
 }
 
 # Wait for user input before closing
-Write-Host "Press Enter to Exit..." -NoNewline
+Write-Host "🔄️ A restart is recommended!" -ForegroundColor Yellow
+Write-Host "Press Enter to Exit..." -NoNewline -ForegroundColor DarkGray
 Read-Host
