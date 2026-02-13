@@ -200,11 +200,13 @@ foreach ($Extra in $Extras) {
       $OpenRgbProfileSrc = Join-Path $Repo.Dir "config/openrgb-profile.PurpleCat.orp"
       $OpenRgbProfileDest = Join-Path $OpenRgbData "PurpleCat.orp"
 
-      # Copy settings and profile from config
+      # Copy settings from config
+      if (-not (Test-Path $OpenRgbData)) { New-Item -ItemType Directory -Path $OpenRgbData -Force | Out-Null }
       Copy-Item -Path $OpenRgbSettingsSrc -Destination $OpenRgbSettingsDest -Force
+      
+      # Start OpenRGB selecting the profile from config
+      # ! This is sometimes dodgy, may want to do manual configuring instead
       Copy-Item -Path $OpenRgbProfileSrc -Destination $OpenRgbProfileDest -Force
-
-      # Start OpenRGB selecting the copied profile
       $OpenRgbExec = "$env:PROGRAMFILES\OpenRGB\OpenRGB.exe"
       & $OpenRgbExec --startminimized --profile $OpenRgbProfileDest
     }
