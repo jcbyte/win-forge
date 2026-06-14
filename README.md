@@ -27,7 +27,7 @@ These scripts automate installing a custom list of apps and configuring them.
 - **Utilities**: 7-Zip, Everything, Google Drive, PowerToys, LocalSend, Unified Remote, Chrome Remote Desktop, Windhawk
 - **Developer tools**: Git, VS Code, Docker Desktop, Windows Terminal, modern PowerShell, Oh My Posh, Visual Studios 2022 Build Tools
 - **Languages**: Node.js (nvm), Python (Python Install Manager), Rust, Java (JDK 25)
-- **Optional Software**: NVIDIA App, MSI Afterburner, Razer Synapse 4, Corsair iCUE 5, OpenRGB
+- **Optional Software**: NVIDIA App, MSI Afterburner, Razer Synapse 4, Corsair iCUE 5, OpenRGB, Intel Driver Assistant
 
 ### Configuration Applied
 
