@@ -52,7 +52,7 @@ function Install-WinGetUnattended([PSCustomObject]$Package) {
   # Default to installing on machine scope
   if ($Package.Scope -eq "none") { $Scope = $null }
   elseif ($Package.Scope) { $Scope = $Package.Scope }
-  else { $Scope = "machine" }
+  else { $Scope = $null }
 
   # Add override to command if set
   $WinGetCmd = "winget install -e --id $($Package.Id) --silent --accept-source-agreements --accept-package-agreements --source winget"

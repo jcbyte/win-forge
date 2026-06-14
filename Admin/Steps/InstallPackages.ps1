@@ -39,10 +39,10 @@ $Packages = @(
 foreach ($Extra in $Extras) {
   switch ($Extra) {
     # "NvidiaApp" { } # ! Nvidia App is currently not within the WinGet repository (https://github.com/microsoft/winget-pkgs/discussions/200910)
-    "MSIAfterburner" { $Packages += [PSCustomObject]@{Id = "Guru3D.Afterburner"; Title = "MSI Afterburner" } }
+    "MSIAfterburner" { $Packages += [PSCustomObject]@{Id = "Guru3D.Afterburner"; Title = "MSI Afterburner"; Scope = "machine" } }
     # "RazerSynapse4" { } # ! Razer Synapse cannot be installed Unattended
-    "CorsairICUE5" { $Packages += [PSCustomObject]@{Id = "Corsair.iCUE.5"; Title = "Corsair iCUE 5" } }
-    "OpenRGB" { $Packages += [PSCustomObject]@{Id = "OpenRGB.OpenRGB"; Title = "OpenRGB" } }
+    "CorsairICUE5" { $Packages += [PSCustomObject]@{Id = "Corsair.iCUE.5"; Title = "Corsair iCUE 5"; Scope = "machine" } }
+    "OpenRGB" { $Packages += [PSCustomObject]@{Id = "OpenRGB.OpenRGB"; Title = "OpenRGB"; Scope = "machine" } }
     "IntelDriverSupport" { $Packages += [PSCustomObject]@{Id = "Intel.IntelDriverAndSupportAssistant"; Title = "Intel Driver Support Assistant"; Scope = "none" } }
   }
 }
