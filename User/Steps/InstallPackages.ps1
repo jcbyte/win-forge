@@ -1,7 +1,7 @@
 # Package Installation Stage
 # Installs common software, development tools, and languages using WinGet.
 
-Import-Module (Join-Path $PSScriptRoot "..\Utils")
+Import-Module (Join-Path $PSScriptRoot "..\..\Utils")
 
 # List of WinGet packages to install
 $Packages = @(
