@@ -42,5 +42,8 @@ foreach ($Extra in $Extras) {
     } 
     # "CorsairICUE5" { }
     # "OpenRGB" { }
+    "IntelDriverSupport" {
+      Write-Prompt "Install Intel Drivers from Intel Driver & Support Assistant"
+     }
   }
 }

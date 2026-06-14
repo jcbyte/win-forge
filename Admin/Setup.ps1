@@ -52,6 +52,7 @@ if ($ResumeStep -eq 0) {
   Write-Prompt -Question "Razer Synapse 4" { $script:Extras += "RazerSynapse4" }
   Write-Prompt -Question "Corsair iCUE 5" { $script:Extras += "CorsairICUE5" }
   Write-Prompt -Question "OpenRGB" { $script:Extras += "OpenRGB" }
+  Write-Prompt -Question "Intel Driver Assistant" { $script:Extras += "IntelDriverSupport" }
   
   # Save them in a file so they are not lost when restarting
   $Extras | ConvertTo-Json -Compress | Out-File $ExtrasPath
