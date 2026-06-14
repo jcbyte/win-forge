@@ -27,6 +27,7 @@ $Packages = @(
     Override = "--wait --quiet --norestart --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --add Microsoft.VisualStudio.Component.VC.CoreBuildTools --add Microsoft.VisualStudio.Component.Windows11SDK.26100" 
   } # ? This will always install BuildTools 2022, and Windows SDK (10.0.26100)
   [PSCustomObject]@{Id = "Rustlang.Rustup"; Title = "Rust Toolchain"; Scope = "none" } # ? This must be installed after installing MSVC Build Tools
+  [PSCustomObject]@{Id = "CoreyButler.NVMforWindows"; Title = "NVM"; Scope = "machine" },
   [PSCustomObject]@{Id = "Oracle.JDK.25"; Title = "Java JDK 25"; Scope = "machine" } # ? This will always install JDK 25 
 )
 
