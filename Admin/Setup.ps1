@@ -79,13 +79,15 @@ else {
 $StepsPath = Join-Path $PSScriptRoot "Steps"
 $SetupSteps = @(
   [PSCustomObject]@{File = "ConfigureWindows.ps1"; Title = "Configuring Windows" },
+  [PSCustomObject]@{File = "InstallPackages.ps1"; Title = "Installing Packages"; Args = @{"Extras" = $Extras } },
+  [PSCustomObject]@{File = "InstallOffice.ps1"; Title = "Installing Office" },
   [PSCustomObject]@{File = "EnableWSL.ps1"; Title = "Enabling WSL"; PostScript = {
       # After this script, we must restart the computer
       param([int]$i)
 
       # Ensure the user script has completed before we restart the computer
       Write-Host "⏳ Ensuring user script has completed" -ForegroundColor Yellow
-      if ($UserDone.WaitOne(180000)) {
+      if ($UserDone.WaitOne(300000)) {
         Write-Host "✅ User script has completed" -ForegroundColor Green
       }
       else {
@@ -109,8 +111,7 @@ $SetupSteps = @(
     };
   }
   [PSCustomObject]@{File = "ConfigureWSL.ps1"; Title = "Configure WSL" },
-  [PSCustomObject]@{File = "InstallPackages.ps1"; Title = "Installing Packages"; Args = @{"Extras" = $Extras } },
-  [PSCustomObject]@{File = "InstallOffice.ps1"; Title = "Installing Office" },
+  [PSCustomObject]@{File = "InstallDocker.ps1"; Title = "Installing Office" },
   [PSCustomObject]@{File = "ConfigurePackages.ps1"; Title = "Configuring Packages"; Args = @{"Extras" = $Extras } },
   [PSCustomObject]@{File = "InstallLang.ps1"; Title = "Installing Languages" },
   [PSCustomObject]@{File = "PostSetup.ps1"; Title = "Performing Post Setup"; Args = @{"Extras" = $Extras } }

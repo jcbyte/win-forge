@@ -27,7 +27,7 @@ function Get-Cred([string]$Username, [int]$MaxAttempts = 3) {
       $Cred = $null
     }
     finally {
-      # THis will always run (for UI) even after returning
+      # This will always run (for UI) even after returning
       [System.Console]::SetCursorPosition(0, [System.Console]::CursorTop - 1)
       [Console]::Write(" " * [Console]::WindowWidth)
       [System.Console]::SetCursorPosition(0, [System.Console]::CursorTop)
@@ -87,9 +87,7 @@ else {
 
 # Do user setup here:
 
-# Install spotify as it requires a underprivileged session
-$SpotifyPackage = [PSCustomObject]@{Id = "Spotify.Spotify"; Title = "Spotify"; Scope = "user" }
-Install-WinGetUnattended $SpotifyPackage
+& "InstallPackages.ps1"
 
 # Notify admin setup that we have completed, allowing restarting
 Write-Host "✅ User setup completed" -ForegroundColor Green
