@@ -43,6 +43,7 @@ foreach ($Extra in $Extras) {
     # "RazerSynapse4" { } # ! Razer Synapse cannot be installed Unattended
     "CorsairICUE5" { $Packages += [PSCustomObject]@{Id = "Corsair.iCUE.5"; Title = "Corsair iCUE 5" } }
     "OpenRGB" { $Packages += [PSCustomObject]@{Id = "OpenRGB.OpenRGB"; Title = "OpenRGB" } }
+    "IntelDriverSupport" { $Packages += [PSCustomObject]@{Id = "Intel.IntelDriverAndSupportAssistant"; Title = "Intel Driver Support Assistant"; Scope = "none" } }
   }
 }
 
