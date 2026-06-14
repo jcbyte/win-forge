@@ -16,7 +16,8 @@ This will clone the repo and begin setup scripts.
 
 ### Windows Configuration
 
-The scripts debloat windows from commonly installed and unused apps, and configure to desired settings.
+- Debloat windows from commonly installed and unused apps, and configure to desired settings.
+- Install custom cursor by [jepriCreations](https://www.deviantart.com/jepricreations)
 
 ### Installed Application
 
