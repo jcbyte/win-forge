@@ -6,12 +6,9 @@ Import-Module (Join-Path $PSScriptRoot "..\..\Utils")
 # List of WinGet packages to install
 $Packages = @(
   # Daily Software
-  [PSCustomObject]@{Id = "Google.Chrome"; Title = "Google Chrome"; Scope = "none" },
   [PSCustomObject]@{Id = "Spotify.Spotify"; Title = "Spotify"; Scope = "user" },
   [PSCustomObject]@{Id = "Discord.Discord"; Title = "Discord"; Scope = "user" }, # ? This will request admin, and then open
-  [PSCustomObject]@{Id = "Valve.Steam"; Title = "Steam"; Scope = "none" },
   # Tools
-  [PSCustomObject]@{Id = "Google.GoogleDrive"; Title = "Google Drive"; Scope = "none" },
   # Dev Software/Tools
   [PSCustomObject]@{Id = "Microsoft.VisualStudioCode"; Title = "Visual Studio Code"; Scope = "user" },
   [PSCustomObject]@{Id = "JanDeDobbeleer.OhMyPosh"; Title = "Oh My Posh"; Scope = "user" },
