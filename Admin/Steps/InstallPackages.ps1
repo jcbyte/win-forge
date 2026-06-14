@@ -9,10 +9,14 @@ Import-Module (Join-Path $PSScriptRoot "..\..\Utils")
 
 # List of WinGet packages to install
 $Packages = @(
+  # Daily Software
+  [PSCustomObject]@{Id = "Google.Chrome"; Title = "Google Chrome"; Scope = "machine" },
+  [PSCustomObject]@{Id = "Valve.Steam"; Title = "Steam"; Scope = "none" },
   # Tools
   [PSCustomObject]@{Id = "7zip.7zip"; Title = "7-Zip"; Scope = "machine" },
   [PSCustomObject]@{Id = "voidtools.Everything"; Title = "Everything Search"; Scope = "machine" },
   [PSCustomObject]@{Id = "Microsoft.PowerToys"; Title = "Microsoft PowerToys"; Scope = "machine" }, # ? This will open
+  [PSCustomObject]@{Id = "Google.GoogleDrive"; Title = "Google Drive"; Scope = "none" },
   [PSCustomObject]@{Id = "LocalSend.LocalSend"; Title = "LocalSend"; Scope = "machine" },
   [PSCustomObject]@{Id = "UnifiedIntents.UnifiedRemote"; Title = "Unified Remote"; Scope = "machine" },
   [PSCustomObject]@{Id = "Google.ChromeRemoteDesktopHost"; Title = "Chrome Remote Desktop"; Scope = "machine" },
@@ -21,13 +25,13 @@ $Packages = @(
   [PSCustomObject]@{Id = "Git.Git"; Title = "Git"; Scope = "machine" },
   #? Docker.DockerDesktop, is installed later as WSL must be enabled
   [PSCustomObject]@{Id = "Microsoft.WindowsTerminal"; Title = "Windows Terminal"; Scope = "machine" },
-  [PSCustomObject]@{Id = "Microsoft.PowerShell"; Title = "Modern Powershell"; Scope = "machine" },
+  [PSCustomObject]@{Id = "Microsoft.PowerShell"; Title = "Modern Powershell"; Scope = "none" },
   # Languages
   [PSCustomObject]@{Id = "Microsoft.VisualStudio.2022.BuildTools"; Title = "Visual Studio BuildTools 2022 & Core C++ Toolchain"; Scope = "machine";
     Override = "--wait --quiet --norestart --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --add Microsoft.VisualStudio.Component.VC.CoreBuildTools --add Microsoft.VisualStudio.Component.Windows11SDK.26100" 
   } # ? This will always install BuildTools 2022, and Windows SDK (10.0.26100)
   [PSCustomObject]@{Id = "Rustlang.Rustup"; Title = "Rust Toolchain"; Scope = "none" } # ? This must be installed after installing MSVC Build Tools
-  [PSCustomObject]@{Id = "CoreyButler.NVMforWindows"; Title = "NVM"; Scope = "machine" },
+  [PSCustomObject]@{Id = "CoreyButler.NVMforWindows"; Title = "NVM"; Scope = "none" },
   [PSCustomObject]@{Id = "Oracle.JDK.25"; Title = "Java JDK 25"; Scope = "machine" } # ? This will always install JDK 25 
 )
 
