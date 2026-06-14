@@ -87,7 +87,8 @@ else {
 
 # Do user setup here:
 $StepsPath = Join-Path $PSScriptRoot "Steps"
-& Join-Path $StepsPath "InstallPackages.ps1"
+$InstallScriptFile = Join-Path $StepsPath "InstallPackages.ps1"
+& $InstallScriptFile
 
 # Notify admin setup that we have completed, allowing restarting
 Write-Host "✅ User setup completed" -ForegroundColor Green
