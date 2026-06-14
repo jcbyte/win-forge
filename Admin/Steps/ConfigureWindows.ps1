@@ -121,5 +121,12 @@ $RemoveAppsList = $RemoveApps -join ","
 $Win11Debloat = Invoke-RestMethod "https://debloat.raphi.re/"
 & ([scriptblock]::Create($Win11Debloat)) -Silent @WindowsConfigParams -RemoveApps -Apps "$RemoveAppsList"
 
+# Install Custom Cursor
+Write-Host "🛠️" -NoNewline -ForegroundColor DarkCyan
+Write-Host " Setting Custom Cursor" -NoNewline
+Write-Host " (https://www.deviantart.com/jepricreations)" -ForegroundColor DarkGray
+$CursorInstallPath = Join-Path $Repo.Dir "config\cursor\Install.inf"
+Start-Process "rundll32.exe" -ArgumentList "advpack.dll,LaunchINFSection `"$CursorInstallPath`",DefaultInstall,3,N" -Wait -NoNewWindow
+
 # Enable hibernation
 powercfg /hibernate on
