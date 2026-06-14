@@ -4,7 +4,7 @@
 
 Import-Module (Join-Path $PSScriptRoot "..\Utils")
 
-# CHeck if the current shell is at privileged level
+# Check if the current shell is at privileged level
 function Test-IsAdmin {
   $CurrentUser = [Security.Principal.WindowsIdentity]::GetCurrent()
   $Principal = New-Object Security.Principal.WindowsPrincipal($CurrentUser)
@@ -87,7 +87,7 @@ else {
 
 # Do user setup here:
 
-& "InstallPackages.ps1"
+& "./InstallPackages.ps1"
 
 # Notify admin setup that we have completed, allowing restarting
 Write-Host "✅ User setup completed" -ForegroundColor Green
