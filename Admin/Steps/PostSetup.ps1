@@ -16,8 +16,8 @@ Write-Prompt "Create Ubuntu user account"
 
 # Remind User to Sign In to installed Applications
 Write-Prompt "Sign In to Chrome" { Start-Process chrome } "Open Chrome"
-Write-Prompt "Sign In to Spotify"
 Write-Prompt -Question "Customise Spotify Client" { Invoke-Expression "& { $(Invoke-WebRequest -useb 'https://raw.githubusercontent.com/SpotX-Official/SpotX/refs/heads/main/run.ps1') } -new_theme" } "Use SpotX: https://github.com/SpotX-Official/SpotX"
+Write-Prompt "Sign In to Spotify"
 Write-Prompt "Sign In to Discord"
 Write-Prompt "Sign In to Steam"
 Write-Prompt "Sign In to Google Drive"
@@ -44,6 +44,6 @@ foreach ($Extra in $Extras) {
     # "OpenRGB" { }
     "IntelDriverSupport" {
       Write-Prompt "Install Intel Drivers from Intel Driver & Support Assistant"
-     }
+    }
   }
 }
