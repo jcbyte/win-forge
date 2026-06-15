@@ -105,7 +105,7 @@ $SetupSteps = @(
       Write-Host "🔄️ Restarting System" -ForegroundColor Magenta
       
       # Restart the computer and running this script afterwards continuing from the next stage
-      New-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\RunOnce" -Name "ResumeSetup" -Value "PowerShell -ExecutionPolicy Bypass -File `"$PSCommandPath`" -ResumeStep $($i + 1)" -PropertyType String -Force
+      New-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\RunOnce" -Name "ResumeSetup" -Value "PowerShell -ExecutionPolicy Bypass -File `"$PSCommandPath`" -ResumeStep $($i + 1)" -PropertyType String -Force | Out-Null
       Restart-Computer -Force
       # Stop continued execution
       Exit 
