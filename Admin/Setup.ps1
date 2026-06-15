@@ -112,7 +112,7 @@ $SetupSteps = @(
     };
   }
   [PSCustomObject]@{File = "ConfigureWSL.ps1"; Title = "Configure WSL" },
-  [PSCustomObject]@{File = "InstallDocker.ps1"; Title = "Installing Office" },
+  [PSCustomObject]@{File = "InstallDocker.ps1"; Title = "Installing Docker" },
   [PSCustomObject]@{File = "ConfigurePackages.ps1"; Title = "Configuring Packages"; Args = @{"Extras" = $Extras } },
   [PSCustomObject]@{File = "InstallLang.ps1"; Title = "Installing Languages" },
   [PSCustomObject]@{File = "PostSetup.ps1"; Title = "Performing Post Setup"; Args = @{"Extras" = $Extras } }
