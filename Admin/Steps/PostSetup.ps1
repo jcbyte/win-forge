@@ -14,6 +14,8 @@ Write-Prompt "Activate Windows (and Office)" { Invoke-RestMethod https://get.act
 Start-Process Powershell -ArgumentList "-Command", "wsl -d Ubuntu-24.04"
 Write-Prompt "Create Ubuntu user account"
 
+Write-Prompt -Question "Configure Power Options" { powercfg.cpl } "Open Power Options in Control Panel"
+
 # Remind User to Sign In to installed Applications
 Write-Prompt "Sign In to Chrome" { Start-Process chrome } "Open Chrome"
 Write-Prompt -Question "Customise Spotify Client" { Invoke-Expression "& { $(Invoke-WebRequest -useb 'https://raw.githubusercontent.com/SpotX-Official/SpotX/refs/heads/main/run.ps1') } -new_theme" } "Use SpotX: https://github.com/SpotX-Official/SpotX"
