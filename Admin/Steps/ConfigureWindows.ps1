@@ -130,3 +130,5 @@ Start-Process "rundll32.exe" -ArgumentList "advpack.dll,LaunchINFSection `"$Curs
 
 # Enable hibernation
 powercfg /hibernate on
+# Show it in start menu
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FlyoutMenuSettings" /v ShowHibernateOption /t REG_DWORD /d 1 /f | Out-Null
