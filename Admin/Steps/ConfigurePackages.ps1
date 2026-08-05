@@ -23,7 +23,7 @@ Import-Module (Join-Path $PSScriptRoot "..\..\Utils")
 # - Chrome Remote Desktop - In PostSetup
 # - Windhawk - Configured Here
 # - Git = Configured Here
-# - Visual Studio Code - In PostSetup
+# - Visual Studio Code - Here + In PostSetup
 # - Docker Desktop - In PostSetup
 # - Windows Terminal - Configured Here
 # - Modern Powershell - Configured Here
@@ -100,6 +100,51 @@ git config --global pull.rebase true
 git config --global core.editor "code --wait"
 git config --global fetch.prune true
 git config --global fetch.pruneTags true
+
+# Configure VS Code
+
+Write-Host "🛠️" -NoNewline -ForegroundColor DarkCyan
+Write-Host " Configuring" -NoNewline
+Write-Host " VS Code" -ForegroundColor Cyan
+
+$VSCodeExec = "$env:LOCALAPPDATA\Programs\Microsoft VS Code\Code.exe"
+$EscapedVSCodeExec = $VSCodeExec -replace '\\', '\\'
+$VSCodeContextReg = @"
+Windows Registry Editor Version 5.00
+
+[-HKEY_CLASSES_ROOT\Directory\shell\OpenWithCode]
+[-HKEY_CLASSES_ROOT\Directory\Background\shell\OpenWithCode]
+[-HKEY_CLASSES_ROOT\*\shell\OpenWithCode]
+
+; Right-click on a Folder
+[HKEY_CLASSES_ROOT\Directory\shell\OpenWithCode]
+@="Open with Code"
+"Icon"="$EscapedVSCodeExec,0"
+
+[HKEY_CLASSES_ROOT\Directory\shell\OpenWithCode\command]
+@="\"$EscapedVSCodeExec\" \"%1\""
+
+; Right-click inside an empty space in a Folder
+[HKEY_CLASSES_ROOT\Directory\Background\shell\OpenWithCode]
+@="Open with Code"
+"Icon"="$EscapedVSCodeExec,0"
+
+[HKEY_CLASSES_ROOT\Directory\Background\shell\OpenWithCode\command]
+@="\"$EscapedVSCodeExec\" \"%V\""
+
+; Right-click on any File
+[HKEY_CLASSES_ROOT\*\shell\OpenWithCode]
+@="Open with Code"
+"Icon"="$EscapedVSCodeExec,0"
+
+[HKEY_CLASSES_ROOT\*\shell\OpenWithCode\command]
+@="\"$EscapedVSCodeExec\" \"%1\""
+"@
+
+$TempRegFile = "$env:TEMP\OpenWithCode.reg"
+Set-Content -Path $TempRegFile -Value $VSCodeContextReg -Encoding Unicode
+reg import $TempRegFile | Out-Null
+Remove-Item -Path $TempRegFile -Force
 
 # Configure PowerToys
 
@@ -212,3 +257,11 @@ foreach ($Extra in $Extras) {
     }
   }
 }
+
+
+# Restart explorer to apply changes
+
+Write-Host "🔄️ Restarting Explorer" -ForegroundColor Magenta
+
+Stop-Process -Name "explorer" -Force
+Start-Process "explorer.exe"
